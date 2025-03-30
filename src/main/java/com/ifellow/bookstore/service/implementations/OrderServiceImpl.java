@@ -53,8 +53,7 @@ public class OrderServiceImpl implements OrderService {
         return OrderMapper.toResponseDto(order);
     }
 
-    private void checkStockAvailability(UUID storeId, List<Book> requestedBooks)
-            throws NotEnoughStockException {
+    private void checkStockAvailability(UUID storeId, List<Book> requestedBooks) throws NotEnoughStockException {
 
         Map<Book, Long> requiredCounts = requestedBooks.stream()
                 .collect(Collectors.groupingBy(
@@ -78,7 +77,7 @@ public class OrderServiceImpl implements OrderService {
         OrderStatus orderStatus = getStatusByOrderId(orderId);
 
         if (orderStatus != OrderStatus.CREATED)
-            throw new ChangeOrderStatusException("Can't cancel order because it has already canceled or completed, orderId: " + orderId);
+            throw new ChangeOrderStatusException("Can't cancel order because it has status: " + orderStatus);
 
         orderDao.updateStatus(orderId, OrderStatus.CANCELED);
     }
@@ -99,5 +98,20 @@ public class OrderServiceImpl implements OrderService {
     public OrderStatus getStatusByOrderId(UUID orderId) throws OrderNotFoundException {
         return orderDao.getStatusByOrderId(orderId)
                 .orElseThrow(() -> new OrderNotFoundException("Order not found with id: " + orderId));
+    }
+
+    @Override
+    public void completeOrder(UUID orderId) throws OrderNotFoundException, ChangeOrderStatusException {
+        OrderStatus orderStatus = getStatusByOrderId(orderId);
+
+        if (orderStatus != OrderStatus.CREATED)
+            throw new ChangeOrderStatusException("Can't complete order because it has status: " + orderStatus);
+
+        Order order = orderDao.findById(orderId)
+                .orElseThrow(() -> new OrderNotFoundException("Order not found with id: " + orderId));
+
+        storeInventoryDao.removeBooks(order.getStoreId(), order.getBooks());
+
+        orderDao.updateStatus(orderId, OrderStatus.COMPLETED);
     }
 }

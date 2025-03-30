@@ -11,15 +11,18 @@ import com.ifellow.bookstore.exception.StoreNotFoundException;
 import java.util.UUID;
 
 public interface OrderService {
-
     OrderResponseDto createOrder(OrderRequestDto orderRequestDto)
             throws StoreNotFoundException, NotEnoughStockException;
 
     void cancelOrder(UUID orderId)
             throws OrderNotFoundException, ChangeOrderStatusException;
 
-    OrderResponseDto getOrder(UUID orderId) throws OrderNotFoundException;
-
-    public OrderStatus getStatusByOrderId(UUID orderId)
+    OrderResponseDto getOrder(UUID orderId)
             throws OrderNotFoundException;
+
+    OrderStatus getStatusByOrderId(UUID orderId)
+            throws OrderNotFoundException;
+
+    void completeOrder(UUID orderId)
+            throws OrderNotFoundException, ChangeOrderStatusException;
 }

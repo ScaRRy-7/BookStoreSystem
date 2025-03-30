@@ -2,8 +2,6 @@ package com.ifellow.bookstore.dao.implementations;
 
 import com.ifellow.bookstore.dao.interfaces.StoreInventoryDao;
 import com.ifellow.bookstore.datasource.DataSource;
-import com.ifellow.bookstore.dto.response.BookResponseDto;
-import com.ifellow.bookstore.mapper.BookMapper;
 import com.ifellow.bookstore.model.Book;
 import lombok.RequiredArgsConstructor;
 
