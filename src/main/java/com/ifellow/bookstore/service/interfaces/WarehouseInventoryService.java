@@ -15,4 +15,7 @@ public interface WarehouseInventoryService {
     void removeBook(BookRequestDto bookRequestDto);
     List<Book> findBooks(Book bookType);
     void removeBooks(List<Book> books);
+    List<BookResponseDto> findBooksByAuthor(String author);
+    List<BookResponseDto> findBooksByTitle(String title);
+    Map<String, List<BookResponseDto>> groupBooksByGenre();
 }

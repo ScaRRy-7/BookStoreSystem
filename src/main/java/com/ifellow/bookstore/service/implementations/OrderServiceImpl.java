@@ -5,6 +5,7 @@ import com.ifellow.bookstore.dao.interfaces.StoreInventoryDao;
 import com.ifellow.bookstore.dto.request.OrderRequestDto;
 import com.ifellow.bookstore.dto.response.OrderResponseDto;
 import com.ifellow.bookstore.enumeration.OrderStatus;
+import com.ifellow.bookstore.exception.ChangeOrderStatusException;
 import com.ifellow.bookstore.exception.NotEnoughStockException;
 import com.ifellow.bookstore.exception.OrderNotFoundException;
 import com.ifellow.bookstore.exception.StoreNotFoundException;
@@ -36,7 +37,9 @@ public class OrderServiceImpl implements OrderService {
         storeService.findById(orderRequestDto.storeId());
 
         List<Book> requestedBooks = orderRequestDto.books().stream()
-                .map(BookMapper::toModel).toList();
+                .map(BookMapper::toModel)
+                .peek(book -> book.setStoreId(orderRequestDto.storeId()))
+                .toList();
 
         checkStockAvailability(orderRequestDto.storeId(), requestedBooks);
 
@@ -71,12 +74,17 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public void cancelOrder(UUID orderId) {
+    public void cancelOrder(UUID orderId) throws OrderNotFoundException, ChangeOrderStatusException {
+        OrderStatus orderStatus = getStatusByOrderId(orderId);
+
+        if (orderStatus != OrderStatus.CREATED)
+            throw new ChangeOrderStatusException("Can't cancel order because it has already canceled or completed, orderId: " + orderId);
+
         orderDao.updateStatus(orderId, OrderStatus.CANCELED);
     }
 
     @Override
-    public OrderResponseDto getOrder(UUID orderId) {
+    public OrderResponseDto getOrder(UUID orderId) throws OrderNotFoundException {
         Order order = orderDao
                 .findById(orderId)
                 .orElseThrow(() -> new OrderNotFoundException("Order not found with id: " + orderId));
@@ -86,5 +94,10 @@ public class OrderServiceImpl implements OrderService {
 
     private double calculateAmount(List<Book> books) {
         return books.stream().mapToDouble(Book::getRetailPrice).sum();
+    }
+
+    public OrderStatus getStatusByOrderId(UUID orderId) throws OrderNotFoundException {
+        return orderDao.getStatusByOrderId(orderId)
+                .orElseThrow(() -> new OrderNotFoundException("Order not found with id: " + orderId));
     }
 }

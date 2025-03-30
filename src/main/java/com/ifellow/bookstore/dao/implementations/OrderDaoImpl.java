@@ -30,4 +30,12 @@ public class OrderDaoImpl implements OrderDao {
     public void updateStatus(UUID orderId, OrderStatus status) {
         findById(orderId).ifPresent(order -> order.setStatus(status));
     }
+
+    @Override
+    public Optional<OrderStatus> getStatusByOrderId(UUID orderId) {
+        return dataSource.getOrders().stream()
+                .filter(order -> order.getId().equals(orderId))
+                .map(Order::getStatus)
+                .findFirst();
+    }
 }

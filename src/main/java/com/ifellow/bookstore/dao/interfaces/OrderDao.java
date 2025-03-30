@@ -10,4 +10,5 @@ public interface OrderDao {
     void save(Order order);
     Optional<Order> findById(UUID id);
     void updateStatus(UUID orderId, OrderStatus status);
+    Optional<OrderStatus> getStatusByOrderId(UUID orderId);
 }

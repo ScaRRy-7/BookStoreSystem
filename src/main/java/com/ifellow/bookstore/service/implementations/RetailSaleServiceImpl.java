@@ -41,6 +41,7 @@ public class RetailSaleServiceImpl implements RetailSaleService {
 
         Map<Book, Long> requestedBooks = books.stream()
                 .map(BookMapper::toModel)
+                .peek(book -> book.setStoreId(storeId))
                 .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
 
         Map<Book, List<Book>> availableBooks = new HashMap<>();

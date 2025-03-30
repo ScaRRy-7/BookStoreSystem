@@ -1,5 +1,6 @@
 package com.ifellow.bookstore.dao.interfaces;
 
+import com.ifellow.bookstore.dto.response.BookResponseDto;
 import com.ifellow.bookstore.model.Book;
 
 import java.util.List;
@@ -14,4 +15,7 @@ public interface WarehouseInventoryDao {
     Map<Book, Long> getBooks();
     List<Book> findBooks(Book bookType);
     void removeBooks(List<Book> books);
+    List<Book> findBooksByAuthor(String author);
+    List<Book> findBooksByTitle(String title);
+    Map<String, List<Book>> groupBooksByGenre();
 }

@@ -2,6 +2,8 @@ package com.ifellow.bookstore.dao.implementations;
 
 import com.ifellow.bookstore.dao.interfaces.WarehouseInventoryDao;
 import com.ifellow.bookstore.datasource.DataSource;
+import com.ifellow.bookstore.dto.response.BookResponseDto;
+import com.ifellow.bookstore.mapper.BookMapper;
 import com.ifellow.bookstore.model.Book;
 import lombok.RequiredArgsConstructor;
 
@@ -54,5 +56,28 @@ public class WarehouseInventoryDaoImpl implements WarehouseInventoryDao {
     @Override
     public void removeBook(Book book) {
         dataSource.getBookReserve().remove(book);
+    }
+
+    @Override
+    public List<Book> findBooksByAuthor(String author) {
+        return dataSource.getBookReserve().stream()
+                .filter(book -> book.getAuthor().contains(author))
+                .filter(book -> book.getStoreId() == WAREHOUSE_ID)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<Book> findBooksByTitle(String title) {
+        return dataSource.getBookReserve().stream()
+                .filter(book -> book.getTitle().contains(title))
+                .filter(book -> book.getStoreId() == WAREHOUSE_ID)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public Map<String, List<Book>> groupBooksByGenre() {
+        return dataSource.getBookReserve().stream()
+                .filter(book -> book.getStoreId() == WAREHOUSE_ID)
+                .collect(Collectors.groupingBy(Book::getGenre));
     }
 }

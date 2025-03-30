@@ -61,4 +61,27 @@ public class WarehouseInventoryServiceImpl implements WarehouseInventoryService 
         warehouseInventoryDAO.removeBooks(books);
     }
 
+    @Override
+    public List<BookResponseDto> findBooksByAuthor(String author) {
+        return warehouseInventoryDAO.findBooksByAuthor(author).stream()
+                .map(BookMapper::toResponseDTO)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<BookResponseDto> findBooksByTitle(String title) {
+        return warehouseInventoryDAO.findBooksByTitle(title).stream()
+                .map(BookMapper::toResponseDTO)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public Map<String, List<BookResponseDto>> groupBooksByGenre() {
+        return warehouseInventoryDAO.groupBooksByGenre().entrySet().stream()
+                .collect(Collectors.toMap(
+                        Map.Entry::getKey,
+                        entry -> entry.getValue().stream().map(BookMapper::toResponseDTO)
+                                .collect(Collectors.toList())
+                ));
+    }
 }
