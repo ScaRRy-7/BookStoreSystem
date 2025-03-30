@@ -1,0 +1,58 @@
+package com.ifellow.bookstore.dao.implementations;
+
+import com.ifellow.bookstore.dao.interfaces.WarehouseInventoryDao;
+import com.ifellow.bookstore.datasource.DataSource;
+import com.ifellow.bookstore.model.Book;
+import lombok.RequiredArgsConstructor;
+
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
+import java.util.function.Function;
+import java.util.stream.Collectors;
+
+@RequiredArgsConstructor
+public class WarehouseInventoryDaoImpl implements WarehouseInventoryDao {
+
+    private final DataSource dataSource;
+    private final UUID WAREHOUSE_ID = null;
+
+    @Override
+    public void wholesaleDelivery(List<Book> books) {
+        dataSource.getBookReserve().addAll(books);
+    }
+
+    @Override
+    public Map<Book, Long> getBooks() {
+        return dataSource.getBookReserve().stream()
+                .filter(b -> b.getStoreId() == WAREHOUSE_ID)
+                .collect(Collectors.groupingBy(
+                        Function.identity(),
+                        Collectors.counting()
+                ));
+    }
+
+    @Override
+    public List<Book> findBooks(Book bookType) {
+        return dataSource.getBookReserve().stream()
+                .filter(book -> book.getStoreId() == WAREHOUSE_ID)
+                .filter(book -> book.equals(bookType))
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public void removeBooks(List<Book> books) {
+        dataSource.getBookReserve().removeAll(books);
+    }
+
+    @Override
+    public void addBook(Book book) {
+        dataSource.getBookReserve().add(book);
+
+    }
+
+    @Override
+    public void removeBook(Book book) {
+        dataSource.getBookReserve().remove(book);
+    }
+}
