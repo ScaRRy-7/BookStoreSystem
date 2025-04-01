@@ -18,6 +18,7 @@ public class StoreServiceImpl implements StoreService {
 
     @Override
     public UUID add(StoreRequestDto storeRequestDto) {
+        if (storeRequestDto == null) throw new IllegalArgumentException("Incorrect argument was passed");
         Store store = StoreMapper.toModel(storeRequestDto);
         storeDao.add(store);
         return store.getId();
@@ -25,6 +26,8 @@ public class StoreServiceImpl implements StoreService {
 
     @Override
     public void remove(StoreRequestDto storeRequestDto) {
+        if (storeRequestDto == null) throw new IllegalArgumentException("Incorrect argument was passed");
+
         storeDao.remove(StoreMapper.toModel(storeRequestDto));
     }
 
