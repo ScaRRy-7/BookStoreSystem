@@ -29,8 +29,6 @@ public class TransferServiceImpl implements TransferService {
     @Override
     public void transferToStore(UUID storeId, List<BookRequestDto> bookRequestDtos)
             throws StoreNotFoundException, NotEnoughStockException {
-        storeService.findById(storeId);
-
         Map<Book, Long> requestedBooks = bookRequestDtos.stream()
                 .map(BookMapper::toModel)
                 .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));

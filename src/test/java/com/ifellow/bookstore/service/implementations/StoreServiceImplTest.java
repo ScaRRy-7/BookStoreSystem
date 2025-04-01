@@ -49,7 +49,6 @@ class StoreServiceImplTest {
 
         Assertions.assertThrows(StoreNotFoundException.class, () -> storeService.findById(UUID.randomUUID()));
         Mockito.verify(storeDao, Mockito.times(1)).findById(Mockito.any(UUID.class));
-
     }
 
     @Test
@@ -62,7 +61,6 @@ class StoreServiceImplTest {
         Assertions.assertNotNull(actualId);
         Assertions.assertEquals(actualId.getClass(), UUID.class);
         Mockito.verify(storeDao, Mockito.times(1)).add(Mockito.any(Store.class));
-
     }
 
     @Test
@@ -75,5 +73,4 @@ class StoreServiceImplTest {
         Mockito.verify(storeDao, Mockito.times(1)).remove(Mockito.any(Store.class));
         Assertions.assertDoesNotThrow(() -> storeService.remove(storeRequestDto));
     }
-
 }

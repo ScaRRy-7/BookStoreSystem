@@ -45,7 +45,7 @@ class StoreInventoryServiceImplTest {
     }
 
     @Test
-    @DisplayName("StoreInventoryService группирует книги по жанру  с маппингом в Dto")
+    @DisplayName("StoreInventoryService группирует книги по жанру с маппингом в Dto")
     public void groupBooksByGenre_ReturnsGroupedDtos() {
         UUID storeId = UUID.randomUUID();
         Book book1 = new Book(
@@ -58,11 +58,10 @@ class StoreInventoryServiceImplTest {
 
         Assertions.assertEquals(1, actualBookDtos.size());
         Assertions.assertEquals(2, actualBookDtos.get("Роман").size());
-
     }
 
     @Test
-    @DisplayName("")
+    @DisplayName("StoreInventoryService ")
     public void findBooksByTitle_ValidArgument_ReturnsListDto() {
         UUID storeId = UUID.randomUUID();
         String title = "Мастер и маргарита";

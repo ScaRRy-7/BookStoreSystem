@@ -57,7 +57,9 @@ class WarehouseInventoryServiceImplTest {
                 "Мастер и маргарита", author, "Роман", 500, 200, WAREHOUSE_ID);
         Mockito.when(warehouseInventoryDao.findBooksByAuthor(author)).thenReturn(List.of(book));
 
+
         List<BookResponseDto> books = warehouseInventoryService.findBooksByAuthor(author);
+
 
         Assertions.assertNotNull(books);
         Assertions.assertEquals(1, books.size());
@@ -73,7 +75,9 @@ class WarehouseInventoryServiceImplTest {
                 "Мёртвые души", "Гоголь", "Роман", 500, 200, WAREHOUSE_ID);
         Mockito.when(warehouseInventoryDao.groupBooksByGenre()).thenReturn(Map.of("Роман", List.of(book1, book2)));
 
+
         Map<String, List<BookResponseDto>> actualBooks = warehouseInventoryService.groupBooksByGenre();
+
 
         Assertions.assertNotNull(actualBooks);
         Assertions.assertEquals(2, actualBooks.get("Роман").size());
@@ -86,10 +90,23 @@ class WarehouseInventoryServiceImplTest {
                 "Мастер и маргарита", "Булгаков", "Роман", 500, 200, WAREHOUSE_ID);
         List<Book> booksToRemove = List.of(book1);
 
+
         warehouseInventoryService.removeBooks(booksToRemove);
 
-        Mockito.verify(warehouseInventoryDao, Mockito.times(1)).removeBooks(booksToRemove);
 
+        Mockito.verify(warehouseInventoryDao, Mockito.times(1)).removeBooks(booksToRemove);
+    }
+
+    @Test
+    @DisplayName("WarehouseInventoryService получает некорректный аргумент и выбрасывает исключение")
+    public void removeBooks_InvalidArgument_throwsException() {
+        Book book1 = new Book(
+                "Мастер и маргарита", "Булгаков", "Роман", 500, 200, UUID.randomUUID());
+        List<Book> booksToRemove = List.of(book1);
+
+
+        Assertions.assertThrows(IllegalArgumentException.class, () -> warehouseInventoryService.removeBooks(booksToRemove));
+        Mockito.verify(warehouseInventoryDao, Mockito.never()).removeBooks(booksToRemove);
     }
 
 }
