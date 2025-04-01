@@ -39,15 +39,6 @@ class WarehouseInventoryServiceImplTest {
     }
 
     @Test
-    @DisplayName("WarehouseInventoryService получает некорректный аргумент и выбрасывает исключение")
-    public void addBook_IncorrectArgument_ThrowException() {
-        BookRequestDto bookRequestDto = null;
-
-        Assertions.assertThrows(IllegalArgumentException.class, () -> warehouseInventoryService.addBook(bookRequestDto));
-
-    }
-
-    @Test
     @DisplayName("WarehouseInventoryService удаляет Book с помощью корректного Dto")
     public void removeBook_CorrectArgument_callWarehouseInventoryDao() {
         BookRequestDto bookRequestDto = new BookRequestDto(
@@ -56,14 +47,6 @@ class WarehouseInventoryServiceImplTest {
         warehouseInventoryService.removeBook(bookRequestDto);
 
         Mockito.verify(warehouseInventoryDao, Mockito.times(1)).removeBook(Mockito.any(Book.class));
-    }
-
-    @Test
-    @DisplayName("WarehouseInventoryService получает некорректный аргумент и выбрасывает исключение")
-    public void removeBook_IncorrectArgument_ThrowException() {
-        BookRequestDto bookRequestDto = null;
-
-        Assertions.assertThrows(IllegalArgumentException.class, () -> warehouseInventoryService.removeBook(bookRequestDto));
     }
 
     @Test
@@ -79,14 +62,6 @@ class WarehouseInventoryServiceImplTest {
         Assertions.assertNotNull(books);
         Assertions.assertEquals(1, books.size());
         Assertions.assertEquals(book.getTitle(), books.getFirst().title());
-    }
-
-    @Test
-    @DisplayName("WarehouseInventoryService получает некорректный аргумент и выбрасывает исключение")
-    public void findBooksByAuthor_IncorrectArgument_ThrowException() {
-        String author = null;
-
-        Assertions.assertThrows(IllegalArgumentException.class, () -> warehouseInventoryService.findBooksByAuthor(author));
     }
 
     @Test
@@ -117,12 +92,4 @@ class WarehouseInventoryServiceImplTest {
 
     }
 
-    @Test
-    @DisplayName("WarehouseInventoryService полчает некорректный аргумент и выбрасывает исключение")
-    public void removeBooks_IncorrectArgument_ThrowException() {
-        List<Book> booksToRemove = null;
-
-        Mockito.verify(warehouseInventoryDao, Mockito.times(0)).removeBooks(Mockito.anyList());
-        Assertions.assertThrows(IllegalArgumentException.class, () -> warehouseInventoryService.removeBooks(booksToRemove));
-    }
 }

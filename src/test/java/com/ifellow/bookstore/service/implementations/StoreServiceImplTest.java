@@ -66,14 +66,6 @@ class StoreServiceImplTest {
     }
 
     @Test
-    @DisplayName("StoreService получает некорректный аргумент null и выбрасывает исключение")
-    public void add_IncorrectArgumentNull_ThrowsException() {
-        StoreRequestDto storeRequestDto = null;
-
-        Assertions.assertThrows(IllegalArgumentException.class, () -> storeService.add(storeRequestDto));
-    }
-
-    @Test
     @DisplayName("StoreService получает корректный StoreRequestDto и удаляет Store")
     public void remove_CorrectArgument_ReturnNothing() {
         StoreRequestDto storeRequestDto = new StoreRequestDto("Магазин классных книг", "Малая пироговка");
@@ -84,13 +76,4 @@ class StoreServiceImplTest {
         Assertions.assertDoesNotThrow(() -> storeService.remove(storeRequestDto));
     }
 
-    @Test
-    @DisplayName("StoreService получает некорректный аргумент null и выбрасывает исключение")
-    public void remove_IncorrectArgument_throwsException() {
-        StoreRequestDto storeRequestDto = null;
-
-
-        Mockito.verify(storeDao, Mockito.times(0)).remove(Mockito.any(Store.class));
-        Assertions.assertThrows(IllegalArgumentException.class, () -> storeService.remove(storeRequestDto));
-    }
 }

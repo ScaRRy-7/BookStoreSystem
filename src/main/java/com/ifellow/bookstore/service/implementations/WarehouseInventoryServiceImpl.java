@@ -30,7 +30,6 @@ public class WarehouseInventoryServiceImpl implements WarehouseInventoryService 
 
     @Override
     public Map<BookResponseDto, Long> getStockReport() {
-
         return warehouseInventoryDAO.getBooks().entrySet()
                 .stream().collect(Collectors.toMap(
                         entry -> BookMapper.toResponseDTO(entry.getKey()),
@@ -40,15 +39,11 @@ public class WarehouseInventoryServiceImpl implements WarehouseInventoryService 
 
     @Override
     public void addBook(BookRequestDto bookRequestDto)  {
-        if (bookRequestDto == null) throw new IllegalArgumentException("Incorrect argument was passed");
-
         warehouseInventoryDAO.addBook(BookMapper.toModel(bookRequestDto));
     }
 
     @Override
     public void removeBook(BookRequestDto bookRequestDto)  {
-        if (bookRequestDto == null) throw new IllegalArgumentException("Incorrect argument was passed");
-
         warehouseInventoryDAO.removeBook(BookMapper.toModel(bookRequestDto));
     }
 
@@ -59,8 +54,6 @@ public class WarehouseInventoryServiceImpl implements WarehouseInventoryService 
 
     @Override
     public void removeBooks(List<Book> books) throws IllegalArgumentException {
-        if (books == null) throw new IllegalArgumentException("Incorrect argument was passed");
-
         if (books.stream().anyMatch(book -> book.getStoreId() != WAREHOUSE_ID))
             throw new IllegalArgumentException("Book isn't in warehouse");
 
@@ -69,8 +62,6 @@ public class WarehouseInventoryServiceImpl implements WarehouseInventoryService 
 
     @Override
     public List<BookResponseDto> findBooksByAuthor(String author) {
-        if (author == null) throw new IllegalArgumentException("Incorrect argument was passed");
-
         return warehouseInventoryDAO.findBooksByAuthor(author).stream()
                 .map(BookMapper::toResponseDTO)
                 .collect(Collectors.toList());
