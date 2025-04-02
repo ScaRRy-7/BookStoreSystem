@@ -10,10 +10,10 @@ import java.util.Map;
 public interface WarehouseInventoryService {
 
     void wholesaleBookDelivery(List<BookRequestDto> bookRequestDtos);
-    public Map<BookResponseDto, Long> getStockReport();
+    Map<BookResponseDto, Long> getStockReport();
     void addBook(BookRequestDto bookRequestDto);
     void removeBook(BookRequestDto bookRequestDto);
-    List<Book> findBooks(Book bookType);
+    List<Book> findBooksByType(Book bookType);
     void removeBooks(List<Book> books);
     List<BookResponseDto> findBooksByAuthor(String author);
     List<BookResponseDto> findBooksByTitle(String title);

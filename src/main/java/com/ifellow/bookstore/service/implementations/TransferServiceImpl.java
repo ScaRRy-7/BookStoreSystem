@@ -44,7 +44,7 @@ public class TransferServiceImpl implements TransferService {
         checkIsEnoughStock(requestedBooks, warehouseStock);
 
         requestedBooks.forEach((bookType, count) -> {
-            warehouseInventoryService.findBooks(bookType)
+            warehouseInventoryService.findBooksByType(bookType)
                     .stream().limit(count).peek(book -> book.setStoreId(storeId))
                     .collect(Collectors.toList());
         });

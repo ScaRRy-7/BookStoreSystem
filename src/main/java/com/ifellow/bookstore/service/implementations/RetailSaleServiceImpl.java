@@ -2,6 +2,7 @@ package com.ifellow.bookstore.service.implementations;
 
 import com.ifellow.bookstore.dao.interfaces.ReceiptDao;
 import com.ifellow.bookstore.dao.interfaces.SaleDao;
+import com.ifellow.bookstore.dao.interfaces.StoreDao;
 import com.ifellow.bookstore.dao.interfaces.StoreInventoryDao;
 import com.ifellow.bookstore.dto.request.BookRequestDto;
 import com.ifellow.bookstore.dto.response.ReceiptResponseDto;
@@ -29,20 +30,43 @@ import java.util.stream.Collectors;
 public class RetailSaleServiceImpl implements RetailSaleService {
 
     private final StoreInventoryDao storeInventoryDao;
-    private final StoreService storeService;
-    private final WarehouseInventoryService warehouseInventoryService;
+    private final StoreDao storeDao;
     private final SaleDao saleDao;
     private final ReceiptDao receiptDao;
 
     public ReceiptResponseDto processSale(UUID storeId, List<BookRequestDto> books)
             throws StoreNotFoundException, NotEnoughStockException {
-
-        storeService.findById(storeId);
+        checkStoreExists(storeId);
 
         Map<Book, Long> requestedBooks = books.stream()
                 .map(BookMapper::toModel)
                 .peek(book -> book.setStoreId(storeId))
                 .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
+
+        Map<Book, List<Book>> availableBooks = checkAndGetAvailableBooks(storeId, requestedBooks);
+        List<Book> booksToRemove = prepareBooksToRemove(availableBooks, requestedBooks);
+
+        storeInventoryDao.removeBooks(storeId, booksToRemove);
+
+        Sale sale = createSale(storeId, booksToRemove);
+        saleDao.add(sale);
+
+        Receipt receipt = createReceipt(sale.getId(), booksToRemove);
+        receiptDao.add(receipt);
+
+        return ReceiptMapper.toReceiptResponseDto(receipt);
+    }
+
+    private double calculateTotal(List<Book> books) {
+        return books.stream().mapToDouble(Book::getRetailPrice).sum();
+    }
+
+    private void checkStoreExists(UUID storeId) throws StoreNotFoundException {
+        storeDao.findById(storeId).orElseThrow(() -> new StoreNotFoundException("Store not found with id: " + storeId));
+    }
+
+    private Map<Book, List<Book>> checkAndGetAvailableBooks(UUID storeId, Map<Book, Long> requestedBooks)
+            throws NotEnoughStockException {
 
         Map<Book, List<Book>> availableBooks = new HashMap<>();
 
@@ -56,33 +80,33 @@ public class RetailSaleServiceImpl implements RetailSaleService {
 
             availableBooks.put(bookType, booksInStore);
         }
+        return availableBooks;
+    }
 
-        List<Book> booksToRemove = requestedBooks.entrySet().stream()
+    private List<Book> prepareBooksToRemove(Map<Book, List<Book>> availableBooks, Map<Book, Long> requestedBooks) {
+        return requestedBooks.entrySet().stream()
                 .flatMap(entry -> {
                     Book bookType = entry.getKey();
                     Long requiredCount = entry.getValue();
                     return availableBooks.get(bookType).stream().limit(requiredCount);
                 }).collect(Collectors.toList());
-
-        storeInventoryDao.removeBooks(storeId, booksToRemove);
-
-        Sale sale = new Sale();
-        sale.setId(UUID.randomUUID());
-        sale.setStoreId(storeId);
-        sale.setBooks(booksToRemove);
-        sale.setSaleDate(new Date());
-        saleDao.add(sale);
-
-        Receipt receipt = new Receipt();
-        receipt.setSaleId(sale.getId());
-        receipt.setIssueDate(new Date());
-        receipt.setTotalAmount(calculateTotal(booksToRemove));
-        receiptDao.add(receipt);
-
-        return ReceiptMapper.toReceiptResponseDto(receipt);
     }
 
-    private double calculateTotal(List<Book> books) {
-        return books.stream().mapToDouble(Book::getRetailPrice).sum();
+    private Sale createSale(UUID storeId, List<Book> books) {
+        return Sale.builder()
+                .id(UUID.randomUUID())
+                .storeId(storeId)
+                .books(books)
+                .saleDate(new Date())
+                .build();
+
+    }
+
+    private Receipt createReceipt(UUID saleId, List<Book> books) {
+        return Receipt.builder()
+                .saleId(saleId)
+                .issueDate(new Date())
+                .totalAmount(calculateTotal(books))
+                .build();
     }
 }

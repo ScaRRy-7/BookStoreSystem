@@ -48,7 +48,7 @@ public class WarehouseInventoryServiceImpl implements WarehouseInventoryService 
     }
 
     @Override
-    public List<Book> findBooks(Book bookType) {
+    public List<Book> findBooksByType(Book bookType) {
         return warehouseInventoryDAO.findBooks(bookType);
     }
 

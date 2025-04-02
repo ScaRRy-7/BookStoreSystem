@@ -168,7 +168,7 @@ class OrderServiceImplTest {
     }
 
     @Test
-    @DisplayName("")
+    @DisplayName("OrderServiceImpl выбрасывает исключение при попытке найти несуществующий Order по id")
     public void completeOder_OrderNotFound_ThrowsException() {
         Mockito.when(orderDao.findById(orderId)).thenReturn(Optional.empty());
 
