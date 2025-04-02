@@ -19,6 +19,7 @@ public class Order {
     private final List<Book> books;
     private final Date createdDate;
     @Setter
+    @Getter
     private OrderStatus status;
     private final double totalAmount;
 

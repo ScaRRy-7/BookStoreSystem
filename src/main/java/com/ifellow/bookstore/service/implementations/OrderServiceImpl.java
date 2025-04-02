@@ -1,6 +1,7 @@
 package com.ifellow.bookstore.service.implementations;
 
 import com.ifellow.bookstore.dao.interfaces.OrderDao;
+import com.ifellow.bookstore.dao.interfaces.StoreDao;
 import com.ifellow.bookstore.dao.interfaces.StoreInventoryDao;
 import com.ifellow.bookstore.dto.request.OrderRequestDto;
 import com.ifellow.bookstore.dto.response.OrderResponseDto;
@@ -26,15 +27,16 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class OrderServiceImpl implements OrderService {
 
-    private final StoreService storeService;
     private final OrderDao orderDao;
     private final StoreInventoryDao storeInventoryDao;
+    private final StoreDao storeDao;
 
     @Override
     public OrderResponseDto createOrder(OrderRequestDto orderRequestDto)
             throws StoreNotFoundException, NotEnoughStockException {
 
-        storeService.findById(orderRequestDto.storeId());
+        storeDao.findById(orderRequestDto.storeId())
+                .orElseThrow(() -> new StoreNotFoundException("Store not found with id: " + orderRequestDto.storeId()));
 
         List<Book> requestedBooks = orderRequestDto.books().stream()
                 .map(BookMapper::toModel)
@@ -102,16 +104,12 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public void completeOrder(UUID orderId) throws OrderNotFoundException, ChangeOrderStatusException {
-        OrderStatus orderStatus = getStatusByOrderId(orderId);
+        Order order = orderDao.findById(orderId).orElseThrow(() -> new OrderNotFoundException("Order not found with id: " + orderId));
 
-        if (orderStatus != OrderStatus.CREATED)
-            throw new ChangeOrderStatusException("Can't complete order because it has status: " + orderStatus);
-
-        Order order = orderDao.findById(orderId)
-                .orElseThrow(() -> new OrderNotFoundException("Order not found with id: " + orderId));
+        if (order.getStatus() != OrderStatus.CREATED)
+            throw new ChangeOrderStatusException("Can't complete order because it has status: " + order.getStatus());
 
         storeInventoryDao.removeBooks(order.getStoreId(), order.getBooks());
-
         orderDao.updateStatus(orderId, OrderStatus.COMPLETED);
     }
 }
