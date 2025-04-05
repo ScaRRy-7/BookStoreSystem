@@ -17,6 +17,7 @@ import com.ifellow.bookstore.model.Order;
 import com.ifellow.bookstore.service.interfaces.OrderService;
 import com.ifellow.bookstore.service.interfaces.StoreService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Map;
@@ -24,12 +25,18 @@ import java.util.UUID;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-@RequiredArgsConstructor
+@Service
 public class OrderServiceImpl implements OrderService {
 
     private final OrderDao orderDao;
     private final StoreInventoryDao storeInventoryDao;
     private final StoreDao storeDao;
+
+    public OrderServiceImpl(OrderDao orderDao, StoreInventoryDao storeInventoryDao, StoreDao storeDao) {
+        this.orderDao = orderDao;
+        this.storeInventoryDao = storeInventoryDao;
+        this.storeDao = storeDao;
+    }
 
     @Override
     public OrderResponseDto createOrder(OrderRequestDto orderRequestDto)

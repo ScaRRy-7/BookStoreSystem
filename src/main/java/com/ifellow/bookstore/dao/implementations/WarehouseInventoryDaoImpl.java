@@ -4,6 +4,7 @@ import com.ifellow.bookstore.dao.interfaces.WarehouseInventoryDao;
 import com.ifellow.bookstore.datasource.DataSource;
 import com.ifellow.bookstore.model.Book;
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Map;
@@ -11,11 +12,15 @@ import java.util.UUID;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-@RequiredArgsConstructor
+@Repository
 public class WarehouseInventoryDaoImpl implements WarehouseInventoryDao {
 
     private final DataSource dataSource;
     private final UUID WAREHOUSE_ID = null;
+
+    public WarehouseInventoryDaoImpl(DataSource dataSource) {
+        this.dataSource = dataSource;
+    }
 
     @Override
     public void wholesaleDelivery(List<Book> books) {

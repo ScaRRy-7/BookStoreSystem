@@ -5,14 +5,19 @@ import com.ifellow.bookstore.datasource.DataSource;
 import com.ifellow.bookstore.enumeration.OrderStatus;
 import com.ifellow.bookstore.model.Order;
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 import java.util.UUID;
 
-@RequiredArgsConstructor
+@Repository
 public class OrderDaoImpl implements OrderDao {
 
     private final DataSource dataSource;
+
+    public OrderDaoImpl(DataSource dataSource) {
+        this.dataSource = dataSource;
+    }
 
     @Override
     public void save(Order order) {

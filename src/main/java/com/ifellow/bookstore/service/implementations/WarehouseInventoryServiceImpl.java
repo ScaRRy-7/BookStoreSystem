@@ -7,17 +7,22 @@ import com.ifellow.bookstore.mapper.BookMapper;
 import com.ifellow.bookstore.model.Book;
 import com.ifellow.bookstore.service.interfaces.WarehouseInventoryService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-@RequiredArgsConstructor
+@Service
 public class WarehouseInventoryServiceImpl implements WarehouseInventoryService {
 
     private final WarehouseInventoryDao warehouseInventoryDAO;
     private final UUID WAREHOUSE_ID = null;
+
+    public WarehouseInventoryServiceImpl(WarehouseInventoryDao warehouseInventoryDAO) {
+        this.warehouseInventoryDAO = warehouseInventoryDAO;
+    }
 
     @Override
     public void wholesaleBookDelivery(List<BookRequestDto> bookRequestDtos) {

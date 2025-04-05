@@ -3,18 +3,22 @@ package com.ifellow.bookstore.dao.implementations;
 import com.ifellow.bookstore.dao.interfaces.StoreInventoryDao;
 import com.ifellow.bookstore.datasource.DataSource;
 import com.ifellow.bookstore.model.Book;
-import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-@RequiredArgsConstructor
+@Repository
 public class StoreInventoryDaoImpl implements StoreInventoryDao {
 
     private final DataSource dataSource;
     private final UUID WAREHOUSE_ID = null;
+
+    public StoreInventoryDaoImpl( DataSource dataSource) {
+        this.dataSource = dataSource;
+    }
 
     @Override
     public List<Book> findBooksByType(UUID storeId, Book bookType) {

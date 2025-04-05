@@ -17,6 +17,7 @@ import com.ifellow.bookstore.service.interfaces.RetailSaleService;
 import com.ifellow.bookstore.service.interfaces.StoreService;
 import com.ifellow.bookstore.service.interfaces.WarehouseInventoryService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -26,13 +27,20 @@ import java.util.UUID;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-@RequiredArgsConstructor
+@Service
 public class RetailSaleServiceImpl implements RetailSaleService {
 
     private final StoreInventoryDao storeInventoryDao;
     private final StoreDao storeDao;
     private final SaleDao saleDao;
     private final ReceiptDao receiptDao;
+
+    public RetailSaleServiceImpl(StoreInventoryDao storeInventoryDao, StoreDao storeDao, SaleDao saleDao, ReceiptDao receiptDao) {
+        this.storeInventoryDao = storeInventoryDao;
+        this.storeDao = storeDao;
+        this.saleDao = saleDao;
+        this.receiptDao = receiptDao;
+    }
 
     public ReceiptResponseDto processSale(UUID storeId, List<BookRequestDto> books)
             throws StoreNotFoundException, NotEnoughStockException {

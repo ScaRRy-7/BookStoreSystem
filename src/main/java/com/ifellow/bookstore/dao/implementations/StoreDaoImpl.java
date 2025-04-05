@@ -4,13 +4,18 @@ import com.ifellow.bookstore.dao.interfaces.StoreDao;
 import com.ifellow.bookstore.datasource.DataSource;
 import com.ifellow.bookstore.model.Store;
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Repository;
 
 import java.util.*;
 
-@RequiredArgsConstructor
+@Repository
 public class StoreDaoImpl implements StoreDao {
 
     private final DataSource dataSource;
+
+    public StoreDaoImpl(DataSource dataSource) {
+        this.dataSource = dataSource;
+    }
 
     @Override
     public void add(Store store) {

@@ -8,13 +8,18 @@ import com.ifellow.bookstore.mapper.StoreMapper;
 import com.ifellow.bookstore.model.Store;
 import com.ifellow.bookstore.service.interfaces.StoreService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
 
 import java.util.UUID;
 
-@RequiredArgsConstructor
+@Service
 public class StoreServiceImpl implements StoreService {
 
     private final StoreDao storeDao;
+
+    public StoreServiceImpl(StoreDao storeDao) {
+        this.storeDao = storeDao;
+    }
 
     @Override
     public UUID add(StoreRequestDto storeRequestDto) {

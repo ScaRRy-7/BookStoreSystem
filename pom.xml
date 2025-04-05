@@ -36,5 +36,12 @@
             <version>${mockito.version}</version>
             <scope>test</scope>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/org.springframework/spring-core -->
+        <!-- https://mvnrepository.com/artifact/org.springframework/spring-context -->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context</artifactId>
+            <version>6.2.0</version>
+        </dependency>
     </dependencies>
 </project>

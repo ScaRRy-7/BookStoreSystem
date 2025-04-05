@@ -5,15 +5,20 @@ import com.ifellow.bookstore.dto.response.BookResponseDto;
 import com.ifellow.bookstore.mapper.BookMapper;
 import com.ifellow.bookstore.service.interfaces.StoreInventoryService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-@RequiredArgsConstructor
+@Service
 public class StoreInventoryServiceImpl implements StoreInventoryService {
 
     private final StoreInventoryDao storeInventoryDao;
+
+    public StoreInventoryServiceImpl(StoreInventoryDao storeInventoryDao) {
+        this.storeInventoryDao = storeInventoryDao;
+    }
 
     @Override
     public List<BookResponseDto> findBooksByAuthor(String author) {
