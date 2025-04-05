@@ -14,9 +14,6 @@ import com.ifellow.bookstore.model.Book;
 import com.ifellow.bookstore.model.Receipt;
 import com.ifellow.bookstore.model.Sale;
 import com.ifellow.bookstore.service.interfaces.RetailSaleService;
-import com.ifellow.bookstore.service.interfaces.StoreService;
-import com.ifellow.bookstore.service.interfaces.WarehouseInventoryService;
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;

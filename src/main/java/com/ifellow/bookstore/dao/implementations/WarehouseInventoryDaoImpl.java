@@ -3,7 +3,6 @@ package com.ifellow.bookstore.dao.implementations;
 import com.ifellow.bookstore.dao.interfaces.WarehouseInventoryDao;
 import com.ifellow.bookstore.datasource.DataSource;
 import com.ifellow.bookstore.model.Book;
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;

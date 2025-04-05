@@ -15,8 +15,6 @@ import com.ifellow.bookstore.mapper.OrderMapper;
 import com.ifellow.bookstore.model.Book;
 import com.ifellow.bookstore.model.Order;
 import com.ifellow.bookstore.service.interfaces.OrderService;
-import com.ifellow.bookstore.service.interfaces.StoreService;
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

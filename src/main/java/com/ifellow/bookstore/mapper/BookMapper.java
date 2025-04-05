@@ -4,8 +4,6 @@ import com.ifellow.bookstore.dto.request.BookRequestDto;
 import com.ifellow.bookstore.dto.response.BookResponseDto;
 import com.ifellow.bookstore.model.Book;
 
-import java.util.UUID;
-
 public class BookMapper {
 
     public static Book toModel(BookRequestDto dto) {

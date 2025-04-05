@@ -15,6 +15,7 @@
         <lombok.version>1.18.30</lombok.version>
         <junit.version>5.8.0</junit.version>
         <mockito.version>5.14.2</mockito.version>
+        <spring.version>6.2.0</spring.version>
     </properties>
 
     <dependencies>
@@ -36,12 +37,10 @@
             <version>${mockito.version}</version>
             <scope>test</scope>
         </dependency>
-        <!-- https://mvnrepository.com/artifact/org.springframework/spring-core -->
-        <!-- https://mvnrepository.com/artifact/org.springframework/spring-context -->
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-context</artifactId>
-            <version>6.2.0</version>
+            <version>${spring.version}</version>
         </dependency>
     </dependencies>
 </project>

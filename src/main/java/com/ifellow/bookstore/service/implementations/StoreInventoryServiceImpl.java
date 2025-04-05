@@ -4,7 +4,6 @@ import com.ifellow.bookstore.dao.interfaces.StoreInventoryDao;
 import com.ifellow.bookstore.dto.response.BookResponseDto;
 import com.ifellow.bookstore.mapper.BookMapper;
 import com.ifellow.bookstore.service.interfaces.StoreInventoryService;
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
