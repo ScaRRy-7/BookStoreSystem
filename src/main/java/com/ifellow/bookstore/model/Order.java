@@ -1,44 +1,30 @@
 package com.ifellow.bookstore.model;
 
 import com.ifellow.bookstore.enumeration.OrderStatus;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.Setter;
+import jakarta.persistence.*;
 
-import java.util.Date;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
-@Getter
-@AllArgsConstructor
+@Entity
+@Table(name = "orders")
 public class Order {
-    private final UUID id;
-    private final UUID storeId;
-    private final List<Book> books;
-    private final Date createdDate;
-    @Setter
-    @Getter
-    private OrderStatus status;
-    private final double totalAmount;
 
-    public Order(UUID storeId, List<Book> books, double totalAmount) {
-        this.id = UUID.randomUUID();
-        this.storeId = storeId;
-        this.books = List.copyOf(books);
-        this.createdDate = new Date();
-        this.status = OrderStatus.CREATED;
-        this.totalAmount = totalAmount;
-    }
+    @Id
+    @GeneratedValue
+    private Long id;
 
-    @Override
-    public String toString() {
-        return "Order{" +
-                "id=" + id +
-                ", storeId=" + storeId +
-                ", books=" + books +
-                ", createdDate=" + createdDate +
-                ", status=" + status +
-                ", totalAmount=" + totalAmount +
-                '}';
-    }
+    @Column(name = "order_date_time", nullable = false)
+    private LocalDateTime orderDateTime;
+
+    @OneToMany(mappedBy = "order")
+    private List<OrderItem> orderItemList = new ArrayList<>();
+
+    @Enumerated(EnumType.STRING)
+    private OrderStatus orderStatus;
+
+    @ManyToOne
+    @JoinColumn(name = "warehouse_id")
+    private Warehouse warehouse;
 }

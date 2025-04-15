@@ -6,31 +6,29 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.math.BigDecimal;
-
 @Entity
-@Table(name = "books")
+@Table(
+        name = "warehouse_books_amount",
+        uniqueConstraints = {@UniqueConstraint(columnNames = {"book_id", "warehouse_id"})}
+)
 @NoArgsConstructor
 @AllArgsConstructor
 @Setter
 @Getter
-public class Book {
+public class WarehouseBookAmount {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
-    private String title;
+    @ManyToOne
+    @JoinColumn(name = "warehouse_id", nullable = false)
+    private Warehouse warehouse;
 
     @ManyToOne
-    @JoinColumn(name = "author_id")
-    private Author author;
-
-    @ManyToOne
-    @JoinColumn(name = "genre_id")
-    private Genre genre;
+    @JoinColumn(name = "book_id", nullable = false)
+    private Book book;
 
     @Column(nullable = false)
-    private BigDecimal price;
+    private Integer amount;
 }

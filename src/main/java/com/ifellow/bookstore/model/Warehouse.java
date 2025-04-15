@@ -6,24 +6,23 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name = "stores")
+@Table(name = "warehouses")
 @NoArgsConstructor
 @AllArgsConstructor
 @Setter
 @Getter
-public class Store {
+public class Warehouse {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue
     private Long id;
 
     @Column(unique = true, nullable = false)
     private String address;
 
-    @OneToMany(mappedBy = "store")
-    private List<StoreBookAmount> storeBooksAmountList = new ArrayList<>();
+    @OneToMany(mappedBy = "warehouse")
+    private List<WarehouseBookAmount> warehouseBooksAmountList;
 }

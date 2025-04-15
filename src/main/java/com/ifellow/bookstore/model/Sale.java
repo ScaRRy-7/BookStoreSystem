@@ -1,77 +1,29 @@
 package com.ifellow.bookstore.model;
 
-import lombok.Getter;
-import lombok.Setter;
+import jakarta.persistence.*;
 
-import java.util.Date;
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
-
-@Getter
-@Setter
+@Entity
+@Table(name = "sales")
 public class Sale {
-    private UUID id;
-    private UUID storeId;
-    private List<Book> books;
-    private Date saleDate;
 
-    Sale(UUID id, UUID storeId, List<Book> books, Date saleDate) {
-        this.id = id;
-        this.storeId = storeId;
-        this.books = books;
-        this.saleDate = saleDate;
-    }
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-    public static SaleBuilder builder() {
-        return new SaleBuilder();
-    }
+    @OneToMany(mappedBy = "sale")
+    private List<SaleItem> saleItemList = new ArrayList<>();
 
-    @Override
-    public String toString() {
-        return "Sale{" +
-                "id=" + id +
-                ", storeId=" + storeId +
-                ", books=" + books +
-                ", saleDate=" + saleDate +
-                '}';
-    }
+    @Column(name = "sale_date_time")
+    private LocalDateTime saleDateTime;
 
-    public static class SaleBuilder {
-        private UUID id;
-        private UUID storeId;
-        private List<Book> books;
-        private Date saleDate;
+    private BigDecimal totalPrice;
 
-        SaleBuilder() {
-        }
-
-        public SaleBuilder id(UUID id) {
-            this.id = id;
-            return this;
-        }
-
-        public SaleBuilder storeId(UUID storeId) {
-            this.storeId = storeId;
-            return this;
-        }
-
-        public SaleBuilder books(List<Book> books) {
-            this.books = books;
-            return this;
-        }
-
-        public SaleBuilder saleDate(Date saleDate) {
-            this.saleDate = saleDate;
-            return this;
-        }
-
-        public Sale build() {
-            return new Sale(this.id, this.storeId, this.books, this.saleDate);
-        }
-
-        public String toString() {
-            return "Sale.SaleBuilder(id=" + this.id + ", storeId=" + this.storeId + ", books=" + this.books + ", saleDate=" + this.saleDate + ")";
-        }
-    }
+    @ManyToOne
+    @JoinColumn(name = "store_id")
+    private Store store;
 }
