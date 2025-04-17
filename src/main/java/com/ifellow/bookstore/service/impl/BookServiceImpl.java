@@ -11,27 +11,21 @@ import com.ifellow.bookstore.repository.api.BookRepository;
 import com.ifellow.bookstore.service.api.AuthorService;
 import com.ifellow.bookstore.service.api.BookService;
 import com.ifellow.bookstore.service.api.GenreService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
+@RequiredArgsConstructor
+
 public class BookServiceImpl implements BookService {
 
     private final BookRepository bookRepository;
-
     private final AuthorService authorService;
     private final GenreService genreService;
-
     private final BookMapper bookMapper;
-
-    public BookServiceImpl(BookRepository bookRepository, AuthorService authorService, GenreService genreService, BookMapper bookMapper ) {
-        this.bookRepository = bookRepository;
-        this.authorService = authorService;
-        this.genreService = genreService;
-        this.bookMapper = bookMapper;
-    }
 
     @Override
     @Transactional

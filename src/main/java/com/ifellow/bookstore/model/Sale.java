@@ -25,6 +25,7 @@ public class Sale {
     @Column(name = "sale_date_time")
     private LocalDateTime saleDateTime;
 
+    @Column
     private BigDecimal totalPrice;
 
     @ManyToOne

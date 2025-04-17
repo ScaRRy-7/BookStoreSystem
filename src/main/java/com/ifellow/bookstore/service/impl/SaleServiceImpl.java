@@ -12,6 +12,7 @@ import com.ifellow.bookstore.repository.api.SaleRepository;
 import com.ifellow.bookstore.service.api.BookService;
 import com.ifellow.bookstore.service.api.SaleService;
 import com.ifellow.bookstore.service.api.StoreService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -22,6 +23,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class SaleServiceImpl implements SaleService {
 
     private final SaleRepository saleRepository;
@@ -29,18 +31,6 @@ public class SaleServiceImpl implements SaleService {
     private final StoreService storeService;
     private final BookService bookService;
     private final SaleMapper saleMapper;
-
-    public SaleServiceImpl(SaleRepository saleRepository,
-                           StoreService storeService,
-                           SaleItemRepository saleItemRepository,
-                           BookService bookService,
-                           SaleMapper saleMapper) {
-        this.saleRepository = saleRepository;
-        this.storeService = storeService;
-        this.saleItemRepository = saleItemRepository;
-        this.bookService = bookService;
-        this.saleMapper = saleMapper;
-    }
 
     @Override
     @Transactional
@@ -52,9 +42,8 @@ public class SaleServiceImpl implements SaleService {
         sale.setSaleDateTime(LocalDateTime.now());
 
         for (BookSaleDto bookSaleDto : bookSaleDtoList) {
-            storeService.removeBookFromStore(storeId, bookSaleDto.bookId(), bookSaleDto.quantity());
-
             Book book = bookService.findBookById(bookSaleDto.bookId());
+            storeService.removeBookFromStore(storeId, bookSaleDto.bookId(), bookSaleDto.quantity());
 
             SaleItem saleItem = new SaleItem();
             saleItem.setBook(book);
@@ -94,10 +83,9 @@ public class SaleServiceImpl implements SaleService {
         BigDecimal totalPrice = BigDecimal.ZERO;
 
         for (SaleItem saleItem : saleItemList) {
-            BigDecimal priceOfSaleItem = saleItem.getPrice().multiply(BigDecimal.valueOf(saleItem.getQuantity()));
-            totalPrice = totalPrice.add(priceOfSaleItem);
+            BigDecimal totalPriceOfSaleItem = saleItem.getPrice().multiply(new BigDecimal(saleItem.getQuantity()));
+            totalPrice = totalPrice.add(totalPriceOfSaleItem);
         }
-
         return totalPrice;
     }
 }

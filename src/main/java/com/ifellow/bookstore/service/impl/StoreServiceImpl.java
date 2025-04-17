@@ -15,6 +15,7 @@ import com.ifellow.bookstore.repository.api.StoreBookAmountRepository;
 import com.ifellow.bookstore.repository.api.StoreRepository;
 import com.ifellow.bookstore.service.api.BookService;
 import com.ifellow.bookstore.service.api.StoreService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -23,6 +24,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
 public class StoreServiceImpl implements StoreService {
 
     private final StoreRepository storeRepository;
@@ -31,18 +33,6 @@ public class StoreServiceImpl implements StoreService {
     private final StoreBookAmountRepository storeBookAmountRepository;
     private final StoreBookAmountMapper storeBookAmountMapper;
     private final Integer EMPTY_STOCK = 0;
-
-    public StoreServiceImpl(StoreRepository storeRepository,
-                            StoreMapper storeMapper,
-                            BookService bookService,
-                            StoreBookAmountRepository storeBookAmountRepository,
-                            StoreBookAmountMapper storeBookAmountMapper) {
-        this.storeRepository = storeRepository;
-        this.storeMapper = storeMapper;
-        this.bookService = bookService;
-        this.storeBookAmountRepository = storeBookAmountRepository;
-        this.storeBookAmountMapper = storeBookAmountMapper;
-    }
 
     @Override
     @Transactional
@@ -61,7 +51,7 @@ public class StoreServiceImpl implements StoreService {
     @Override
     @Transactional
     public void addBookToStore(Long id, Long bookId, int quantity) {
-        if (quantity <= 0) throw new IllegalArgumentException("quantity must be greater than zero");
+        if (quantity <= EMPTY_STOCK) throw new IllegalArgumentException("quantity must be greater than zero");
 
         Store store = findStoreById(id);
         Book book = bookService.findBookById(bookId);
@@ -84,7 +74,7 @@ public class StoreServiceImpl implements StoreService {
     @Override
     @Transactional
     public void removeBookFromStore(Long id, Long bookId, int quantity) {
-        if (quantity <= 0) throw new IllegalArgumentException("quantity must be greater than zero");
+        if (quantity <= EMPTY_STOCK) throw new IllegalArgumentException("quantity must be greater than zero");
 
         Store store = findStoreById(id);
         Book book = bookService.findBookById(bookId);

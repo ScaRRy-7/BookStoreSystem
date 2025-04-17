@@ -7,20 +7,17 @@ import com.ifellow.bookstore.mapper.GenreMapper;
 import com.ifellow.bookstore.model.Genre;
 import com.ifellow.bookstore.repository.api.GenreRepository;
 import com.ifellow.bookstore.service.api.GenreService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
+@RequiredArgsConstructor
 public class GenreServiceImpl implements GenreService {
 
     private final GenreRepository genreRepository;
-
     private final GenreMapper genreMapper;
 
-    public GenreServiceImpl(GenreRepository genreRepository, GenreMapper genreMapper) {
-        this.genreRepository = genreRepository;
-        this.genreMapper = genreMapper;
-    }
 
     @Transactional
     public GenreResponseDto save(GenreRequestDto genreRequestDto) {

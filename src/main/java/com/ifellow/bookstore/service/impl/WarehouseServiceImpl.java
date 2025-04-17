@@ -16,6 +16,7 @@ import com.ifellow.bookstore.repository.api.WarehouseBookAmountRepository;
 import com.ifellow.bookstore.repository.api.WarehouseRepository;
 import com.ifellow.bookstore.service.api.BookService;
 import com.ifellow.bookstore.service.api.WarehouseService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -25,6 +26,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
 public class WarehouseServiceImpl implements WarehouseService {
 
     private final WarehouseRepository warehouseRepository;
@@ -33,18 +35,6 @@ public class WarehouseServiceImpl implements WarehouseService {
     private final BookService bookService;
     private final WarehouseBookAmountMapper warehouseBookAmountMapper;
     private final Integer EMPTY_STOCK = 0;
-
-    public WarehouseServiceImpl(WarehouseRepository warehouseRepository,
-                                WarehouseMapper warehouseMapper,
-                                WarehouseBookAmountRepository warehouseBookAmountRepository,
-                                BookService bookService,
-                                WarehouseBookAmountMapper warehouseBookAmountMapper) {
-        this.warehouseRepository = warehouseRepository;
-        this.warehouseMapper = warehouseMapper;
-        this.warehouseBookAmountRepository = warehouseBookAmountRepository;
-        this.bookService = bookService;
-        this.warehouseBookAmountMapper = warehouseBookAmountMapper;
-    }
 
     @Override
     @Transactional
@@ -63,7 +53,7 @@ public class WarehouseServiceImpl implements WarehouseService {
     @Override
     @Transactional
     public void addBookToWarehouse(Long id, Long bookId, int quantity) {
-        if (quantity <= 0) throw new IllegalArgumentException("quantity must be greater than zero");
+        if (quantity <= EMPTY_STOCK) throw new IllegalArgumentException("quantity must be greater than zero");
 
         Warehouse warehouse = findWarehouseById(id);
         Book book = bookService.findBookById(bookId);
@@ -87,7 +77,7 @@ public class WarehouseServiceImpl implements WarehouseService {
     @Override
     @Transactional
     public void removeBookFromWarehouse(Long id, Long bookId, int quantity) {
-        if (quantity <= 0) throw new IllegalArgumentException("quantity must be greater than zero");
+        if (quantity <= EMPTY_STOCK) throw new IllegalArgumentException("quantity must be greater than zero");
 
         Warehouse warehouse = findWarehouseById(id);
         Book book = bookService.findBookById(bookId);

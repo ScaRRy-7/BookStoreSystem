@@ -7,21 +7,16 @@ import com.ifellow.bookstore.mapper.AuthorMapper;
 import com.ifellow.bookstore.model.Author;
 import com.ifellow.bookstore.repository.api.AuthorRepository;
 import com.ifellow.bookstore.service.api.AuthorService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
+@RequiredArgsConstructor
 public class AuthorServiceImpl implements AuthorService {
 
     private final AuthorRepository authorRepository;
-
     private final AuthorMapper authorMapper;
-
-
-    public AuthorServiceImpl(AuthorRepository authorRepository, AuthorMapper authorMapper) {
-        this.authorRepository = authorRepository;
-        this.authorMapper = authorMapper;
-    }
 
     @Override
     @Transactional
