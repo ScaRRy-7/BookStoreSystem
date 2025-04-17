@@ -32,6 +32,7 @@ public class WarehouseServiceImpl implements WarehouseService {
     private final WarehouseMapper warehouseMapper;
     private final BookService bookService;
     private final WarehouseBookAmountMapper warehouseBookAmountMapper;
+    private final Integer EMPTY_STOCK = 0;
 
     public WarehouseServiceImpl(WarehouseRepository warehouseRepository,
                                 WarehouseMapper warehouseMapper,
@@ -56,7 +57,7 @@ public class WarehouseServiceImpl implements WarehouseService {
     @Override
     public Warehouse findWarehouseById(Long id) {
         return warehouseRepository.findById(id)
-                .orElseThrow(() -> new WarehouseNotFoundException("Warehouse not found with id: " + id));
+                .orElseThrow(() -> new WarehouseNotFoundException("Warehouse not found with bookId: " + id));
     }
 
     @Override
@@ -97,12 +98,15 @@ public class WarehouseServiceImpl implements WarehouseService {
             WarehouseBookAmount warehouseBookAmount = optionalWba.get();
 
             if (warehouseBookAmount.getAmount() < quantity)
-                throw new NotEnoughStockException("Not enough stock of book with id: " + bookId + " for removing it in warehouse with id:" + id);
+                throw new NotEnoughStockException("Not enough stock of book with bookId: " + bookId + " for removing it in warehouse with bookId:" + id);
 
             warehouseBookAmount.setAmount(warehouseBookAmount.getAmount() - quantity);
-            warehouseBookAmountRepository.save(warehouseBookAmount);
+
+            if (warehouseBookAmount.getAmount() == EMPTY_STOCK) warehouseBookAmountRepository.delete(warehouseBookAmount);
+            else warehouseBookAmountRepository.save(warehouseBookAmount);
+
         } else {
-            throw new BookNotFoundException("Book not found with id: " + bookId + " in warehouse with id: " + id);
+            throw new BookNotFoundException("Book not found with bookId: " + bookId + " in warehouse with bookId: " + id);
         }
     }
 
@@ -116,7 +120,7 @@ public class WarehouseServiceImpl implements WarehouseService {
     @Transactional
     public void bulkAddBooks(Long id, List<BookBulkAddDto> booksToAdd) {
         for (BookBulkAddDto bookDto : booksToAdd) {
-            addBookToWarehouse(id, bookDto.id(), bookDto.quantity());
+            addBookToWarehouse(id, bookDto.bookId(), bookDto.quantity());
         }
     }
 }

@@ -30,6 +30,7 @@ public class StoreServiceImpl implements StoreService {
     private final BookService bookService;
     private final StoreBookAmountRepository storeBookAmountRepository;
     private final StoreBookAmountMapper storeBookAmountMapper;
+    private final Integer EMPTY_STOCK = 0;
 
     public StoreServiceImpl(StoreRepository storeRepository,
                             StoreMapper storeMapper,
@@ -54,7 +55,7 @@ public class StoreServiceImpl implements StoreService {
     @Override
     public Store findStoreById(Long id) {
         return storeRepository.findById(id)
-                .orElseThrow(() -> new StoreNotFoundException("Store not found with id: " + id));
+                .orElseThrow(() -> new StoreNotFoundException("Store not found with bookId: " + id));
     }
 
     @Override
@@ -94,12 +95,15 @@ public class StoreServiceImpl implements StoreService {
             storeBookAmount = optionalSba.get();
 
             if (storeBookAmount.getAmount() < quantity)
-                throw new NotEnoughStockException("Not enough stock of book with id: " + bookId + " for removing it in store with id:" + id);
+                throw new NotEnoughStockException("Not enough stock of book with bookId: " + bookId + " for removing it in store with bookId:" + id);
 
             storeBookAmount.setAmount(storeBookAmount.getAmount() - quantity);
-            storeBookAmountRepository.save(storeBookAmount);
+
+            if (storeBookAmount.getAmount() == EMPTY_STOCK) storeBookAmountRepository.delete(storeBookAmount);
+            else storeBookAmountRepository.save(storeBookAmount);
+
         } else {
-            throw new BookNotFoundException("Book not found with id: " + bookId + " in store with id: " + id);
+            throw new BookNotFoundException("Book not found with bookId: " + bookId + " in store with bookId: " + id);
         }
     }
 

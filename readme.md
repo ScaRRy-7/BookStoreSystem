@@ -98,7 +98,7 @@ public class BookStoreClient {
         try {
             // Создание магазина
             UUID storeId = storeService.add(new StoreRequestDto("Главный магазин", "Москва"));
-            System.out.println("Создан магазин с id: " + storeId);
+            System.out.println("Создан магазин с bookId: " + storeId);
 
             // Проверка существования магазина
             StoreResponseDto store = storeService.findById(storeId);
