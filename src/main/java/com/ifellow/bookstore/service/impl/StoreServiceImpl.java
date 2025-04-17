@@ -1,0 +1,111 @@
+package com.ifellow.bookstore.service.impl;
+
+import com.ifellow.bookstore.dto.request.StoreRequestDto;
+import com.ifellow.bookstore.dto.response.StoreBookResponseDto;
+import com.ifellow.bookstore.dto.response.StoreResponseDto;
+import com.ifellow.bookstore.exception.BookNotFoundException;
+import com.ifellow.bookstore.exception.NotEnoughStockException;
+import com.ifellow.bookstore.exception.StoreNotFoundException;
+import com.ifellow.bookstore.mapper.StoreBookAmountMapper;
+import com.ifellow.bookstore.mapper.StoreMapper;
+import com.ifellow.bookstore.model.Book;
+import com.ifellow.bookstore.model.Store;
+import com.ifellow.bookstore.model.StoreBookAmount;
+import com.ifellow.bookstore.repository.api.StoreBookAmountRepository;
+import com.ifellow.bookstore.repository.api.StoreRepository;
+import com.ifellow.bookstore.service.api.BookService;
+import com.ifellow.bookstore.service.api.StoreService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Optional;
+
+@Service
+public class StoreServiceImpl implements StoreService {
+
+    private final StoreRepository storeRepository;
+    private final StoreMapper storeMapper;
+    private final BookService bookService;
+    private final StoreBookAmountRepository storeBookAmountRepository;
+    private final StoreBookAmountMapper storeBookAmountMapper;
+
+    public StoreServiceImpl(StoreRepository storeRepository,
+                            StoreMapper storeMapper,
+                            BookService bookService,
+                            StoreBookAmountRepository storeBookAmountRepository,
+                            StoreBookAmountMapper storeBookAmountMapper) {
+        this.storeRepository = storeRepository;
+        this.storeMapper = storeMapper;
+        this.bookService = bookService;
+        this.storeBookAmountRepository = storeBookAmountRepository;
+        this.storeBookAmountMapper = storeBookAmountMapper;
+    }
+
+    @Override
+    @Transactional
+    public StoreResponseDto save(StoreRequestDto storeRequestDto) {
+        Store store = storeMapper.toEntity(storeRequestDto);
+        storeRepository.save(store);
+        return storeMapper.toResponseDto(store);
+    }
+
+    @Override
+    public Store findStoreById(Long id) {
+        return storeRepository.findById(id)
+                .orElseThrow(() -> new StoreNotFoundException("Store not found with id: " + id));
+    }
+
+    @Override
+    @Transactional
+    public void addBookToStore(Long id, Long bookId, int quantity) {
+        if (quantity <= 0) throw new IllegalArgumentException("quantity must be greater than zero");
+
+        Store store = findStoreById(id);
+        Book book = bookService.findBookById(bookId);
+
+        Optional<StoreBookAmount> optionalSba = storeBookAmountRepository.findByStoreIdAndBookId(id, bookId);
+        StoreBookAmount storeBookAmount;
+        if (optionalSba.isPresent()) {
+            storeBookAmount = optionalSba.get();
+            storeBookAmount.setAmount(storeBookAmount.getAmount() + quantity);
+        } else {
+            storeBookAmount = new StoreBookAmount();
+            storeBookAmount.setAmount(quantity);
+            storeBookAmount.setBook(book);
+            storeBookAmount.setStore(store);
+        }
+
+        storeBookAmountRepository.save(storeBookAmount);
+    }
+
+    @Override
+    @Transactional
+    public void removeBookFromStore(Long id, Long bookId, int quantity) {
+        if (quantity <= 0) throw new IllegalArgumentException("quantity must be greater than zero");
+
+        Store store = findStoreById(id);
+        Book book = bookService.findBookById(bookId);
+
+        Optional<StoreBookAmount> optionalSba = storeBookAmountRepository.findByStoreIdAndBookId(id, bookId);
+        StoreBookAmount storeBookAmount;
+        if (optionalSba.isPresent()) {
+            storeBookAmount = optionalSba.get();
+
+            if (storeBookAmount.getAmount() < quantity)
+                throw new NotEnoughStockException("Not enough stock of book with id: " + bookId + " for removing it in store with id:" + id);
+
+            storeBookAmount.setAmount(storeBookAmount.getAmount() - quantity);
+            storeBookAmountRepository.save(storeBookAmount);
+        } else {
+            throw new BookNotFoundException("Book not found with id: " + bookId + " in store with id: " + id);
+        }
+    }
+
+    @Override
+    public Page<StoreBookResponseDto> getStoreStock(Long id, Pageable pageable) {
+       return storeBookAmountRepository.findByStoreId(id, pageable)
+               .map(storeBookAmountMapper::toResponseDto);
+    }
+}

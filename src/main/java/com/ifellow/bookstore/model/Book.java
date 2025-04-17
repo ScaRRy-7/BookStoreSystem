@@ -6,16 +6,18 @@ import lombok.*;
 import java.math.BigDecimal;
 
 @Entity
-@Table(name = "books")
-@NoArgsConstructor
-@AllArgsConstructor
 @Setter
 @Getter
+@Builder
 @ToString
+@NoArgsConstructor
+@AllArgsConstructor
+@Table(name = "books")
 public class Book {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @EqualsAndHashCode.Exclude
     private Long id;
 
     @Column(nullable = false)

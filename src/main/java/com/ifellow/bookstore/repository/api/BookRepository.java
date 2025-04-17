@@ -11,10 +11,10 @@ import java.util.List;
 public interface BookRepository extends JpaRepository<Book, Long> {
 
     Page<Book> findByGenreId(Long genreId, Pageable pageable);
-    List<Book> findByAuthorId(Long authorId);
+    Page<Book> findByAuthorId(Long authorId, Pageable pageable);
     Page<Book> findByTitleContainingIgnoreCase(String title, Pageable pageable);
-    List<Book> findByAuthorFullNameIgnoreCase(String authorFullName);
-    List<Book> findByAuthorFullNameIgnoreCaseAndTitleContainingIgnoreCase(String authorFullName, String title);
+    Page<Book> findByAuthorFullNameIgnoreCase(String authorFullName, Pageable pageable);
+    Page<Book> findByAuthorFullNameIgnoreCaseAndTitleContainingIgnoreCase(String authorFullName, String title, Pageable pageable);
     @Query("SELECT b FROM Book b ORDER BY b.genre.id ASC")
     Page<Book> findAllOrderedByGenreAsc(Pageable pageable);
 

@@ -23,6 +23,4 @@ public class Warehouse {
     @Column(unique = true, nullable = false)
     private String address;
 
-    @OneToMany(mappedBy = "warehouse")
-    private List<WarehouseBookAmount> warehouseBooksAmountList;
 }

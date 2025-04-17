@@ -12,16 +12,14 @@ import java.util.List;
 @Setter
 @Getter
 @ToString
+@Builder
 public class Author {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @EqualsAndHashCode.Exclude
     private Long id;
 
     @Column(name = "full_name", nullable = false)
     private String fullName;
-
-    @OneToMany(mappedBy = "author")
-    @ToString.Exclude
-    private List<Book> books;
 }

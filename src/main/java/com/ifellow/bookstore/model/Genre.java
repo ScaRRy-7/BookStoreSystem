@@ -1,10 +1,7 @@
 package com.ifellow.bookstore.model;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.List;
 
@@ -14,15 +11,15 @@ import java.util.List;
 @AllArgsConstructor
 @Setter
 @Getter
+@Builder
 public class Genre {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @EqualsAndHashCode.Exclude
     private Long id;
 
     @Column(unique = true, nullable = false)
     private String name;
 
-    @OneToMany(mappedBy = "genre")
-    private List<Book> books;
 }

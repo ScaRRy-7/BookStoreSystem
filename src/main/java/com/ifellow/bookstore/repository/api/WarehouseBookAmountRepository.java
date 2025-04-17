@@ -10,6 +10,6 @@ import java.util.Optional;
 public interface WarehouseBookAmountRepository extends JpaRepository<WarehouseBookAmount, Long> {
 
     Page<WarehouseBookAmount> findByWarehouseId(Long warehouseId, Pageable pageable);
-    Optional<WarehouseBookAmount> finaByWarehouseIdAndBookId(Long warehouseId, Long bookId);
+    Optional<WarehouseBookAmount> findByWarehouseIdAndBookId(Long warehouseId, Long bookId);
     boolean existsByWarehouseIdAndBookId(Long warehouseId, Long bookId);
 }

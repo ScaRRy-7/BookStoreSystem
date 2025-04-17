@@ -24,6 +24,4 @@ public class Store {
     @Column(unique = true, nullable = false)
     private String address;
 
-    @OneToMany(mappedBy = "store")
-    private List<StoreBookAmount> storeBooksAmountList = new ArrayList<>();
 }
