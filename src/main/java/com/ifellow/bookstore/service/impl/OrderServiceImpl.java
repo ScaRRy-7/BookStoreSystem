@@ -87,6 +87,11 @@ public class OrderServiceImpl implements OrderService {
         if (order.getOrderStatus() != OrderStatus.CREATED)
             throw new ChangeOrderStatusException("Order can't be canceled because it isn't CREATED");
 
+        List<OrderItem> orderItems = order.getOrderItemList();
+        for (OrderItem orderItem : orderItems) {
+            warehouseService.addBookToWarehouse(order.getWarehouse().getId(), orderItem.getBook().getId(), orderItem.getQuantity());
+        }
+
         order.setOrderStatus(OrderStatus.CANCELED);
         orderRepository.save(order);
 

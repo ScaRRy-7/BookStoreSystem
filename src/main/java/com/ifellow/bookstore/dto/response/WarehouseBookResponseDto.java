@@ -4,10 +4,8 @@ import java.math.BigDecimal;
 
 public record WarehouseBookResponseDto(
         Long id,
-        String title,
-        String authorFullName,
-        String Genre,
-        BigDecimal price,
+        Long warehouseId,
+        Long bookId,
         int quantity
 ) {
 }

@@ -9,10 +9,8 @@ public class WarehouseBookAmountMapper {
 
     public WarehouseBookResponseDto toResponseDto(WarehouseBookAmount warehouseBookAmount) {
         return new WarehouseBookResponseDto(warehouseBookAmount.getId(),
-                warehouseBookAmount.getBook().getTitle(),
-                warehouseBookAmount.getBook().getAuthor().getFullName(),
-                warehouseBookAmount.getBook().getGenre().getName(),
-                warehouseBookAmount.getBook().getPrice(),
+                warehouseBookAmount.getBook().getId(),
+                warehouseBookAmount.getWarehouse().getId(),
                 warehouseBookAmount.getAmount());
     }
 }

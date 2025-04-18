@@ -88,15 +88,12 @@ public class WarehouseServiceImpl implements WarehouseService {
             WarehouseBookAmount warehouseBookAmount = optionalWba.get();
 
             if (warehouseBookAmount.getAmount() < quantity)
-                throw new NotEnoughStockException("Not enough stock of book with bookId: " + bookId + " for removing it in warehouse with bookId:" + id);
+                throw new NotEnoughStockException("Not enough stock of book with id: " + bookId + " for removing it in warehouse with id:" + id);
 
             warehouseBookAmount.setAmount(warehouseBookAmount.getAmount() - quantity);
-
-            if (warehouseBookAmount.getAmount() == EMPTY_STOCK) warehouseBookAmountRepository.delete(warehouseBookAmount);
-            else warehouseBookAmountRepository.save(warehouseBookAmount);
-
+            warehouseBookAmountRepository.save(warehouseBookAmount);
         } else {
-            throw new BookNotFoundException("Book not found with bookId: " + bookId + " in warehouse with bookId: " + id);
+            throw new BookNotFoundException("Book not found with id: " + bookId + " in warehouse with id: " + id);
         }
     }
 

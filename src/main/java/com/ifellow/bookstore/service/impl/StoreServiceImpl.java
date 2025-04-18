@@ -85,15 +85,12 @@ public class StoreServiceImpl implements StoreService {
             storeBookAmount = optionalSba.get();
 
             if (storeBookAmount.getAmount() < quantity)
-                throw new NotEnoughStockException("Not enough stock of book with bookId: " + bookId + " for removing it in store with bookId:" + id);
+                throw new NotEnoughStockException("Not enough stock of book with id: " + bookId + " for removing it in store with id:" + id);
 
             storeBookAmount.setAmount(storeBookAmount.getAmount() - quantity);
-
-            if (storeBookAmount.getAmount() == EMPTY_STOCK) storeBookAmountRepository.delete(storeBookAmount);
-            else storeBookAmountRepository.save(storeBookAmount);
-
+            storeBookAmountRepository.save(storeBookAmount);
         } else {
-            throw new BookNotFoundException("Book not found with bookId: " + bookId + " in store with bookId: " + id);
+            throw new BookNotFoundException("Book not found with id: " + bookId + " in store with id: " + id);
         }
     }
 
