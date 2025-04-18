@@ -15,7 +15,7 @@ public interface BookRepository extends JpaRepository<Book, Long> {
     Page<Book> findByTitleContainingIgnoreCase(String title, Pageable pageable);
     Page<Book> findByAuthorFullNameIgnoreCase(String authorFullName, Pageable pageable);
     Page<Book> findByAuthorFullNameIgnoreCaseAndTitleContainingIgnoreCase(String authorFullName, String title, Pageable pageable);
-    @Query("SELECT b FROM Book b ORDER BY b.genre.id ASC")
+    @Query("SELECT b FROM Book b JOIN FETCH b.author JOIN FETCH b.genre ORDER BY b.genre.id ASC")
     Page<Book> findAllOrderedByGenreAsc(Pageable pageable);
 
 }

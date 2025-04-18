@@ -23,7 +23,7 @@ public class Order {
     @Column(name = "order_date_time", nullable = false)
     private LocalDateTime orderDateTime;
 
-    @OneToMany(mappedBy = "order")
+    @OneToMany(mappedBy = "order", cascade = CascadeType.PERSIST)
     private List<OrderItem> orderItemList = new ArrayList<>();
 
     @Enumerated(EnumType.STRING)

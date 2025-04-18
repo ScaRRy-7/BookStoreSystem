@@ -44,8 +44,9 @@ public class OrderServiceImpl implements OrderService {
         order.setOrderStatus(OrderStatus.CREATED);
 
         for (BookOrderDto bookOrderDto : bookOrderDtoList) {
-            Book book = bookService.findBookById(bookOrderDto.bookId());
             warehouseService.removeBookFromWarehouse(warehouseId, bookOrderDto.bookId(), bookOrderDto.quantity());
+
+            Book book = bookService.findBookById(bookOrderDto.bookId());
 
             OrderItem orderItem = new OrderItem();
             orderItem.setOrder(order);

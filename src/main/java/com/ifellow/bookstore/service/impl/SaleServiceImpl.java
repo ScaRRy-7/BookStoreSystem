@@ -2,6 +2,7 @@ package com.ifellow.bookstore.service.impl;
 
 import com.ifellow.bookstore.dto.request.BookSaleDto;
 import com.ifellow.bookstore.dto.response.SaleResponseDto;
+import com.ifellow.bookstore.exception.SaleNotFoundException;
 import com.ifellow.bookstore.mapper.SaleMapper;
 import com.ifellow.bookstore.model.Book;
 import com.ifellow.bookstore.model.Sale;
@@ -42,8 +43,9 @@ public class SaleServiceImpl implements SaleService {
         sale.setSaleDateTime(LocalDateTime.now());
 
         for (BookSaleDto bookSaleDto : bookSaleDtoList) {
-            Book book = bookService.findBookById(bookSaleDto.bookId());
             storeService.removeBookFromStore(storeId, bookSaleDto.bookId(), bookSaleDto.quantity());
+
+            Book book = bookService.findBookById(bookSaleDto.bookId());
 
             SaleItem saleItem = new SaleItem();
             saleItem.setBook(book);
@@ -87,5 +89,12 @@ public class SaleServiceImpl implements SaleService {
             totalPrice = totalPrice.add(totalPriceOfSaleItem);
         }
         return totalPrice;
+    }
+
+    @Transactional
+    public SaleResponseDto findById(Long id) {
+        Sale sale = saleRepository.findById(id).orElse(null);
+        sale.getSaleItemList().get(0);
+        return saleMapper.toResponseDto(sale);
     }
 }

@@ -15,4 +15,5 @@ public interface SaleService {
     Page<SaleResponseDto> findBySaleDateTimeBetween(LocalDateTime start, LocalDateTime end, Pageable pageable);
     Page<SaleResponseDto> findByStoreId(Long storeId, Pageable pageable);
     Page<SaleResponseDto> findByStoreIdAndSaleDateTimeBetween(Long storeId, LocalDateTime start, LocalDateTime end, Pageable pageable);
+    SaleResponseDto findById(Long id);
 }

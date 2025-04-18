@@ -5,8 +5,8 @@ import java.math.BigDecimal;
 public record BookResponseDto (
     Long id,
     String title,
-    String authorFullName,
-    String genre,
+    Long authorId,
+    Long genreId,
     BigDecimal price
 ) {
 }

@@ -19,8 +19,8 @@ public class BookMapper {
         return new BookResponseDto(
                 book.getId(),
                 book.getTitle(),
-                book.getAuthor().getFullName(),
-                book.getGenre().getName(),
+                book.getAuthor().getId(),
+                book.getGenre().getId(),
                 book.getPrice()
         );
     }
