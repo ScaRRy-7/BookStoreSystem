@@ -1,23 +1,20 @@
 package com.ifellow.bookstore.model;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-
-import java.util.List;
+import lombok.*;
 
 @Entity
-@Table(name = "warehouses")
-@NoArgsConstructor
-@AllArgsConstructor
 @Setter
 @Getter
+@EqualsAndHashCode
+@NoArgsConstructor
+@AllArgsConstructor
+@Table(name = "warehouses")
 public class Warehouse {
 
     @Id
     @GeneratedValue
+    @EqualsAndHashCode.Exclude
     private Long id;
 
     @Column(unique = true, nullable = false)

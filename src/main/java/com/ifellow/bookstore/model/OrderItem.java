@@ -1,19 +1,22 @@
 package com.ifellow.bookstore.model;
 
 import jakarta.persistence.*;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.math.BigDecimal;
 
 @Entity
-@Table(name = "order_items")
 @Getter
 @Setter
+@EqualsAndHashCode
+@Table(name = "order_items")
 public class OrderItem {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @EqualsAndHashCode.Exclude
     private Long id;
 
     @ManyToOne

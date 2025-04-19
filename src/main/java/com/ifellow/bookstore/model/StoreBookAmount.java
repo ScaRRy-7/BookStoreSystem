@@ -1,23 +1,22 @@
 package com.ifellow.bookstore.model;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @Entity
+@Setter
+@Getter
+@EqualsAndHashCode
+@NoArgsConstructor
+@AllArgsConstructor
 @Table(
         name = "store_books_amount",
         uniqueConstraints = {@UniqueConstraint(columnNames = {"book_id", "store_id"})})
-@NoArgsConstructor
-@AllArgsConstructor
-@Setter
-@Getter
 public class StoreBookAmount {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @EqualsAndHashCode.Exclude
     private Long id;
 
     @ManyToOne

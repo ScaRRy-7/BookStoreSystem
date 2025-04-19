@@ -1,21 +1,16 @@
 package integration;
 
-import com.ifellow.bookstore.AppConfig;
 import com.ifellow.bookstore.dto.request.AuthorRequestDto;
 import com.ifellow.bookstore.dto.response.AuthorResponseDto;
 import com.ifellow.bookstore.model.Author;
 import com.ifellow.bookstore.service.api.AuthorService;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.transaction.annotation.Transactional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-@Transactional
-@SpringBootTest(classes = AppConfig.class)
-class AuthorServiceImplTest {
+class AuthorServiceImplTest extends AbstractIntegrationTest {
 
     @Autowired
     private AuthorService authorService;

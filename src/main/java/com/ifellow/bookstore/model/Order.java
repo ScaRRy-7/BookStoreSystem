@@ -2,6 +2,7 @@ package com.ifellow.bookstore.model;
 
 import com.ifellow.bookstore.enumeration.OrderStatus;
 import jakarta.persistence.*;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -11,13 +12,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name = "orders")
 @Getter
 @Setter
+@EqualsAndHashCode
+@Table(name = "orders")
 public class Order {
 
     @Id
     @GeneratedValue
+    @EqualsAndHashCode.Exclude
     private Long id;
 
     @Column(name = "order_date_time", nullable = false)

@@ -43,14 +43,16 @@ public class StoreServiceImpl implements StoreService {
     }
 
     @Override
-    public Store findStoreById(Long id) {
+    public Store findStoreById(Long id) throws StoreNotFoundException {
         return storeRepository.findById(id)
                 .orElseThrow(() -> new StoreNotFoundException("Store not found with bookId: " + id));
     }
 
     @Override
     @Transactional
-    public void addBookToStore(Long id, Long bookId, int quantity) {
+    public void addBookToStore(Long id, Long bookId, int quantity)
+            throws IllegalArgumentException, StoreNotFoundException, BookNotFoundException {
+
         if (quantity <= EMPTY_STOCK) throw new IllegalArgumentException("quantity must be greater than zero");
 
         Store store = findStoreById(id);
@@ -73,7 +75,9 @@ public class StoreServiceImpl implements StoreService {
 
     @Override
     @Transactional
-    public void removeBookFromStore(Long id, Long bookId, int quantity) {
+    public void removeBookFromStore(Long id, Long bookId, int quantity)
+            throws IllegalArgumentException, NotEnoughStockException, BookNotFoundException, StoreNotFoundException {
+
         if (quantity <= EMPTY_STOCK) throw new IllegalArgumentException("quantity must be greater than zero");
 
         Store store = findStoreById(id);

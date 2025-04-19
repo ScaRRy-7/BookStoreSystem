@@ -64,21 +64,21 @@ class BookServiceImplTest {
 
         author = new Author();
         author.setId(authorId);
-        author.setFullName("Джон Доу");
+        author.setFullName("Федор Достоевский");
 
         genre = new Genre();
         genre.setId(genreId);
-        genre.setName("Фантастика");
+        genre.setName("Роман");
 
         book = new Book();
         book.setId(bookId);
-        book.setTitle("Тестовая книга");
+        book.setTitle("Преступление и наказание");
         book.setAuthor(author);
         book.setGenre(genre);
         book.setPrice(BigDecimal.valueOf(100));
 
-        bookRequestDto = new BookRequestDto("Тестовая книга", authorId, genreId, BigDecimal.valueOf(100));
-        bookResponseDto = new BookResponseDto(bookId, "Тестовая книга", authorId, genreId, BigDecimal.valueOf(100));
+        bookRequestDto = new BookRequestDto("Преступление и наказание", authorId, genreId, BigDecimal.valueOf(100));
+        bookResponseDto = new BookResponseDto(bookId, "Преступление и наказание", authorId, genreId, BigDecimal.valueOf(100));
     }
 
     @Test
@@ -185,7 +185,7 @@ class BookServiceImplTest {
     @Test
     @DisplayName("Поиск книг по названию")
     void findByTitle_ValidTitle_ReturnsBooks() {
-        String title = "Тест";
+        String title = "Преступление и наказание";
         Pageable pageable = Pageable.unpaged();
         Page<Book> booksPage = new PageImpl<>(List.of(book));
 
@@ -204,7 +204,7 @@ class BookServiceImplTest {
     @Test
     @DisplayName("Поиск книг по имени автора")
     void findByAuthorFullName_ValidFullName_ReturnsBooks() {
-        String fullName = "Джон Доу";
+        String fullName = "Федор Достоевский";
         Pageable pageable = Pageable.unpaged();
         Page<Book> booksPage = new PageImpl<>(List.of(book));
 
@@ -223,8 +223,8 @@ class BookServiceImplTest {
     @Test
     @DisplayName("Поиск книг по имени автора и названию")
     void findByAuthorFullNameAndTitle_ValidData_ReturnsBooks() {
-        String fullName = "Джон Доу";
-        String title = "Тест";
+        String fullName = "Федор Достоевский";
+        String title = "Преступление и наказание";
         Pageable pageable = Pageable.unpaged();
         Page<Book> booksPage = new PageImpl<>(List.of(book));
 

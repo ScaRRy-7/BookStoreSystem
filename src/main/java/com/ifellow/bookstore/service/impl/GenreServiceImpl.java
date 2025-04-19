@@ -27,14 +27,14 @@ public class GenreServiceImpl implements GenreService {
     }
 
     @Override
-    public Genre findGenreById(Long id) {
+    public Genre findGenreById(Long id) throws GenreNotFoundException {
         return genreRepository.findById(id).orElseThrow(
                 () -> new GenreNotFoundException("Genre not found with bookId: " + id)
         );
     }
 
     @Override
-    public GenreResponseDto findById(Long id) {
+    public GenreResponseDto findById(Long id) throws GenreNotFoundException {
         return genreRepository.findById(id)
                 .map(genreMapper::toResponseDto)
                 .orElseThrow(() -> new GenreNotFoundException("Genre not found with bookId: " + id));

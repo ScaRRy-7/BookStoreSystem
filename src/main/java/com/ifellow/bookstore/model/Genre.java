@@ -3,15 +3,14 @@ package com.ifellow.bookstore.model;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.util.List;
-
 @Entity
-@Table(name = "genres")
-@NoArgsConstructor
-@AllArgsConstructor
 @Setter
 @Getter
 @Builder
+@NoArgsConstructor
+@EqualsAndHashCode
+@AllArgsConstructor
+@Table(name = "genres")
 public class Genre {
 
     @Id

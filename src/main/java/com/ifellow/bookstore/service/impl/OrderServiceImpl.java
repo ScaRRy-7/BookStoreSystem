@@ -65,7 +65,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     @Transactional
-    public OrderResponseDto completeById(Long orderId) {
+    public OrderResponseDto completeById(Long orderId) throws OrderNotFoundException, ChangeOrderStatusException {
         Order order = orderRepository.findById(orderId)
                 .orElseThrow(() -> new OrderNotFoundException("Order not found with id: " + orderId));
 
@@ -80,7 +80,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     @Transactional
-    public OrderResponseDto cancelById(Long orderId) {
+    public OrderResponseDto cancelById(Long orderId) throws OrderNotFoundException {
         Order order = orderRepository.findById(orderId)
                 .orElseThrow(() -> new OrderNotFoundException("Order not found with id: " + orderId));
 
@@ -99,7 +99,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public OrderResponseDto findById(Long orderId) {
+    public OrderResponseDto findById(Long orderId) throws OrderNotFoundException {
         Order order = orderRepository.findById(orderId)
                 .orElseThrow(() -> new OrderNotFoundException("Order not found with id: " + orderId));
 

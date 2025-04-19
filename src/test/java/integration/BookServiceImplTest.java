@@ -1,6 +1,5 @@
 package integration;
 
-import com.ifellow.bookstore.AppConfig;
 import com.ifellow.bookstore.dto.request.AuthorRequestDto;
 import com.ifellow.bookstore.dto.request.BookRequestDto;
 import com.ifellow.bookstore.dto.request.GenreRequestDto;
@@ -13,18 +12,15 @@ import com.ifellow.bookstore.service.api.GenreService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-@Transactional
-@SpringBootTest(classes = AppConfig.class)
-class BookServiceImplTest {
+
+class BookServiceImplTest extends AbstractIntegrationTest {
 
     @Autowired
     private BookService bookService;

@@ -42,7 +42,7 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public BookResponseDto findById(Long id) {
+    public BookResponseDto findById(Long id) throws BookNotFoundException {
         Book book = bookRepository.findById(id)
                 .orElseThrow(() -> new BookNotFoundException("Book not found with bookId: " + id));
 
@@ -87,7 +87,7 @@ public class BookServiceImpl implements BookService {
    }
 
    @Override
-   public Book findBookById(Long id) {
+   public Book findBookById(Long id) throws BookNotFoundException {
         return bookRepository.findById(id)
                 .orElseThrow(() -> new BookNotFoundException("Book not found with bookId: " + id));
    }

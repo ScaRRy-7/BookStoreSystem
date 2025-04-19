@@ -1,6 +1,7 @@
 package com.ifellow.bookstore.model;
 
 import jakarta.persistence.*;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -10,13 +11,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name = "sales")
 @Getter
 @Setter
+@EqualsAndHashCode
+@Table(name = "sales")
 public class Sale {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @EqualsAndHashCode.Exclude
     private Long id;
 
     @OneToMany(mappedBy = "sale", cascade = CascadeType.PERSIST, orphanRemoval = true) // cascade = CascadeType.ALL
