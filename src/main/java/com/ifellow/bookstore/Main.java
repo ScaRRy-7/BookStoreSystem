@@ -2,10 +2,6 @@ package com.ifellow.bookstore;
 
 import com.ifellow.bookstore.dto.request.*;
 import com.ifellow.bookstore.dto.response.*;
-import com.ifellow.bookstore.model.*;
-import com.ifellow.bookstore.repository.api.AuthorRepository;
-import com.ifellow.bookstore.repository.api.BookRepository;
-import com.ifellow.bookstore.repository.api.GenreRepository;
 import com.ifellow.bookstore.service.api.*;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
