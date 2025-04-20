@@ -80,22 +80,21 @@ public class StoreServiceImpl implements StoreService {
 
         if (quantity <= EMPTY_STOCK) throw new IllegalArgumentException("quantity must be greater than zero");
 
+        //неиспользуемые переменные, за которыми лазим в БД
         Store store = findStoreById(id);
         Book book = bookService.findBookById(bookId);
 
-        Optional<StoreBookAmount> optionalSba = storeBookAmountRepository.findByStoreIdAndBookId(id, bookId);
-        StoreBookAmount storeBookAmount;
-        if (optionalSba.isPresent()) {
-            storeBookAmount = optionalSba.get();
+        // Переписала немного код для демонстрации возможностей Optional. Погляди, так вроде лаконичней?
+        storeBookAmountRepository.findByStoreIdAndBookId(id, bookId)
+                .ifPresentOrElse(sba -> {
+                    if (sba.getAmount() < quantity)
+                        throw new NotEnoughStockException("Not enough stock of book with id: " + bookId + " for removing it in store with id:" + id);
 
-            if (storeBookAmount.getAmount() < quantity)
-                throw new NotEnoughStockException("Not enough stock of book with id: " + bookId + " for removing it in store with id:" + id);
-
-            storeBookAmount.setAmount(storeBookAmount.getAmount() - quantity);
-            storeBookAmountRepository.save(storeBookAmount);
-        } else {
-            throw new BookNotFoundException("Book not found with id: " + bookId + " in store with id: " + id);
-        }
+                    sba.setAmount(sba.getAmount() - quantity);
+                    storeBookAmountRepository.save(sba);
+                }, () -> {
+                    throw new BookNotFoundException("Book not found with id: " + bookId + " in store with id: " + id);
+                });
     }
 
     @Override

@@ -31,7 +31,7 @@ import java.util.List;
 public class SaleServiceImpl implements SaleService {
 
     private final SaleRepository saleRepository;
-    private final SaleItemRepository saleItemRepository;
+    private final SaleItemRepository saleItemRepository; //лишняя зависимость?
     private final StoreService storeService;
     private final BookService bookService;
     private final SaleMapper saleMapper;

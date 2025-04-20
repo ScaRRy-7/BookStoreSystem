@@ -127,6 +127,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     private BigDecimal calculateTotalPrice(List<OrderItem> orderItemList) {
+        //можно переписать через StreamAPI, погляди в сторону метода reduce
         BigDecimal totalPrice = BigDecimal.ZERO;
 
         for (OrderItem orderItem : orderItemList) {

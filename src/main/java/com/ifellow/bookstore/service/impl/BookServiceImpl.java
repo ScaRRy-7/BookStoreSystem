@@ -19,7 +19,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
-
 public class BookServiceImpl implements BookService {
 
     private final BookRepository bookRepository;

@@ -73,6 +73,7 @@ public class AppConfig {
         return transactionManager;
     }
 
+    // А почему тут, а не сразу в application.properties? Ничего против не имею, но лучше, что бы всё в одном месте лежало
     @Bean
     public Properties properties() {
         Properties properties = new Properties();

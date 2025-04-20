@@ -79,6 +79,7 @@ public class WarehouseServiceImpl implements WarehouseService {
     public void removeBookFromWarehouse(Long id, Long bookId, int quantity) {
         if (quantity <= EMPTY_STOCK) throw new IllegalArgumentException("quantity must be greater than zero");
 
+        //две переменные ниже не используются, наверное не стоит за ними в БД лазить?
         Warehouse warehouse = findWarehouseById(id);
         Book book = bookService.findBookById(bookId);
 
