@@ -5,7 +5,7 @@ import com.ifellow.bookstore.dto.response.AuthorResponseDto;
 import com.ifellow.bookstore.exception.AuthorNotFoundException;
 import com.ifellow.bookstore.mapper.AuthorMapper;
 import com.ifellow.bookstore.model.Author;
-import com.ifellow.bookstore.repository.api.AuthorRepository;
+import com.ifellow.bookstore.repository.AuthorRepository;
 import com.ifellow.bookstore.service.api.AuthorService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

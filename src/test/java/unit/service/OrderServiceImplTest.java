@@ -11,7 +11,7 @@ import com.ifellow.bookstore.model.Book;
 import com.ifellow.bookstore.model.Order;
 import com.ifellow.bookstore.model.OrderItem;
 import com.ifellow.bookstore.model.Warehouse;
-import com.ifellow.bookstore.repository.api.OrderRepository;
+import com.ifellow.bookstore.repository.OrderRepository;
 import com.ifellow.bookstore.service.api.BookService;
 import com.ifellow.bookstore.service.api.WarehouseService;
 import com.ifellow.bookstore.service.impl.OrderServiceImpl;

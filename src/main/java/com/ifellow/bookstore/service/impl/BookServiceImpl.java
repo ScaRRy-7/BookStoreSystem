@@ -7,7 +7,7 @@ import com.ifellow.bookstore.mapper.BookMapper;
 import com.ifellow.bookstore.model.Author;
 import com.ifellow.bookstore.model.Book;
 import com.ifellow.bookstore.model.Genre;
-import com.ifellow.bookstore.repository.api.BookRepository;
+import com.ifellow.bookstore.repository.BookRepository;
 import com.ifellow.bookstore.service.api.AuthorService;
 import com.ifellow.bookstore.service.api.BookService;
 import com.ifellow.bookstore.service.api.GenreService;
@@ -46,6 +46,10 @@ public class BookServiceImpl implements BookService {
                 .orElseThrow(() -> new BookNotFoundException("Book not found with bookId: " + id));
 
         return bookMapper.toResponseDto(book);
+   }
+
+   public void checkBookExistence(Long id) throws BookNotFoundException {
+        findById(id);
    }
 
    @Override

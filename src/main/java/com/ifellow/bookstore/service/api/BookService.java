@@ -2,6 +2,7 @@ package com.ifellow.bookstore.service.api;
 
 import com.ifellow.bookstore.dto.request.BookRequestDto;
 import com.ifellow.bookstore.dto.response.BookResponseDto;
+import com.ifellow.bookstore.exception.BookNotFoundException;
 import com.ifellow.bookstore.model.Book;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -16,6 +17,7 @@ public interface BookService {
     Page<BookResponseDto> findByAuthorFullName(String fullName, Pageable pageable);
     Page<BookResponseDto> findByAuthorFullNameAndTitle(String fullName, String title, Pageable pageable);
     Page<BookResponseDto> findAllGroupedByGenre(Pageable pageable);
+    void checkBookExistence(Long id);
     Book findBookById(Long id);
 
 }

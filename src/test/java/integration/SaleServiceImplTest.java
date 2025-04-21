@@ -2,7 +2,7 @@ package integration;
 
 import com.ifellow.bookstore.dto.request.*;
 import com.ifellow.bookstore.dto.response.*;
-import com.ifellow.bookstore.repository.api.SaleItemRepository;
+import com.ifellow.bookstore.repository.SaleItemRepository;
 import com.ifellow.bookstore.service.api.*;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

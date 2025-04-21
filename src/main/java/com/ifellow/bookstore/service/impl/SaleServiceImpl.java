@@ -11,8 +11,8 @@ import com.ifellow.bookstore.model.Book;
 import com.ifellow.bookstore.model.Sale;
 import com.ifellow.bookstore.model.SaleItem;
 import com.ifellow.bookstore.model.Store;
-import com.ifellow.bookstore.repository.api.SaleItemRepository;
-import com.ifellow.bookstore.repository.api.SaleRepository;
+import com.ifellow.bookstore.repository.SaleItemRepository;
+import com.ifellow.bookstore.repository.SaleRepository;
 import com.ifellow.bookstore.service.api.BookService;
 import com.ifellow.bookstore.service.api.SaleService;
 import com.ifellow.bookstore.service.api.StoreService;
@@ -31,7 +31,6 @@ import java.util.List;
 public class SaleServiceImpl implements SaleService {
 
     private final SaleRepository saleRepository;
-    private final SaleItemRepository saleItemRepository; //лишняя зависимость?
     private final StoreService storeService;
     private final BookService bookService;
     private final SaleMapper saleMapper;

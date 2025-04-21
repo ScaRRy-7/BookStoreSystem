@@ -5,9 +5,9 @@ import com.ifellow.bookstore.model.WarehouseBookAmount;
 import org.springframework.stereotype.Component;
 
 @Component
-public class WarehouseBookAmountMapper {
+public class WarehouseBookAmountMapper implements ToDtoMapper<WarehouseBookAmount, WarehouseBookResponseDto> {
 
-    public WarehouseBookResponseDto toResponseDto(WarehouseBookAmount warehouseBookAmount) {
+    public WarehouseBookResponseDto toDto(WarehouseBookAmount warehouseBookAmount) {
         return new WarehouseBookResponseDto(warehouseBookAmount.getId(),
                 warehouseBookAmount.getBook().getId(),
                 warehouseBookAmount.getWarehouse().getId(),

@@ -1,4 +1,4 @@
-package com.ifellow.bookstore.repository.api;
+package com.ifellow.bookstore.repository;
 
 import com.ifellow.bookstore.model.OrderItem;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -9,5 +9,4 @@ import java.util.Optional;
 public interface OrderItemRepository extends JpaRepository<OrderItem, Long> {
 
     List<OrderItem> findByOrderId(Long orderId);
-    Optional<OrderItem> findByOrderIdAndBookId(Long orderId, Long bookId); //не используется, надо удалить?
 }

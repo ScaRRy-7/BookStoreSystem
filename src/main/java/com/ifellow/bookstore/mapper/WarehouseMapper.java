@@ -6,7 +6,7 @@ import com.ifellow.bookstore.model.Warehouse;
 import org.springframework.stereotype.Component;
 
 @Component
-public class WarehouseMapper {
+public class WarehouseMapper implements ToEntityMapper<WarehouseRequestDto, Warehouse>, ToDtoMapper<Warehouse, WarehouseResponseDto> {
 
     public Warehouse toEntity(WarehouseRequestDto warehouseRequestDto) {
         Warehouse warehouse = new Warehouse();
@@ -14,7 +14,7 @@ public class WarehouseMapper {
         return warehouse;
     }
 
-    public WarehouseResponseDto toResponseDto(Warehouse warehouse) {
+    public WarehouseResponseDto toDto(Warehouse warehouse) {
         return new WarehouseResponseDto(warehouse.getId(), warehouse.getAddress());
     }
 }

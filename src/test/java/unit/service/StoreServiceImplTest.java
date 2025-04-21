@@ -11,8 +11,8 @@ import com.ifellow.bookstore.mapper.StoreMapper;
 import com.ifellow.bookstore.model.Book;
 import com.ifellow.bookstore.model.Store;
 import com.ifellow.bookstore.model.StoreBookAmount;
-import com.ifellow.bookstore.repository.api.StoreBookAmountRepository;
-import com.ifellow.bookstore.repository.api.StoreRepository;
+import com.ifellow.bookstore.repository.StoreBookAmountRepository;
+import com.ifellow.bookstore.repository.StoreRepository;
 import com.ifellow.bookstore.service.api.BookService;
 import com.ifellow.bookstore.service.impl.StoreServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
@@ -175,7 +175,6 @@ class StoreServiceImplTest {
         sba.setAmount(initialAmount);
 
         Mockito.when(storeRepository.findById(storeId)).thenReturn(Optional.of(store));
-        Mockito.when(bookService.findBookById(bookId)).thenReturn(book);
         Mockito.when(storeBookAmountRepository.findByStoreIdAndBookId(storeId, bookId)).thenReturn(Optional.of(sba));
         Mockito.when(storeBookAmountRepository.save(sba)).thenReturn(sba);
 
@@ -192,7 +191,6 @@ class StoreServiceImplTest {
         sba.setAmount(5);
 
         Mockito.when(storeRepository.findById(storeId)).thenReturn(Optional.of(store));
-        Mockito.when(bookService.findBookById(bookId)).thenReturn(book);
         Mockito.when(storeBookAmountRepository.findByStoreIdAndBookId(storeId, bookId)).thenReturn(Optional.of(sba));
 
         assertThrows(NotEnoughStockException.class, () -> storeService.removeBookFromStore(storeId, bookId, 10));
@@ -203,7 +201,6 @@ class StoreServiceImplTest {
     @DisplayName("Выбрасывает BookNotFoundException когда книга не найдена в магазине")
     void removeBookFromStore_BookNotFound_ThrowsException() {
         Mockito.when(storeRepository.findById(storeId)).thenReturn(Optional.of(store));
-        Mockito.when(bookService.findBookById(bookId)).thenReturn(book);
         Mockito.when(storeBookAmountRepository.findByStoreIdAndBookId(storeId, bookId)).thenReturn(Optional.empty());
 
         assertThrows(BookNotFoundException.class, () -> storeService.removeBookFromStore(storeId, bookId, quantity));

@@ -6,7 +6,7 @@ import com.ifellow.bookstore.model.Genre;
 import org.springframework.stereotype.Component;
 
 @Component
-public class GenreMapper {
+public class GenreMapper implements ToEntityMapper<GenreRequestDto, Genre>, ToDtoMapper<Genre, GenreResponseDto> {
 
     public Genre toEntity(GenreRequestDto genreRequestDto) {
         return Genre.builder()
@@ -14,7 +14,7 @@ public class GenreMapper {
                 .build();
     }
 
-    public GenreResponseDto toResponseDto(Genre genre) {
+    public GenreResponseDto toDto(Genre genre) {
         return new GenreResponseDto(genre.getId(), genre.getName());
     }
 }

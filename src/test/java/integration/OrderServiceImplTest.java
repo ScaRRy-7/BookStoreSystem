@@ -5,7 +5,7 @@ import com.ifellow.bookstore.dto.response.*;
 import com.ifellow.bookstore.enumeration.OrderStatus;
 import com.ifellow.bookstore.exception.ChangeOrderStatusException;
 import com.ifellow.bookstore.model.OrderItem;
-import com.ifellow.bookstore.repository.api.OrderItemRepository;
+import com.ifellow.bookstore.repository.OrderItemRepository;
 import com.ifellow.bookstore.service.api.*;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

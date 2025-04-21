@@ -12,8 +12,8 @@ import com.ifellow.bookstore.mapper.WarehouseMapper;
 import com.ifellow.bookstore.model.Book;
 import com.ifellow.bookstore.model.Warehouse;
 import com.ifellow.bookstore.model.WarehouseBookAmount;
-import com.ifellow.bookstore.repository.api.WarehouseBookAmountRepository;
-import com.ifellow.bookstore.repository.api.WarehouseRepository;
+import com.ifellow.bookstore.repository.WarehouseBookAmountRepository;
+import com.ifellow.bookstore.repository.WarehouseRepository;
 import com.ifellow.bookstore.service.api.BookService;
 import com.ifellow.bookstore.service.impl.WarehouseServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
@@ -146,7 +146,6 @@ class WarehouseServiceImplTest {
         wba.setBook(book);
         wba.setAmount(initialAmount);
         Mockito.when(warehouseRepository.findById(1L)).thenReturn(Optional.of(warehouse));
-        Mockito.when(bookService.findBookById(1L)).thenReturn(book);
         Mockito.when(warehouseBookAmountRepository.findByWarehouseIdAndBookId(1L, 1L)).thenReturn(Optional.of(wba));
 
         warehouseService.removeBookFromWarehouse(1L, 1L, quantityToRemove);
@@ -161,7 +160,6 @@ class WarehouseServiceImplTest {
         WarehouseBookAmount wba = new WarehouseBookAmount();
         wba.setAmount(5);
         Mockito.when(warehouseRepository.findById(1L)).thenReturn(Optional.of(warehouse));
-        Mockito.when(bookService.findBookById(1L)).thenReturn(book);
         Mockito.when(warehouseBookAmountRepository.findByWarehouseIdAndBookId(1L, 1L)).thenReturn(Optional.of(wba));
 
         assertThrows(NotEnoughStockException.class, () -> warehouseService.removeBookFromWarehouse(1L, 1L, 10));
@@ -171,7 +169,6 @@ class WarehouseServiceImplTest {
     @DisplayName("WarehouseServiceImpl выбрасывает исключение, если книга не найдена на складе")
     void removeBookFromWarehouse_BookNotFound_ThrowsException() {
         Mockito.when(warehouseRepository.findById(1L)).thenReturn(Optional.of(warehouse));
-        Mockito.when(bookService.findBookById(1L)).thenReturn(book);
         Mockito.when(warehouseBookAmountRepository.findByWarehouseIdAndBookId(1L, 1L)).thenReturn(Optional.empty());
 
         assertThrows(BookNotFoundException.class, () -> warehouseService.removeBookFromWarehouse(1L, 1L, 5));

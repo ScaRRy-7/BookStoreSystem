@@ -11,8 +11,8 @@ import com.ifellow.bookstore.mapper.StoreMapper;
 import com.ifellow.bookstore.model.Book;
 import com.ifellow.bookstore.model.Store;
 import com.ifellow.bookstore.model.StoreBookAmount;
-import com.ifellow.bookstore.repository.api.StoreBookAmountRepository;
-import com.ifellow.bookstore.repository.api.StoreRepository;
+import com.ifellow.bookstore.repository.StoreBookAmountRepository;
+import com.ifellow.bookstore.repository.StoreRepository;
 import com.ifellow.bookstore.service.api.BookService;
 import com.ifellow.bookstore.service.api.StoreService;
 import lombok.RequiredArgsConstructor;
@@ -48,6 +48,10 @@ public class StoreServiceImpl implements StoreService {
                 .orElseThrow(() -> new StoreNotFoundException("Store not found with bookId: " + id));
     }
 
+    public void checkStoreExistence(Long id) throws StoreNotFoundException {
+        findStoreById(id);
+    }
+
     @Override
     @Transactional
     public void addBookToStore(Long id, Long bookId, int quantity)
@@ -80,11 +84,9 @@ public class StoreServiceImpl implements StoreService {
 
         if (quantity <= EMPTY_STOCK) throw new IllegalArgumentException("quantity must be greater than zero");
 
-        //неиспользуемые переменные, за которыми лазим в БД
-        Store store = findStoreById(id);
-        Book book = bookService.findBookById(bookId);
+        checkStoreExistence(id);
+        bookService.checkBookExistence(bookId);
 
-        // Переписала немного код для демонстрации возможностей Optional. Погляди, так вроде лаконичней?
         storeBookAmountRepository.findByStoreIdAndBookId(id, bookId)
                 .ifPresentOrElse(sba -> {
                     if (sba.getAmount() < quantity)

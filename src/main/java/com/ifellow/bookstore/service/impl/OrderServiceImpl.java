@@ -10,7 +10,7 @@ import com.ifellow.bookstore.model.Book;
 import com.ifellow.bookstore.model.Order;
 import com.ifellow.bookstore.model.OrderItem;
 import com.ifellow.bookstore.model.Warehouse;
-import com.ifellow.bookstore.repository.api.OrderRepository;
+import com.ifellow.bookstore.repository.OrderRepository;
 import com.ifellow.bookstore.service.api.BookService;
 import com.ifellow.bookstore.service.api.OrderService;
 import com.ifellow.bookstore.service.api.WarehouseService;
@@ -127,14 +127,11 @@ public class OrderServiceImpl implements OrderService {
     }
 
     private BigDecimal calculateTotalPrice(List<OrderItem> orderItemList) {
-        //можно переписать через StreamAPI, погляди в сторону метода reduce
-        BigDecimal totalPrice = BigDecimal.ZERO;
+        return orderItemList.stream()
+                .reduce(BigDecimal.ZERO, (BigDecimal totalPrice, OrderItem orderItem) ->
+                        totalPrice.add(orderItem.getPrice().multiply(new BigDecimal(orderItem.getQuantity()))),
+                        BigDecimal::add);
 
-        for (OrderItem orderItem : orderItemList) {
-            BigDecimal totalPriceOfOrderItem = orderItem.getPrice().multiply(new BigDecimal(orderItem.getQuantity()));
-            totalPrice = totalPrice.add(totalPriceOfOrderItem);
-        }
-        return totalPrice;
     }
 
 }

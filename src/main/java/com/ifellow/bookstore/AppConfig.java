@@ -21,7 +21,7 @@ import java.util.UUID;
 @ComponentScan("com.ifellow.bookstore")
 @PropertySource("classpath:application.properties")
 @EnableTransactionManagement
-@EnableJpaRepositories("com.ifellow.bookstore.repository.api")
+@EnableJpaRepositories("com.ifellow.bookstore.repository")
 public class AppConfig {
 
     @Value("${datasource.driver}")
@@ -73,13 +73,19 @@ public class AppConfig {
         return transactionManager;
     }
 
-    // А почему тут, а не сразу в application.properties? Ничего против не имею, но лучше, что бы всё в одном месте лежало
+    @Value("${hibernate.hbm2ddl.auto}")
+    private String hibernate2ddl;
+    @Value("${hibernate.show_sql}")
+    private String hibernateShowSql;
+    @Value("${hibernate.dialect}")
+    private String hibernateDialect;
+
     @Bean
     public Properties properties() {
         Properties properties = new Properties();
-        properties.put("hibernate.hbm2ddl.auto", "create");
-        properties.put("hibernate.show_sql", "true");
-        properties.put("hibernate.dialect", "org.hibernate.dialect.H2Dialect");
+        properties.put("hibernate.hbm2ddl.auto", hibernate2ddl);
+        properties.put("hibernate.show_sql", hibernateShowSql);
+        properties.put("hibernate.dialect", hibernateDialect);
         return properties;
     }
 }

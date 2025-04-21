@@ -7,7 +7,7 @@ import com.ifellow.bookstore.mapper.BookMapper;
 import com.ifellow.bookstore.model.Author;
 import com.ifellow.bookstore.model.Book;
 import com.ifellow.bookstore.model.Genre;
-import com.ifellow.bookstore.repository.api.BookRepository;
+import com.ifellow.bookstore.repository.BookRepository;
 import com.ifellow.bookstore.service.api.AuthorService;
 import com.ifellow.bookstore.service.api.GenreService;
 import com.ifellow.bookstore.service.impl.BookServiceImpl;

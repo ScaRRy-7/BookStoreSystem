@@ -1,4 +1,4 @@
-package com.ifellow.bookstore.repository.api;
+package com.ifellow.bookstore.repository;
 
 import com.ifellow.bookstore.enumeration.OrderStatus;
 import com.ifellow.bookstore.model.Order;

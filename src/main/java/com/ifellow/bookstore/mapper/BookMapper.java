@@ -6,7 +6,7 @@ import com.ifellow.bookstore.model.Book;
 import org.springframework.stereotype.Component;
 
 @Component
-public class BookMapper {
+public class BookMapper implements ToEntityMapper<BookRequestDto, Book>, ToDtoMapper<Book, BookResponseDto> {
 
     public Book toEntity(BookRequestDto bookRequestDto) {
         return Book.builder()
@@ -15,7 +15,7 @@ public class BookMapper {
                 .build();
     }
 
-    public BookResponseDto toResponseDto(Book book) {
+    public BookResponseDto toDto(Book book) {
         return new BookResponseDto(
                 book.getId(),
                 book.getTitle(),

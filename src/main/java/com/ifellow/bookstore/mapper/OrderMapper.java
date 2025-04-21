@@ -5,9 +5,9 @@ import com.ifellow.bookstore.model.Order;
 import org.springframework.stereotype.Component;
 
 @Component
-public class OrderMapper {
+public class OrderMapper implements ToDtoMapper<Order, OrderResponseDto> {
 
-    public OrderResponseDto toResponseDto(Order order) {
+    public OrderResponseDto toDto(Order order) {
         return new OrderResponseDto(
                 order.getId(),
                 order.getOrderDateTime(),

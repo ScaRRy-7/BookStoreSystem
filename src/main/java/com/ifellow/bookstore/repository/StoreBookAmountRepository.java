@@ -1,4 +1,4 @@
-package com.ifellow.bookstore.repository.api;
+package com.ifellow.bookstore.repository;
 
 import com.ifellow.bookstore.model.StoreBookAmount;
 import org.springframework.data.domain.Page;

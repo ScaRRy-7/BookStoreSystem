@@ -12,8 +12,8 @@ import com.ifellow.bookstore.mapper.WarehouseMapper;
 import com.ifellow.bookstore.model.Book;
 import com.ifellow.bookstore.model.Warehouse;
 import com.ifellow.bookstore.model.WarehouseBookAmount;
-import com.ifellow.bookstore.repository.api.WarehouseBookAmountRepository;
-import com.ifellow.bookstore.repository.api.WarehouseRepository;
+import com.ifellow.bookstore.repository.WarehouseBookAmountRepository;
+import com.ifellow.bookstore.repository.WarehouseRepository;
 import com.ifellow.bookstore.service.api.BookService;
 import com.ifellow.bookstore.service.api.WarehouseService;
 import lombok.RequiredArgsConstructor;
@@ -50,6 +50,10 @@ public class WarehouseServiceImpl implements WarehouseService {
                 .orElseThrow(() -> new WarehouseNotFoundException("Warehouse not found with bookId: " + id));
     }
 
+    public void checkWarehouseExistence(Long id) {
+        findWarehouseById(id);
+    }
+
     @Override
     @Transactional
     public void addBookToWarehouse(Long id, Long bookId, int quantity) {
@@ -79,9 +83,8 @@ public class WarehouseServiceImpl implements WarehouseService {
     public void removeBookFromWarehouse(Long id, Long bookId, int quantity) {
         if (quantity <= EMPTY_STOCK) throw new IllegalArgumentException("quantity must be greater than zero");
 
-        //две переменные ниже не используются, наверное не стоит за ними в БД лазить?
-        Warehouse warehouse = findWarehouseById(id);
-        Book book = bookService.findBookById(bookId);
+        checkWarehouseExistence(id);
+        bookService.checkBookExistence(bookId);
 
         Optional<WarehouseBookAmount> optionalWba = warehouseBookAmountRepository.findByWarehouseIdAndBookId(id, bookId);
 

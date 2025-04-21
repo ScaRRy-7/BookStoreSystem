@@ -5,7 +5,7 @@ import com.ifellow.bookstore.dto.response.GenreResponseDto;
 import com.ifellow.bookstore.exception.GenreNotFoundException;
 import com.ifellow.bookstore.mapper.GenreMapper;
 import com.ifellow.bookstore.model.Genre;
-import com.ifellow.bookstore.repository.api.GenreRepository;
+import com.ifellow.bookstore.repository.GenreRepository;
 import com.ifellow.bookstore.service.api.GenreService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
