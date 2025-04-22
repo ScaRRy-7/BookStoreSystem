@@ -23,13 +23,13 @@ public class AuthorServiceImpl implements AuthorService {
     public AuthorResponseDto save(AuthorRequestDto authorRequestDto) {
         Author author = authorMapper.toEntity(authorRequestDto);
         authorRepository.save(author);
-        return authorMapper.toResponseDto(author);
+        return authorMapper.toDto(author);
     }
 
     @Override
     public AuthorResponseDto findById(Long id) throws AuthorNotFoundException {
         return authorRepository.findById(id)
-                .map(authorMapper::toResponseDto)
+                .map(authorMapper::toDto)
                 .orElseThrow(() -> new AuthorNotFoundException("Author not found with bookId: " + id));
     }
 

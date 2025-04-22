@@ -23,7 +23,7 @@ public class GenreServiceImpl implements GenreService {
     public GenreResponseDto save(GenreRequestDto genreRequestDto) {
         Genre genre = genreMapper.toEntity(genreRequestDto);
         genreRepository.save(genre);
-        return genreMapper.toResponseDto(genre);
+        return genreMapper.toDto(genre);
     }
 
     @Override
@@ -36,7 +36,7 @@ public class GenreServiceImpl implements GenreService {
     @Override
     public GenreResponseDto findById(Long id) throws GenreNotFoundException {
         return genreRepository.findById(id)
-                .map(genreMapper::toResponseDto)
+                .map(genreMapper::toDto)
                 .orElseThrow(() -> new GenreNotFoundException("Genre not found with bookId: " + id));
     }
 }

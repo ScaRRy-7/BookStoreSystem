@@ -11,6 +11,7 @@ import org.springframework.data.domain.Pageable;
 public interface StoreService {
 
     StoreResponseDto save(StoreRequestDto storeRequestDto);
+    StoreResponseDto findById(Long id);
     Store findStoreById(Long id);
     void addBookToStore(Long id, Long bookId, int quantity);
     void removeBookFromStore(Long id, Long bookId, int quantity);

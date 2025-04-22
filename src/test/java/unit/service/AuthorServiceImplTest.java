@@ -54,7 +54,7 @@ class AuthorServiceImplTest {
     void save_ValidData_SavesAuthor() {
         Mockito.when(authorMapper.toEntity(authorRequestDto)).thenReturn(author);
         Mockito.when(authorRepository.save(author)).thenReturn(author);
-        Mockito.when(authorMapper.toResponseDto(author)).thenReturn(authorResponseDto);
+        Mockito.when(authorMapper.toDto(author)).thenReturn(authorResponseDto);
 
         AuthorResponseDto result = authorService.save(authorRequestDto);
 
@@ -62,21 +62,21 @@ class AuthorServiceImplTest {
         assertEquals(authorResponseDto, result);
         Mockito.verify(authorMapper).toEntity(authorRequestDto);
         Mockito.verify(authorRepository).save(author);
-        Mockito.verify(authorMapper).toResponseDto(author);
+        Mockito.verify(authorMapper).toDto(author);
     }
 
     @Test
     @DisplayName("Успешный поиск автора по ID с возвратом DTO")
     void findById_ExistingId_ReturnsAuthorResponseDto() {
         Mockito.when(authorRepository.findById(authorId)).thenReturn(Optional.of(author));
-        Mockito.when(authorMapper.toResponseDto(author)).thenReturn(authorResponseDto);
+        Mockito.when(authorMapper.toDto(author)).thenReturn(authorResponseDto);
 
         AuthorResponseDto result = authorService.findById(authorId);
 
         assertNotNull(result);
         assertEquals(authorResponseDto, result);
         Mockito.verify(authorRepository).findById(authorId);
-        Mockito.verify(authorMapper).toResponseDto(author);
+        Mockito.verify(authorMapper).toDto(author);
     }
 
     @Test
@@ -86,7 +86,7 @@ class AuthorServiceImplTest {
 
         assertThrows(AuthorNotFoundException.class, () -> authorService.findById(authorId));
         Mockito.verify(authorRepository).findById(authorId);
-        Mockito.verify(authorMapper, Mockito.never()).toResponseDto(Mockito.any(Author.class));
+        Mockito.verify(authorMapper, Mockito.never()).toDto(Mockito.any(Author.class));
     }
 
     @Test

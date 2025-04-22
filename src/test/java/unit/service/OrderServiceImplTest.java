@@ -104,7 +104,7 @@ class OrderServiceImplTest {
         Mockito.when(warehouseService.findWarehouseById(warehouseId)).thenReturn(warehouse);
         Mockito.when(bookService.findBookById(bookId)).thenReturn(book);
         Mockito.when(orderRepository.save(Mockito.any(Order.class))).thenReturn(order);
-        Mockito.when(orderMapper.toResponseDto(Mockito.any(Order.class))).thenReturn(orderResponseDto);
+        Mockito.when(orderMapper.toDto(Mockito.any(Order.class))).thenReturn(orderResponseDto);
 
         OrderResponseDto result = orderService.create(warehouseId, List.of(bookOrderDto));
 
@@ -130,7 +130,7 @@ class OrderServiceImplTest {
     void completeById_ValidOrderId_CompletesOrder() {
         Mockito.when(orderRepository.findById(orderId)).thenReturn(Optional.of(order));
         Mockito.when(orderRepository.save(order)).thenReturn(order);
-        Mockito.when(orderMapper.toResponseDto(order)).thenReturn(orderResponseDto);
+        Mockito.when(orderMapper.toDto(order)).thenReturn(orderResponseDto);
 
         OrderResponseDto result = orderService.completeById(orderId);
 
@@ -163,7 +163,7 @@ class OrderServiceImplTest {
     void cancelById_ValidOrderId_CancelsOrder() {
         Mockito.when(orderRepository.findById(orderId)).thenReturn(Optional.of(order));
         Mockito.when(orderRepository.save(order)).thenReturn(order);
-        Mockito.when(orderMapper.toResponseDto(order)).thenReturn(orderResponseDto);
+        Mockito.when(orderMapper.toDto(order)).thenReturn(orderResponseDto);
 
         OrderResponseDto result = orderService.cancelById(orderId);
 
@@ -196,7 +196,7 @@ class OrderServiceImplTest {
     @DisplayName("Получение заказа по ID")
     void findById_ExistingOrderId_ReturnsOrder() {
         Mockito.when(orderRepository.findById(orderId)).thenReturn(Optional.of(order));
-        Mockito.when(orderMapper.toResponseDto(order)).thenReturn(orderResponseDto);
+        Mockito.when(orderMapper.toDto(order)).thenReturn(orderResponseDto);
 
         OrderResponseDto result = orderService.findById(orderId);
 
@@ -220,7 +220,7 @@ class OrderServiceImplTest {
         Page<Order> ordersPage = new PageImpl<>(List.of(order));
 
         Mockito.when(orderRepository.findByOrderStatus(OrderStatus.CREATED, pageable)).thenReturn(ordersPage);
-        Mockito.when(orderMapper.toResponseDto(order)).thenReturn(orderResponseDto);
+        Mockito.when(orderMapper.toDto(order)).thenReturn(orderResponseDto);
 
         Page<OrderResponseDto> result = orderService.findByOrderStatus(OrderStatus.CREATED, pageable);
 
@@ -239,7 +239,7 @@ class OrderServiceImplTest {
         Page<Order> ordersPage = new PageImpl<>(List.of(order));
 
         Mockito.when(orderRepository.findByOrderDateTimeBetween(start, end, pageable)).thenReturn(ordersPage);
-        Mockito.when(orderMapper.toResponseDto(order)).thenReturn(orderResponseDto);
+        Mockito.when(orderMapper.toDto(order)).thenReturn(orderResponseDto);
 
         Page<OrderResponseDto> result = orderService.findByOrderDateTimeBetween(start, end, pageable);
 
@@ -256,7 +256,7 @@ class OrderServiceImplTest {
         Page<Order> ordersPage = new PageImpl<>(List.of(order));
 
         Mockito.when(orderRepository.findByWarehouseId(warehouseId, pageable)).thenReturn(ordersPage);
-        Mockito.when(orderMapper.toResponseDto(order)).thenReturn(orderResponseDto);
+        Mockito.when(orderMapper.toDto(order)).thenReturn(orderResponseDto);
 
         Page<OrderResponseDto> result = orderService.findByWarehouseId(warehouseId, pageable);
 
@@ -273,7 +273,7 @@ class OrderServiceImplTest {
         Page<Order> ordersPage = new PageImpl<>(List.of(order));
 
         Mockito.when(orderRepository.findByWarehouseIdAndOrderStatus(warehouseId, OrderStatus.CREATED, pageable)).thenReturn(ordersPage);
-        Mockito.when(orderMapper.toResponseDto(order)).thenReturn(orderResponseDto);
+        Mockito.when(orderMapper.toDto(order)).thenReturn(orderResponseDto);
 
         Page<OrderResponseDto> result = orderService.findByWarehouseIdAndOrderStatus(warehouseId, OrderStatus.CREATED, pageable);
 

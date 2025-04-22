@@ -1,6 +1,6 @@
 package unit.service;
 
-import com.ifellow.bookstore.dto.request.BookBulkAddDto;
+import com.ifellow.bookstore.dto.request.BookBulkDto;
 import com.ifellow.bookstore.dto.request.WarehouseRequestDto;
 import com.ifellow.bookstore.dto.response.WarehouseBookResponseDto;
 import com.ifellow.bookstore.dto.response.WarehouseResponseDto;
@@ -76,7 +76,7 @@ class WarehouseServiceImplTest {
         WarehouseResponseDto responseDto = new WarehouseResponseDto(1L, "Склад 1");
         Mockito.when(warehouseMapper.toEntity(warehouseRequestDto)).thenReturn(warehouse);
         Mockito.when(warehouseRepository.save(warehouse)).thenReturn(warehouse);
-        Mockito.when(warehouseMapper.toResponseDto(warehouse)).thenReturn(responseDto);
+        Mockito.when(warehouseMapper.toDto(warehouse)).thenReturn(responseDto);
 
         WarehouseResponseDto result = warehouseService.save(warehouseRequestDto);
 
@@ -84,7 +84,7 @@ class WarehouseServiceImplTest {
         assertEquals(responseDto, result);
         Mockito.verify(warehouseMapper, Mockito.times(1)).toEntity(warehouseRequestDto);
         Mockito.verify(warehouseRepository, Mockito.times(1)).save(warehouse);
-        Mockito.verify(warehouseMapper, Mockito.times(1)).toResponseDto(warehouse);
+        Mockito.verify(warehouseMapper, Mockito.times(1)).toDto(warehouse);
     }
 
     @Test
@@ -187,7 +187,7 @@ class WarehouseServiceImplTest {
         WarehouseBookResponseDto responseDto = new WarehouseBookResponseDto(1L, 1L, 1L, 10);
 
         Mockito.when(warehouseBookAmountRepository.findByWarehouseId(1L, pageable)).thenReturn(page);
-        Mockito.when(warehouseBookAmountMapper.toResponseDto(wba)).thenReturn(responseDto);
+        Mockito.when(warehouseBookAmountMapper.toDto(wba)).thenReturn(responseDto);
 
         Page<WarehouseBookResponseDto> result = warehouseService.getWarehouseStock(1L, pageable);
 
@@ -200,9 +200,9 @@ class WarehouseServiceImplTest {
     @Test
     @DisplayName("WarehouseServiceImpl успешно добавляет несколько книг")
     void bulkAddBooks_ValidData_AddBooks() {
-        List<BookBulkAddDto> booksToAdd = List.of(
-                new BookBulkAddDto(1L, 5),
-                new BookBulkAddDto(2L, 10)
+        List<BookBulkDto> booksToAdd = List.of(
+                new BookBulkDto(1L, 5),
+                new BookBulkDto(2L, 10)
         );
         Mockito.when(warehouseRepository.findById(1L)).thenReturn(Optional.of(warehouse));
         Mockito.when(bookService.findBookById(1L)).thenReturn(book);

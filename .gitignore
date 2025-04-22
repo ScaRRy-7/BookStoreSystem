@@ -40,3 +40,4 @@ build/
 
 ### Maven build
 target/
+out/

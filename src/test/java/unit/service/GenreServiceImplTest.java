@@ -54,7 +54,7 @@ class GenreServiceImplTest {
     void save_ValidData_SavesGenre() {
         Mockito.when(genreMapper.toEntity(genreRequestDto)).thenReturn(genre);
         Mockito.when(genreRepository.save(genre)).thenReturn(genre);
-        Mockito.when(genreMapper.toResponseDto(genre)).thenReturn(genreResponseDto);
+        Mockito.when(genreMapper.toDto(genre)).thenReturn(genreResponseDto);
 
         GenreResponseDto result = genreService.save(genreRequestDto);
 
@@ -62,7 +62,7 @@ class GenreServiceImplTest {
         assertEquals(genreResponseDto, result);
         Mockito.verify(genreMapper).toEntity(genreRequestDto);
         Mockito.verify(genreRepository).save(genre);
-        Mockito.verify(genreMapper).toResponseDto(genre);
+        Mockito.verify(genreMapper).toDto(genre);
     }
 
     @Test
@@ -90,14 +90,14 @@ class GenreServiceImplTest {
     @DisplayName("Успешный поиск жанра с возвратом DTO по ID")
     void findById_ExistingId_ReturnsGenreResponseDto() {
         Mockito.when(genreRepository.findById(genreId)).thenReturn(Optional.of(genre));
-        Mockito.when(genreMapper.toResponseDto(genre)).thenReturn(genreResponseDto);
+        Mockito.when(genreMapper.toDto(genre)).thenReturn(genreResponseDto);
 
         GenreResponseDto result = genreService.findById(genreId);
 
         assertNotNull(result);
         assertEquals(genreResponseDto, result);
         Mockito.verify(genreRepository).findById(genreId);
-        Mockito.verify(genreMapper).toResponseDto(genre);
+        Mockito.verify(genreMapper).toDto(genre);
     }
 
     @Test
@@ -107,6 +107,6 @@ class GenreServiceImplTest {
 
         assertThrows(GenreNotFoundException.class, () -> genreService.findById(genreId));
         Mockito.verify(genreRepository).findById(genreId);
-        Mockito.verify(genreMapper, Mockito.never()).toResponseDto(Mockito.any(Genre.class));
+        Mockito.verify(genreMapper, Mockito.never()).toDto(Mockito.any(Genre.class));
     }
 }

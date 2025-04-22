@@ -1,4 +1,4 @@
-package com.ifellow.bookstore;
+package com.ifellow.bookstore.configuration;
 
 import org.h2.tools.Server;
 import org.springframework.beans.factory.annotation.Value;
@@ -12,17 +12,15 @@ import org.springframework.transaction.TransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import javax.sql.DataSource;
-import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Properties;
-import java.util.UUID;
 
 @Configuration
 @ComponentScan("com.ifellow.bookstore")
 @PropertySource("classpath:application.properties")
 @EnableTransactionManagement
 @EnableJpaRepositories("com.ifellow.bookstore.repository")
-public class AppConfig {
+public class RootConfiguration {
 
     @Value("${datasource.driver}")
     private String driver;

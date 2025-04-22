@@ -39,14 +39,23 @@ public class StoreServiceImpl implements StoreService {
     public StoreResponseDto save(StoreRequestDto storeRequestDto) {
         Store store = storeMapper.toEntity(storeRequestDto);
         storeRepository.save(store);
-        return storeMapper.toResponseDto(store);
+        return storeMapper.toDto(store);
+    }
+
+    @Override
+    public StoreResponseDto findById(Long id) throws StoreNotFoundException {
+        Store store = storeRepository.findById(id)
+                .orElseThrow(() -> new StoreNotFoundException("Store not found with id " + id));
+        return storeMapper.toDto(store);
+
     }
 
     @Override
     public Store findStoreById(Long id) throws StoreNotFoundException {
         return storeRepository.findById(id)
-                .orElseThrow(() -> new StoreNotFoundException("Store not found with bookId: " + id));
+                .orElseThrow(() -> new StoreNotFoundException("Store not found with id: " + id));
     }
+
 
     public void checkStoreExistence(Long id) throws StoreNotFoundException {
         findStoreById(id);
@@ -102,6 +111,6 @@ public class StoreServiceImpl implements StoreService {
     @Override
     public Page<StoreBookResponseDto> getStoreStock(Long id, Pageable pageable) {
        return storeBookAmountRepository.findByStoreId(id, pageable)
-               .map(storeBookAmountMapper::toResponseDto);
+               .map(storeBookAmountMapper::toDto);
     }
 }

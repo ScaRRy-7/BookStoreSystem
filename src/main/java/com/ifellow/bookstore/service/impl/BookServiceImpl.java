@@ -37,7 +37,7 @@ public class BookServiceImpl implements BookService {
         book.setGenre(genre);
 
         bookRepository.save(book);
-        return bookMapper.toResponseDto(book);
+        return bookMapper.toDto(book);
     }
 
     @Override
@@ -45,7 +45,7 @@ public class BookServiceImpl implements BookService {
         Book book = bookRepository.findById(id)
                 .orElseThrow(() -> new BookNotFoundException("Book not found with bookId: " + id));
 
-        return bookMapper.toResponseDto(book);
+        return bookMapper.toDto(book);
    }
 
    public void checkBookExistence(Long id) throws BookNotFoundException {
@@ -55,38 +55,38 @@ public class BookServiceImpl implements BookService {
    @Override
    public Page<BookResponseDto> findByGenreId(Long genreId, Pageable pageable) {
         return bookRepository.findByGenreId(genreId, pageable)
-                .map(bookMapper::toResponseDto);
+                .map(bookMapper::toDto);
 
    }
 
    @Override
    public Page<BookResponseDto> findByAuthorId(Long authorId, Pageable pageable) {
         return bookRepository.findByAuthorId(authorId, pageable)
-                .map(bookMapper::toResponseDto);
+                .map(bookMapper::toDto);
    }
 
    @Override
    public Page<BookResponseDto> findByTitle(String title, Pageable pageable) {
         return bookRepository.findByTitleContainingIgnoreCase(title, pageable)
-                .map(bookMapper::toResponseDto);
+                .map(bookMapper::toDto);
    }
 
    @Override
-   public Page<BookResponseDto> findByAuthorFullName(String fullName, Pageable pageable) {
-        return bookRepository.findByAuthorFullNameIgnoreCase(fullName, pageable)
-                .map(bookMapper::toResponseDto);
+   public Page<BookResponseDto> findByAuthorFullName(String authorFullName, Pageable pageable) {
+        return bookRepository.findByAuthorFullNameIgnoreCase(authorFullName, pageable)
+                .map(bookMapper::toDto);
    }
 
    @Override
-   public Page<BookResponseDto> findByAuthorFullNameAndTitle(String fullName, String title, Pageable pageable) {
-        return bookRepository.findByAuthorFullNameIgnoreCaseAndTitleContainingIgnoreCase(fullName, title, pageable)
-                .map(bookMapper::toResponseDto);
+   public Page<BookResponseDto> findByAuthorFullNameAndTitle(String authorFullName, String title, Pageable pageable) {
+        return bookRepository.findByAuthorFullNameIgnoreCaseAndTitleContainingIgnoreCase(authorFullName, title, pageable)
+                .map(bookMapper::toDto);
    }
 
    @Override
    public Page<BookResponseDto> findAllGroupedByGenre(Pageable pageable) {
         return bookRepository.findAllOrderedByGenreAsc(pageable)
-                .map(bookMapper::toResponseDto);
+                .map(bookMapper::toDto);
    }
 
    @Override

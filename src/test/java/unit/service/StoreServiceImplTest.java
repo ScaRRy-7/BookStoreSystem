@@ -83,7 +83,7 @@ class StoreServiceImplTest {
 
         Mockito.when(storeMapper.toEntity(storeRequestDto)).thenReturn(store);
         Mockito.when(storeRepository.save(store)).thenReturn(store);
-        Mockito.when(storeMapper.toResponseDto(store)).thenReturn(responseDto);
+        Mockito.when(storeMapper.toDto(store)).thenReturn(responseDto);
 
         StoreResponseDto result = storeService.save(storeRequestDto);
 
@@ -91,7 +91,7 @@ class StoreServiceImplTest {
         assertEquals(responseDto, result);
         Mockito.verify(storeMapper).toEntity(storeRequestDto);
         Mockito.verify(storeRepository).save(store);
-        Mockito.verify(storeMapper).toResponseDto(store);
+        Mockito.verify(storeMapper).toDto(store);
     }
 
     @Test
@@ -220,7 +220,7 @@ class StoreServiceImplTest {
         StoreBookResponseDto responseDto = new StoreBookResponseDto(1L, bookId, storeId, 10);
 
         Mockito.when(storeBookAmountRepository.findByStoreId(storeId, pageable)).thenReturn(page);
-        Mockito.when(storeBookAmountMapper.toResponseDto(sba)).thenReturn(responseDto);
+        Mockito.when(storeBookAmountMapper.toDto(sba)).thenReturn(responseDto);
 
         Page<StoreBookResponseDto> result = storeService.getStoreStock(storeId, pageable);
 
@@ -228,6 +228,6 @@ class StoreServiceImplTest {
         assertEquals(1, result.getTotalElements());
         assertEquals(responseDto, result.getContent().get(0));
         Mockito.verify(storeBookAmountRepository).findByStoreId(storeId, pageable);
-        Mockito.verify(storeBookAmountMapper).toResponseDto(sba);
+        Mockito.verify(storeBookAmountMapper).toDto(sba);
     }
 }

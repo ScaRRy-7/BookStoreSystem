@@ -88,7 +88,7 @@ class BookServiceImplTest {
         Mockito.when(genreService.findGenreById(genreId)).thenReturn(genre);
         Mockito.when(bookMapper.toEntity(bookRequestDto)).thenReturn(book);
         Mockito.when(bookRepository.save(book)).thenReturn(book);
-        Mockito.when(bookMapper.toResponseDto(book)).thenReturn(bookResponseDto);
+        Mockito.when(bookMapper.toDto(book)).thenReturn(bookResponseDto);
 
         BookResponseDto result = bookService.save(bookRequestDto);
 
@@ -98,21 +98,21 @@ class BookServiceImplTest {
         Mockito.verify(genreService).findGenreById(genreId);
         Mockito.verify(bookMapper).toEntity(bookRequestDto);
         Mockito.verify(bookRepository).save(book);
-        Mockito.verify(bookMapper).toResponseDto(book);
+        Mockito.verify(bookMapper).toDto(book);
     }
 
     @Test
     @DisplayName("Успешный поиск книги по ID с возвратом DTO")
     void findById_ExistingId_ReturnsBookResponseDto() {
         Mockito.when(bookRepository.findById(bookId)).thenReturn(Optional.of(book));
-        Mockito.when(bookMapper.toResponseDto(book)).thenReturn(bookResponseDto);
+        Mockito.when(bookMapper.toDto(book)).thenReturn(bookResponseDto);
 
         BookResponseDto result = bookService.findById(bookId);
 
         assertNotNull(result);
         assertEquals(bookResponseDto, result);
         Mockito.verify(bookRepository).findById(bookId);
-        Mockito.verify(bookMapper).toResponseDto(book);
+        Mockito.verify(bookMapper).toDto(book);
     }
 
     @Test
@@ -122,7 +122,7 @@ class BookServiceImplTest {
 
         assertThrows(BookNotFoundException.class, () -> bookService.findById(bookId));
         Mockito.verify(bookRepository).findById(bookId);
-        Mockito.verify(bookMapper, Mockito.never()).toResponseDto(Mockito.any(Book.class));
+        Mockito.verify(bookMapper, Mockito.never()).toDto(Mockito.any(Book.class));
     }
 
     @Test
@@ -153,7 +153,7 @@ class BookServiceImplTest {
         Page<Book> booksPage = new PageImpl<>(List.of(book));
 
         Mockito.when(bookRepository.findByGenreId(genreId, pageable)).thenReturn(booksPage);
-        Mockito.when(bookMapper.toResponseDto(book)).thenReturn(bookResponseDto);
+        Mockito.when(bookMapper.toDto(book)).thenReturn(bookResponseDto);
 
         Page<BookResponseDto> result = bookService.findByGenreId(genreId, pageable);
 
@@ -161,7 +161,7 @@ class BookServiceImplTest {
         assertEquals(1, result.getTotalElements());
         assertEquals(bookResponseDto, result.getContent().get(0));
         Mockito.verify(bookRepository).findByGenreId(genreId, pageable);
-        Mockito.verify(bookMapper).toResponseDto(book);
+        Mockito.verify(bookMapper).toDto(book);
     }
 
     @Test
@@ -171,7 +171,7 @@ class BookServiceImplTest {
         Page<Book> booksPage = new PageImpl<>(List.of(book));
 
         Mockito.when(bookRepository.findByAuthorId(authorId, pageable)).thenReturn(booksPage);
-        Mockito.when(bookMapper.toResponseDto(book)).thenReturn(bookResponseDto);
+        Mockito.when(bookMapper.toDto(book)).thenReturn(bookResponseDto);
 
         Page<BookResponseDto> result = bookService.findByAuthorId(authorId, pageable);
 
@@ -179,7 +179,7 @@ class BookServiceImplTest {
         assertEquals(1, result.getTotalElements());
         assertEquals(bookResponseDto, result.getContent().get(0));
         Mockito.verify(bookRepository).findByAuthorId(authorId, pageable);
-        Mockito.verify(bookMapper).toResponseDto(book);
+        Mockito.verify(bookMapper).toDto(book);
     }
 
     @Test
@@ -190,7 +190,7 @@ class BookServiceImplTest {
         Page<Book> booksPage = new PageImpl<>(List.of(book));
 
         Mockito.when(bookRepository.findByTitleContainingIgnoreCase(title, pageable)).thenReturn(booksPage);
-        Mockito.when(bookMapper.toResponseDto(book)).thenReturn(bookResponseDto);
+        Mockito.when(bookMapper.toDto(book)).thenReturn(bookResponseDto);
 
         Page<BookResponseDto> result = bookService.findByTitle(title, pageable);
 
@@ -198,7 +198,7 @@ class BookServiceImplTest {
         assertEquals(1, result.getTotalElements());
         assertEquals(bookResponseDto, result.getContent().get(0));
         Mockito.verify(bookRepository).findByTitleContainingIgnoreCase(title, pageable);
-        Mockito.verify(bookMapper).toResponseDto(book);
+        Mockito.verify(bookMapper).toDto(book);
     }
 
     @Test
@@ -209,7 +209,7 @@ class BookServiceImplTest {
         Page<Book> booksPage = new PageImpl<>(List.of(book));
 
         Mockito.when(bookRepository.findByAuthorFullNameIgnoreCase(fullName, pageable)).thenReturn(booksPage);
-        Mockito.when(bookMapper.toResponseDto(book)).thenReturn(bookResponseDto);
+        Mockito.when(bookMapper.toDto(book)).thenReturn(bookResponseDto);
 
         Page<BookResponseDto> result = bookService.findByAuthorFullName(fullName, pageable);
 
@@ -217,7 +217,7 @@ class BookServiceImplTest {
         assertEquals(1, result.getTotalElements());
         assertEquals(bookResponseDto, result.getContent().get(0));
         Mockito.verify(bookRepository).findByAuthorFullNameIgnoreCase(fullName, pageable);
-        Mockito.verify(bookMapper).toResponseDto(book);
+        Mockito.verify(bookMapper).toDto(book);
     }
 
     @Test
@@ -229,7 +229,7 @@ class BookServiceImplTest {
         Page<Book> booksPage = new PageImpl<>(List.of(book));
 
         Mockito.when(bookRepository.findByAuthorFullNameIgnoreCaseAndTitleContainingIgnoreCase(fullName, title, pageable)).thenReturn(booksPage);
-        Mockito.when(bookMapper.toResponseDto(book)).thenReturn(bookResponseDto);
+        Mockito.when(bookMapper.toDto(book)).thenReturn(bookResponseDto);
 
         Page<BookResponseDto> result = bookService.findByAuthorFullNameAndTitle(fullName, title, pageable);
 
@@ -237,7 +237,7 @@ class BookServiceImplTest {
         assertEquals(1, result.getTotalElements());
         assertEquals(bookResponseDto, result.getContent().get(0));
         Mockito.verify(bookRepository).findByAuthorFullNameIgnoreCaseAndTitleContainingIgnoreCase(fullName, title, pageable);
-        Mockito.verify(bookMapper).toResponseDto(book);
+        Mockito.verify(bookMapper).toDto(book);
     }
 
     @Test
@@ -247,7 +247,7 @@ class BookServiceImplTest {
         Page<Book> booksPage = new PageImpl<>(List.of(book));
 
         Mockito.when(bookRepository.findAllOrderedByGenreAsc(pageable)).thenReturn(booksPage);
-        Mockito.when(bookMapper.toResponseDto(book)).thenReturn(bookResponseDto);
+        Mockito.when(bookMapper.toDto(book)).thenReturn(bookResponseDto);
 
         Page<BookResponseDto> result = bookService.findAllGroupedByGenre(pageable);
 
@@ -255,6 +255,6 @@ class BookServiceImplTest {
         assertEquals(1, result.getTotalElements());
         assertEquals(bookResponseDto, result.getContent().get(0));
         Mockito.verify(bookRepository).findAllOrderedByGenreAsc(pageable);
-        Mockito.verify(bookMapper).toResponseDto(book);
+        Mockito.verify(bookMapper).toDto(book);
     }
 }

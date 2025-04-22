@@ -60,7 +60,7 @@ public class OrderServiceImpl implements OrderService {
         order.setTotalPrice(calculateTotalPrice(order.getOrderItemList()));
         orderRepository.save(order);
 
-        return orderMapper.toResponseDto(order);
+        return orderMapper.toDto(order);
     }
 
     @Override
@@ -75,7 +75,7 @@ public class OrderServiceImpl implements OrderService {
         order.setOrderStatus(OrderStatus.COMPLETED);
         orderRepository.save(order);
 
-        return orderMapper.toResponseDto(order);
+        return orderMapper.toDto(order);
     }
 
     @Override
@@ -95,7 +95,7 @@ public class OrderServiceImpl implements OrderService {
         order.setOrderStatus(OrderStatus.CANCELED);
         orderRepository.save(order);
 
-        return orderMapper.toResponseDto(order);
+        return orderMapper.toDto(order);
     }
 
     @Override
@@ -103,27 +103,27 @@ public class OrderServiceImpl implements OrderService {
         Order order = orderRepository.findById(orderId)
                 .orElseThrow(() -> new OrderNotFoundException("Order not found with id: " + orderId));
 
-        return orderMapper.toResponseDto(order);
+        return orderMapper.toDto(order);
     }
 
     @Override
     public Page<OrderResponseDto> findByOrderStatus(OrderStatus orderStatus, Pageable pageable) {
-        return orderRepository.findByOrderStatus(orderStatus, pageable).map(orderMapper::toResponseDto);
+        return orderRepository.findByOrderStatus(orderStatus, pageable).map(orderMapper::toDto);
     }
 
     @Override
     public Page<OrderResponseDto> findByOrderDateTimeBetween(LocalDateTime start, LocalDateTime end, Pageable pageable) {
-        return orderRepository.findByOrderDateTimeBetween(start, end, pageable).map(orderMapper::toResponseDto);
+        return orderRepository.findByOrderDateTimeBetween(start, end, pageable).map(orderMapper::toDto);
     }
 
     @Override
     public Page<OrderResponseDto> findByWarehouseId(Long warehouseId, Pageable pageable) {
-        return orderRepository.findByWarehouseId(warehouseId, pageable).map(orderMapper::toResponseDto);
+        return orderRepository.findByWarehouseId(warehouseId, pageable).map(orderMapper::toDto);
     }
 
     @Override
     public Page<OrderResponseDto> findByWarehouseIdAndOrderStatus(Long warehouseId, OrderStatus status, Pageable pageable) {
-        return orderRepository.findByWarehouseIdAndOrderStatus(warehouseId, status, pageable).map(orderMapper::toResponseDto);
+        return orderRepository.findByWarehouseIdAndOrderStatus(warehouseId, status, pageable).map(orderMapper::toDto);
     }
 
     private BigDecimal calculateTotalPrice(List<OrderItem> orderItemList) {

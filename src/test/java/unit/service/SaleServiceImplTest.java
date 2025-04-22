@@ -102,7 +102,7 @@ class SaleServiceImplTest {
         Mockito.when(storeService.findStoreById(storeId)).thenReturn(store);
         Mockito.when(bookService.findBookById(bookId)).thenReturn(book);
         Mockito.when(saleRepository.save(Mockito.any(Sale.class))).thenReturn(sale);
-        Mockito.when(saleMapper.toResponseDto(Mockito.any(Sale.class))).thenReturn(saleResponseDto);
+        Mockito.when(saleMapper.toDto(Mockito.any(Sale.class))).thenReturn(saleResponseDto);
 
         SaleResponseDto result = saleService.processSale(storeId, List.of(bookSaleDto));
 
@@ -121,7 +121,7 @@ class SaleServiceImplTest {
         Page<Sale> salesPage = new PageImpl<>(List.of(sale));
 
         Mockito.when(saleRepository.findBySaleDateTimeBetween(start, end, pageable)).thenReturn(salesPage);
-        Mockito.when(saleMapper.toResponseDto(sale)).thenReturn(saleResponseDto);
+        Mockito.when(saleMapper.toDto(sale)).thenReturn(saleResponseDto);
 
         Page<SaleResponseDto> result = saleService.findBySaleDateTimeBetween(start, end, pageable);
 
@@ -138,7 +138,7 @@ class SaleServiceImplTest {
         Page<Sale> salesPage = new PageImpl<>(List.of(sale));
 
         Mockito.when(saleRepository.findByStoreId(storeId, pageable)).thenReturn(salesPage);
-        Mockito.when(saleMapper.toResponseDto(sale)).thenReturn(saleResponseDto);
+        Mockito.when(saleMapper.toDto(sale)).thenReturn(saleResponseDto);
 
         Page<SaleResponseDto> result = saleService.findByStoreId(storeId, pageable);
 
@@ -157,7 +157,7 @@ class SaleServiceImplTest {
         Page<Sale> salesPage = new PageImpl<>(List.of(sale));
 
         Mockito.when(saleRepository.findByStoreIdAndSaleDateTimeBetween(storeId, start, end, pageable)).thenReturn(salesPage);
-        Mockito.when(saleMapper.toResponseDto(sale)).thenReturn(saleResponseDto);
+        Mockito.when(saleMapper.toDto(sale)).thenReturn(saleResponseDto);
 
         Page<SaleResponseDto> result = saleService.findByStoreIdAndSaleDateTimeBetween(storeId, start, end, pageable);
 
@@ -172,7 +172,7 @@ class SaleServiceImplTest {
     void findById_ExistingId_ReturnsSale() {
         Long saleId = 1L;
         Mockito.when(saleRepository.findById(saleId)).thenReturn(Optional.of(sale));
-        Mockito.when(saleMapper.toResponseDto(sale)).thenReturn(saleResponseDto);
+        Mockito.when(saleMapper.toDto(sale)).thenReturn(saleResponseDto);
 
         SaleResponseDto result = saleService.findById(saleId);
 

@@ -63,26 +63,26 @@ public class SaleServiceImpl implements SaleService {
         sale.setTotalPrice(calculateTotalPrice(sale.getSaleItemList()));
         saleRepository.save(sale);
 
-        return saleMapper.toResponseDto(sale);
+        return saleMapper.toDto(sale);
 
     }
 
     @Override
     public Page<SaleResponseDto> findBySaleDateTimeBetween(LocalDateTime start, LocalDateTime end, Pageable pageable) {
         return saleRepository.findBySaleDateTimeBetween(start, end, pageable)
-                .map(saleMapper::toResponseDto);
+                .map(saleMapper::toDto);
     }
 
     @Override
     public Page<SaleResponseDto> findByStoreId(Long storeId, Pageable pageable) {
         return saleRepository.findByStoreId(storeId, pageable)
-                .map(saleMapper::toResponseDto);
+                .map(saleMapper::toDto);
     }
 
     @Override
     public Page<SaleResponseDto> findByStoreIdAndSaleDateTimeBetween(Long storeId, LocalDateTime start, LocalDateTime end, Pageable pageable) {
         return saleRepository.findByStoreIdAndSaleDateTimeBetween(storeId, start, end, pageable)
-                .map(saleMapper::toResponseDto);
+                .map(saleMapper::toDto);
     }
 
     private BigDecimal calculateTotalPrice(List<SaleItem> saleItemList) {
@@ -99,6 +99,6 @@ public class SaleServiceImpl implements SaleService {
     public SaleResponseDto findById(Long id) {
         Sale sale = saleRepository.findById(id)
                 .orElseThrow(() -> new SaleNotFoundException("Sale not found with id: " + id));
-        return saleMapper.toResponseDto(sale);
+        return saleMapper.toDto(sale);
     }
 }

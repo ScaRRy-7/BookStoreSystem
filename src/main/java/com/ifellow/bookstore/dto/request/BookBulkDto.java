@@ -1,6 +1,6 @@
 package com.ifellow.bookstore.dto.request;
 
-public record BookBulkAddDto(
+public record BookBulkDto(
         Long bookId,
         int quantity
 ) {

@@ -1,6 +1,6 @@
 package com.ifellow.bookstore.service.impl;
 
-import com.ifellow.bookstore.dto.request.BookBulkAddDto;
+import com.ifellow.bookstore.dto.request.BookBulkDto;
 import com.ifellow.bookstore.dto.request.WarehouseRequestDto;
 import com.ifellow.bookstore.dto.response.WarehouseBookResponseDto;
 import com.ifellow.bookstore.dto.response.WarehouseResponseDto;
@@ -41,11 +41,19 @@ public class WarehouseServiceImpl implements WarehouseService {
     public WarehouseResponseDto save(WarehouseRequestDto warehouseRequestDto) {
         Warehouse warehouse = warehouseMapper.toEntity(warehouseRequestDto);
         warehouseRepository.save(warehouse);
-        return warehouseMapper.toResponseDto(warehouse);
+        return warehouseMapper.toDto(warehouse);
     }
 
     @Override
-    public Warehouse findWarehouseById(Long id) {
+    public WarehouseResponseDto findById(Long id) throws WarehouseNotFoundException {
+        Warehouse warehouse = warehouseRepository.findById(id).orElseThrow(
+                () -> new WarehouseNotFoundException("Warehouse not found with id: " + id)
+        );
+        return warehouseMapper.toDto(warehouse);
+    }
+
+    @Override
+    public Warehouse findWarehouseById(Long id) throws WarehouseNotFoundException {
         return warehouseRepository.findById(id)
                 .orElseThrow(() -> new WarehouseNotFoundException("Warehouse not found with bookId: " + id));
     }
@@ -104,13 +112,13 @@ public class WarehouseServiceImpl implements WarehouseService {
     @Override
     public Page<WarehouseBookResponseDto> getWarehouseStock(Long id, Pageable pageable) {
         return warehouseBookAmountRepository.findByWarehouseId(id, pageable)
-                .map(warehouseBookAmountMapper::toResponseDto);
+                .map(warehouseBookAmountMapper::toDto);
     }
 
     @Override
     @Transactional
-    public void bulkAddBooks(Long id, List<BookBulkAddDto> booksToAdd) {
-        for (BookBulkAddDto bookDto : booksToAdd) {
+    public void bulkAddBooks(Long id, List<BookBulkDto> booksToAdd) {
+        for (BookBulkDto bookDto : booksToAdd) {
             addBookToWarehouse(id, bookDto.bookId(), bookDto.quantity());
         }
     }
