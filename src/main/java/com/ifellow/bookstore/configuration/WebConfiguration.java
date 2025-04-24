@@ -1,5 +1,7 @@
 package com.ifellow.bookstore.configuration;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.domain.PageRequest;
@@ -26,6 +28,13 @@ public class WebConfiguration implements WebMvcConfigurer {
                 .dateFormat(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"));
 
         converters.add(new MappingJackson2HttpMessageConverter(builder.build()));
+    }
+
+    @Bean
+    public ObjectMapper objectMapper() {
+        return new Jackson2ObjectMapperBuilder()
+                .indentOutput(true)
+                .dateFormat(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss")).build();
     }
 
     @Override

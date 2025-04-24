@@ -1,6 +1,8 @@
 package com.ifellow.bookstore.service.impl;
 
+import com.ifellow.bookstore.dto.request.BookFilter;
 import com.ifellow.bookstore.dto.request.BookRequestDto;
+import com.ifellow.bookstore.dto.request.GroupedBookResponse;
 import com.ifellow.bookstore.dto.response.BookResponseDto;
 import com.ifellow.bookstore.exception.BookNotFoundException;
 import com.ifellow.bookstore.mapper.BookMapper;
@@ -11,11 +13,17 @@ import com.ifellow.bookstore.repository.BookRepository;
 import com.ifellow.bookstore.service.api.AuthorService;
 import com.ifellow.bookstore.service.api.BookService;
 import com.ifellow.bookstore.service.api.GenreService;
+import com.ifellow.bookstore.specification.BookSpecification;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -52,41 +60,37 @@ public class BookServiceImpl implements BookService {
         findById(id);
    }
 
-   @Override
-   public Page<BookResponseDto> findByGenreId(Long genreId, Pageable pageable) {
-        return bookRepository.findByGenreId(genreId, pageable)
-                .map(bookMapper::toDto);
-
+   public Object findAll(BookFilter filter, Pageable pageable) {
+        if (filter.getGroupByGenre()) {
+            return findAllGroupedByGenre(filter, pageable);
+        } else {
+            return findAllFiltered(filter, pageable);
+        }
    }
 
-   @Override
-   public Page<BookResponseDto> findByAuthorId(Long authorId, Pageable pageable) {
-        return bookRepository.findByAuthorId(authorId, pageable)
-                .map(bookMapper::toDto);
+   private Page<BookResponseDto> findAllFiltered(BookFilter filter, Pageable pageable) {
+       Specification<Book> spec = BookSpecification.withFilter(filter);
+       return bookRepository.findAll(spec, pageable)
+               .map(bookMapper::toDto);
    }
 
-   @Override
-   public Page<BookResponseDto> findByTitle(String title, Pageable pageable) {
-        return bookRepository.findByTitleContainingIgnoreCase(title, pageable)
-                .map(bookMapper::toDto);
-   }
+   private GroupedBookResponse findAllGroupedByGenre(BookFilter filter, Pageable pageable) {
+        Specification<Book> spec = BookSpecification.withFilter(filter);
 
-   @Override
-   public Page<BookResponseDto> findByAuthorFullName(String authorFullName, Pageable pageable) {
-        return bookRepository.findByAuthorFullNameIgnoreCase(authorFullName, pageable)
-                .map(bookMapper::toDto);
-   }
+        Page<Book> bookPage = bookRepository.findAll(spec, pageable);
 
-   @Override
-   public Page<BookResponseDto> findByAuthorFullNameAndTitle(String authorFullName, String title, Pageable pageable) {
-        return bookRepository.findByAuthorFullNameIgnoreCaseAndTitleContainingIgnoreCase(authorFullName, title, pageable)
-                .map(bookMapper::toDto);
-   }
+        Map<String, List<BookResponseDto>> groupedBooks = bookPage.getContent().stream()
+                .collect(Collectors.groupingBy(
+                        book -> book.getGenre().getName(),
+                        Collectors.mapping(bookMapper::toDto, Collectors.toList())
+                ));
 
-   @Override
-   public Page<BookResponseDto> findAllGroupedByGenre(Pageable pageable) {
-        return bookRepository.findAllOrderedByGenreAsc(pageable)
-                .map(bookMapper::toDto);
+        return GroupedBookResponse.builder()
+                .booksByGenre(groupedBooks)
+                .currentPage(bookPage.getNumber())
+                .totalPages(bookPage.getTotalPages())
+                .totalElements(bookPage.getTotalElements())
+                .build();
    }
 
    @Override

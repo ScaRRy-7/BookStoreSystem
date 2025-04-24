@@ -52,8 +52,6 @@ public class GlobalExceptionHandler {
         return e.getMessage();
     }
 
-
-
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(NotEnoughStockException.class)
     public String handleNotEnoughStockException(NotEnoughStockException e) {
