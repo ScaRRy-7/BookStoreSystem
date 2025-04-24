@@ -1,6 +1,6 @@
 package com.ifellow.bookstore.controller;
 
-import com.ifellow.bookstore.dto.request.OrderRequestDto;
+import com.ifellow.bookstore.dto.request.BookOrderDto;
 import com.ifellow.bookstore.dto.response.OrderResponseDto;
 import com.ifellow.bookstore.enumeration.OrderStatus;
 import com.ifellow.bookstore.service.api.OrderService;
@@ -12,61 +12,65 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/orders")
+@RequestMapping("api")
 public class OrderController {
 
     private final OrderService orderService;
 
-    @PostMapping
+    @PostMapping("/warehouses/{warehouseId}/orders")
     @ResponseStatus(HttpStatus.CREATED)
-    public OrderResponseDto create(@RequestBody OrderRequestDto orderRequestDto) {
-        return orderService.create(orderRequestDto.warehouseId(), orderRequestDto.bookOrderDtoList());
+    public OrderResponseDto create(@PathVariable Long warehouseId, @RequestBody List<BookOrderDto> bookOrderDtoList) {
+        return orderService.create(warehouseId, bookOrderDtoList);
     }
 
     @ResponseStatus(HttpStatus.OK)
-    @PostMapping("/{orderId}/complete")
-    public OrderResponseDto complete(@PathVariable("orderId") Long orderId) {
+    @PostMapping("/orders/{orderId}/complete")
+    public OrderResponseDto completeById(@PathVariable Long orderId) {
         return orderService.completeById(orderId);
     }
 
     @ResponseStatus(HttpStatus.OK)
-    @PostMapping("/{orderId}/cancel")
-    public OrderResponseDto cancel(@PathVariable("orderId") Long orderId) {
+    @PostMapping("/orders/{orderId}/cancel")
+    public OrderResponseDto cancelById(@PathVariable Long orderId) {
         return orderService.cancelById(orderId);
     }
 
-    @GetMapping("/{orderId}")
     @ResponseStatus(HttpStatus.OK)
-    public OrderResponseDto getOrderById(@PathVariable("orderId") Long orderId) {
+    @GetMapping("/orders/{orderId}")
+    public OrderResponseDto findById(@PathVariable Long orderId) {
         return orderService.findById(orderId);
     }
 
-    @GetMapping("/status")
     @ResponseStatus(HttpStatus.OK)
+    @GetMapping("/orders/by-order-status")
     public Page<OrderResponseDto> findByOrderStatus(@RequestParam OrderStatus orderStatus, Pageable pageable) {
         return orderService.findByOrderStatus(orderStatus, pageable);
     }
 
-    @GetMapping("/timeperiod")
     @ResponseStatus(HttpStatus.OK)
-    public Page<OrderResponseDto> findByOrderDateTimeBetween(@RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime start,
-                                                             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime end, Pageable pageable) {
-        return orderService.findByOrderDateTimeBetween(start, end, pageable);
+    @GetMapping("/orders/by-datetime-between")
+    public Page<OrderResponseDto> findByOrderDateBetween(
+            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime startDate,
+            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime endDate,
+            Pageable pageable) {
+        return orderService.findByOrderDateTimeBetween(startDate, endDate, pageable);
     }
 
-    @GetMapping("/warehouse")
+    @GetMapping("/warehouses/{warehouseId}/orders")
     @ResponseStatus(HttpStatus.OK)
-    public Page<OrderResponseDto> findByWarehouseId(@RequestParam Long warehouseId, Pageable pageable) {
+    public Page<OrderResponseDto> findByWarehouseId(@PathVariable Long warehouseId, Pageable pageable) {
         return orderService.findByWarehouseId(warehouseId, pageable);
     }
 
     @ResponseStatus(HttpStatus.OK)
-    @GetMapping("/warehouse-status")
-    public Page<OrderResponseDto> findByWarehouseIdAndOrderStatus(@RequestParam Long warehouseId, @RequestParam OrderStatus status, Pageable pageable) {
-        return orderService.findByWarehouseIdAndOrderStatus(warehouseId, status, pageable);
+    @GetMapping("/warehouses/{warehouseId}/orders/by-order-status")
+    public Page<OrderResponseDto> findByWarehouseIdAndOrderStatus(@PathVariable Long warehouseId, @RequestParam OrderStatus orderStatus, Pageable pageable) {
+        return orderService.findByWarehouseIdAndOrderStatus(warehouseId, orderStatus, pageable);
     }
+
 
 }
