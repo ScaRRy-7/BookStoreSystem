@@ -2,6 +2,10 @@ package com.ifellow.bookstore.specification;
 
 import com.ifellow.bookstore.dto.request.BookFilter;
 import com.ifellow.bookstore.model.Book;
+import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Predicate;
+import jakarta.persistence.criteria.Root;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.util.StringUtils;
 
@@ -34,7 +38,7 @@ public class BookSpecification {
 
     private static Specification<Book> byAuthorFullName(String authorFullName) {
         if (!StringUtils.hasText(authorFullName)) return null;
-        return (root, query, cb) -> cb.like(cb.lower(root.get("author").get("fullname")), "%" + authorFullName + "%");
+        return (root, query, cb) -> cb.like(cb.lower(root.get("author").get("fullName")), "%" + authorFullName.toLowerCase() + "%");
     }
 
     private static Specification<Book> byPriceBetween(BigDecimal minPrice, BigDecimal maxPrice) {

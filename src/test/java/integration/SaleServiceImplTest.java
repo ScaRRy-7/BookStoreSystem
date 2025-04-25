@@ -70,42 +70,4 @@ class SaleServiceImplTest extends AbstractIntegrationTest {
         assertEquals(BigDecimal.valueOf(bookSaleDtoList.getFirst().quantity()).multiply(bookResponseDto.price()), saleResponseDto.totalPrice());
     }
 
-    @Test
-    @DisplayName("Находит покупку в диапазоне двух дат")
-    public void findBySaleDateTimeBetween() {
-        AuthorRequestDto authorRequestDto = new AuthorRequestDto("Федор Достоевский");
-        AuthorResponseDto authorResponseDto = authorService.save(authorRequestDto);
-
-        GenreRequestDto genreRequestDto = new GenreRequestDto("Роман");
-        GenreResponseDto genreResponseDto = genreService.save(genreRequestDto);
-
-        BookRequestDto bookRequestDto = new BookRequestDto("Преступление и наказание", authorResponseDto.id(), genreResponseDto.id(), BigDecimal.valueOf(250L));
-        BookResponseDto bookResponseDto = bookService.save(bookRequestDto);
-
-        WarehouseRequestDto warehouseRequestDto = new WarehouseRequestDto("Ул. Арбат");
-        WarehouseResponseDto warehouseResponseDto = warehouseService.save(warehouseRequestDto);
-        warehouseService.addBookToWarehouse(warehouseResponseDto.id(), bookResponseDto.id(), 20);
-
-        StoreRequestDto storeRequestDto = new StoreRequestDto("Фрунзенская");
-        StoreResponseDto storeResponseDto = storeService.save(storeRequestDto);
-
-        transferService.transferBookFromWarehouseToStore(warehouseResponseDto.id(), storeResponseDto.id(), bookResponseDto.id(), 20);
-
-        List<BookSaleDto> bookSaleDtoList = new ArrayList<>();
-        bookSaleDtoList.add(new BookSaleDto(bookResponseDto.id(), 20));
-
-        SaleResponseDto saleResponseDto = saleService.processSale(storeResponseDto.id(), bookSaleDtoList);
-
-
-
-        Page<SaleResponseDto> page = saleService.findBySaleDateTimeBetween(LocalDateTime.now().minusMinutes(1L), LocalDateTime.now().plusMinutes(1L), PageRequest.of(0, 1));
-
-
-
-        SaleResponseDto actualSaleResponseDto = page.getContent().getFirst();
-        assertNotNull(actualSaleResponseDto);
-        assertEquals(saleResponseDto.totalPrice(), actualSaleResponseDto.totalPrice());
-
-    }
-
 }

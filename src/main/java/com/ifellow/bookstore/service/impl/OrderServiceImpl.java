@@ -1,6 +1,7 @@
 package com.ifellow.bookstore.service.impl;
 
 import com.ifellow.bookstore.dto.request.BookOrderDto;
+import com.ifellow.bookstore.dto.request.OrderFilter;
 import com.ifellow.bookstore.dto.response.OrderResponseDto;
 import com.ifellow.bookstore.enumeration.OrderStatus;
 import com.ifellow.bookstore.exception.ChangeOrderStatusException;
@@ -14,9 +15,11 @@ import com.ifellow.bookstore.repository.OrderRepository;
 import com.ifellow.bookstore.service.api.BookService;
 import com.ifellow.bookstore.service.api.OrderService;
 import com.ifellow.bookstore.service.api.WarehouseService;
+import com.ifellow.bookstore.specification.OrderSpecification;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -107,23 +110,10 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public Page<OrderResponseDto> findByOrderStatus(OrderStatus orderStatus, Pageable pageable) {
-        return orderRepository.findByOrderStatus(orderStatus, pageable).map(orderMapper::toDto);
-    }
-
-    @Override
-    public Page<OrderResponseDto> findByOrderDateTimeBetween(LocalDateTime start, LocalDateTime end, Pageable pageable) {
-        return orderRepository.findByOrderDateTimeBetween(start, end, pageable).map(orderMapper::toDto);
-    }
-
-    @Override
-    public Page<OrderResponseDto> findByWarehouseId(Long warehouseId, Pageable pageable) {
-        return orderRepository.findByWarehouseId(warehouseId, pageable).map(orderMapper::toDto);
-    }
-
-    @Override
-    public Page<OrderResponseDto> findByWarehouseIdAndOrderStatus(Long warehouseId, OrderStatus status, Pageable pageable) {
-        return orderRepository.findByWarehouseIdAndOrderStatus(warehouseId, status, pageable).map(orderMapper::toDto);
+    public Page<OrderResponseDto> findAll(OrderFilter filter, Pageable pageable) {
+        Specification<Order> spec = OrderSpecification.withFilter(filter);
+        return orderRepository.findAll(spec, pageable)
+                .map(orderMapper::toDto);
     }
 
     private BigDecimal calculateTotalPrice(List<OrderItem> orderItemList) {
@@ -133,5 +123,4 @@ public class OrderServiceImpl implements OrderService {
                         BigDecimal::add);
 
     }
-
 }

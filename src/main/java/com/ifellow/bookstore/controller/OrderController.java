@@ -1,6 +1,7 @@
 package com.ifellow.bookstore.controller;
 
 import com.ifellow.bookstore.dto.request.BookOrderDto;
+import com.ifellow.bookstore.dto.request.OrderFilter;
 import com.ifellow.bookstore.dto.response.OrderResponseDto;
 import com.ifellow.bookstore.enumeration.OrderStatus;
 import com.ifellow.bookstore.service.api.OrderService;
@@ -45,32 +46,9 @@ public class OrderController {
         return orderService.findById(orderId);
     }
 
+    @GetMapping("/orders")
     @ResponseStatus(HttpStatus.OK)
-    @GetMapping("/orders/by-order-status")
-    public Page<OrderResponseDto> findByOrderStatus(@RequestParam OrderStatus orderStatus, Pageable pageable) {
-        return orderService.findByOrderStatus(orderStatus, pageable);
+    public Page<OrderResponseDto> findAll(OrderFilter filter, Pageable pageable) {
+        return orderService.findAll(filter, pageable);
     }
-
-    @ResponseStatus(HttpStatus.OK)
-    @GetMapping("/orders/by-datetime-between")
-    public Page<OrderResponseDto> findByOrderDateBetween(
-            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime startDate,
-            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime endDate,
-            Pageable pageable) {
-        return orderService.findByOrderDateTimeBetween(startDate, endDate, pageable);
-    }
-
-    @GetMapping("/warehouses/{warehouseId}/orders")
-    @ResponseStatus(HttpStatus.OK)
-    public Page<OrderResponseDto> findByWarehouseId(@PathVariable Long warehouseId, Pageable pageable) {
-        return orderService.findByWarehouseId(warehouseId, pageable);
-    }
-
-    @ResponseStatus(HttpStatus.OK)
-    @GetMapping("/warehouses/{warehouseId}/orders/by-order-status")
-    public Page<OrderResponseDto> findByWarehouseIdAndOrderStatus(@PathVariable Long warehouseId, @RequestParam OrderStatus orderStatus, Pageable pageable) {
-        return orderService.findByWarehouseIdAndOrderStatus(warehouseId, orderStatus, pageable);
-    }
-
-
 }

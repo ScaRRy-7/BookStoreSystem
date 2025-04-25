@@ -1,6 +1,7 @@
 package com.ifellow.bookstore.service.api;
 
 import com.ifellow.bookstore.dto.request.BookOrderDto;
+import com.ifellow.bookstore.dto.request.OrderFilter;
 import com.ifellow.bookstore.dto.response.OrderResponseDto;
 import com.ifellow.bookstore.enumeration.OrderStatus;
 import com.ifellow.bookstore.model.Order;
@@ -16,9 +17,5 @@ public interface OrderService {
     OrderResponseDto completeById(Long orderId);
     OrderResponseDto cancelById(Long orderId);
     OrderResponseDto findById(Long orderId);
-    Page<OrderResponseDto> findByOrderStatus(OrderStatus orderStatus, Pageable pageable);
-    Page<OrderResponseDto> findByOrderDateTimeBetween(LocalDateTime start, LocalDateTime end, Pageable pageable);
-    Page<OrderResponseDto> findByWarehouseId(Long warehouseId, Pageable pageable);
-    Page<OrderResponseDto> findByWarehouseIdAndOrderStatus(Long warehouseId, OrderStatus status, Pageable pageable);
-
+    Page<OrderResponseDto> findAll(OrderFilter filter, Pageable pageable);
 }

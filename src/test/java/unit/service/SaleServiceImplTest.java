@@ -112,60 +112,6 @@ class SaleServiceImplTest {
         Mockito.verify(saleRepository).save(Mockito.any(Sale.class));
     }
 
-    @Test
-    @DisplayName("Получение продаж по дате")
-    void findBySaleDateTimeBetween_ValidDates_ReturnsSales() {
-        LocalDateTime start = LocalDateTime.now().minusDays(1);
-        LocalDateTime end = LocalDateTime.now();
-        Pageable pageable = Pageable.unpaged();
-        Page<Sale> salesPage = new PageImpl<>(List.of(sale));
-
-        Mockito.when(saleRepository.findBySaleDateTimeBetween(start, end, pageable)).thenReturn(salesPage);
-        Mockito.when(saleMapper.toDto(sale)).thenReturn(saleResponseDto);
-
-        Page<SaleResponseDto> result = saleService.findBySaleDateTimeBetween(start, end, pageable);
-
-        assertNotNull(result);
-        assertEquals(1, result.getTotalElements());
-        assertEquals(saleResponseDto, result.getContent().get(0));
-        Mockito.verify(saleRepository).findBySaleDateTimeBetween(start, end, pageable);
-    }
-
-    @Test
-    @DisplayName("Получение продаж по магазину")
-    void findByStoreId_ValidStoreId_ReturnsSales() {
-        Pageable pageable = Pageable.unpaged();
-        Page<Sale> salesPage = new PageImpl<>(List.of(sale));
-
-        Mockito.when(saleRepository.findByStoreId(storeId, pageable)).thenReturn(salesPage);
-        Mockito.when(saleMapper.toDto(sale)).thenReturn(saleResponseDto);
-
-        Page<SaleResponseDto> result = saleService.findByStoreId(storeId, pageable);
-
-        assertNotNull(result);
-        assertEquals(1, result.getTotalElements());
-        assertEquals(saleResponseDto, result.getContent().get(0));
-        Mockito.verify(saleRepository).findByStoreId(storeId, pageable);
-    }
-
-    @Test
-    @DisplayName("Получение продаж по магазину и дате")
-    void findByStoreIdAndSaleDateTimeBetween_ValidData_ReturnsSales() {
-        LocalDateTime start = LocalDateTime.now().minusDays(1);
-        LocalDateTime end = LocalDateTime.now();
-        Pageable pageable = Pageable.unpaged();
-        Page<Sale> salesPage = new PageImpl<>(List.of(sale));
-
-        Mockito.when(saleRepository.findByStoreIdAndSaleDateTimeBetween(storeId, start, end, pageable)).thenReturn(salesPage);
-        Mockito.when(saleMapper.toDto(sale)).thenReturn(saleResponseDto);
-
-        Page<SaleResponseDto> result = saleService.findByStoreIdAndSaleDateTimeBetween(storeId, start, end, pageable);
-
-        assertNotNull(result);
-        assertEquals(1, result.getTotalElements());
-        assertEquals(saleResponseDto, result.getContent().get(0));
-        Mockito.verify(saleRepository).findByStoreIdAndSaleDateTimeBetween(storeId, start, end, pageable);
-    }
 
     @Test
     @DisplayName("Получение продажи по ID")

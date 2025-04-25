@@ -1,6 +1,7 @@
 package com.ifellow.bookstore.service.impl;
 
 import com.ifellow.bookstore.dto.request.BookSaleDto;
+import com.ifellow.bookstore.dto.request.SaleFilter;
 import com.ifellow.bookstore.dto.response.SaleResponseDto;
 import com.ifellow.bookstore.exception.BookNotFoundException;
 import com.ifellow.bookstore.exception.NotEnoughStockException;
@@ -16,9 +17,11 @@ import com.ifellow.bookstore.repository.SaleRepository;
 import com.ifellow.bookstore.service.api.BookService;
 import com.ifellow.bookstore.service.api.SaleService;
 import com.ifellow.bookstore.service.api.StoreService;
+import com.ifellow.bookstore.specification.SaleSpecification;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -68,21 +71,15 @@ public class SaleServiceImpl implements SaleService {
     }
 
     @Override
-    public Page<SaleResponseDto> findBySaleDateTimeBetween(LocalDateTime start, LocalDateTime end, Pageable pageable) {
-        return saleRepository.findBySaleDateTimeBetween(start, end, pageable)
-                .map(saleMapper::toDto);
+    public SaleResponseDto findById(Long id) {
+        Sale sale = saleRepository.findById(id)
+                .orElseThrow(() -> new SaleNotFoundException("Sale not found with id: " + id));
+        return saleMapper.toDto(sale);
     }
 
-    @Override
-    public Page<SaleResponseDto> findByStoreId(Long storeId, Pageable pageable) {
-        return saleRepository.findByStoreId(storeId, pageable)
-                .map(saleMapper::toDto);
-    }
-
-    @Override
-    public Page<SaleResponseDto> findByStoreIdAndSaleDateTimeBetween(Long storeId, LocalDateTime start, LocalDateTime end, Pageable pageable) {
-        return saleRepository.findByStoreIdAndSaleDateTimeBetween(storeId, start, end, pageable)
-                .map(saleMapper::toDto);
+    public Page<SaleResponseDto> findAll(SaleFilter filter, Pageable pageable) {
+        Specification<Sale> spec = SaleSpecification.withFilter(filter);
+        return saleRepository.findAll(spec, pageable).map(saleMapper::toDto);
     }
 
     private BigDecimal calculateTotalPrice(List<SaleItem> saleItemList) {
@@ -93,12 +90,5 @@ public class SaleServiceImpl implements SaleService {
             totalPrice = totalPrice.add(totalPriceOfSaleItem);
         }
         return totalPrice;
-    }
-
-    @Override
-    public SaleResponseDto findById(Long id) {
-        Sale sale = saleRepository.findById(id)
-                .orElseThrow(() -> new SaleNotFoundException("Sale not found with id: " + id));
-        return saleMapper.toDto(sale);
     }
 }
