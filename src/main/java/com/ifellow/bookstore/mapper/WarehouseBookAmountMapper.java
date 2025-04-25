@@ -9,8 +9,8 @@ public class WarehouseBookAmountMapper implements ToDtoMapper<WarehouseBookAmoun
 
     public WarehouseBookResponseDto toDto(WarehouseBookAmount warehouseBookAmount) {
         return new WarehouseBookResponseDto(warehouseBookAmount.getId(),
-                warehouseBookAmount.getBook().getId(),
                 warehouseBookAmount.getWarehouse().getId(),
+                warehouseBookAmount.getBook().getId(),
                 warehouseBookAmount.getAmount());
     }
 }

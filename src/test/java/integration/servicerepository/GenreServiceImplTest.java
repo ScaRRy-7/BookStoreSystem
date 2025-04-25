@@ -1,9 +1,10 @@
-package integration;
+package integration.servicerepository;
 
 import com.ifellow.bookstore.dto.request.GenreRequestDto;
 import com.ifellow.bookstore.dto.response.GenreResponseDto;
 import com.ifellow.bookstore.model.Genre;
 import com.ifellow.bookstore.service.api.GenreService;
+import integration.AbstractIntegrationTest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -18,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @SpringBootTest(classes = {RootConfiguration.class})
 @AutoConfigureMockMvc
@@ -33,11 +34,6 @@ class AuthorControllerTest {
     @Autowired
     private AuthorRepository authorRepository;
 
-    @BeforeEach
-    public void setUp() {
-        authorRepository.deleteAll();
-    }
-
     @Test
     public void create_ValidJsonEntity_CreatesAuthor() throws Exception {
         AuthorRequestDto authorRequestDto = new AuthorRequestDto("Михаил Булгаков");
@@ -46,9 +42,9 @@ class AuthorControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(authorRequestDto)));
 
-        response.andExpect(MockMvcResultMatchers.status().isCreated())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.id").isNumber())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.fullName").value(authorRequestDto.fullName()));
+        response.andExpect(status().isCreated())
+                .andExpect(jsonPath("$.id").isNumber())
+                .andExpect(jsonPath("$.fullName").value(authorRequestDto.fullName()));
     }
 
     @Test
@@ -58,9 +54,9 @@ class AuthorControllerTest {
 
         ResultActions response = mockMvc.perform(get("/api/authors/{id}", savedAuthor.getId()));
 
-        response.andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.id").isNumber())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.fullName").value(savedAuthor.getFullName()));
+        response.andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.id").isNumber())
+                .andExpect(jsonPath("$.fullName").value(savedAuthor.getFullName()));
     }
 }

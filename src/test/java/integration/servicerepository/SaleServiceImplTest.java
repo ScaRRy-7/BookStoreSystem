@@ -1,17 +1,15 @@
-package integration;
+package integration.servicerepository;
 
 import com.ifellow.bookstore.dto.request.*;
 import com.ifellow.bookstore.dto.response.*;
 import com.ifellow.bookstore.repository.SaleItemRepository;
 import com.ifellow.bookstore.service.api.*;
+import integration.AbstractIntegrationTest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 

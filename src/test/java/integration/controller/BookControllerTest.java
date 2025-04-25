@@ -3,6 +3,7 @@ package integration.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ifellow.bookstore.configuration.RootConfiguration;
+import com.ifellow.bookstore.dto.filter.BookFilter;
 import com.ifellow.bookstore.dto.request.BookRequestDto;
 import com.ifellow.bookstore.model.Author;
 import com.ifellow.bookstore.model.Book;
@@ -18,13 +19,14 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 
 @SpringBootTest(classes = {RootConfiguration.class})
@@ -53,7 +55,7 @@ class BookControllerTest {
     }
 
     @Test
-    public void create_ValidJsonEntity_ReturnsBook() throws Exception {
+    public void create_ValidJsonEntity_CreatesBook() throws Exception {
         Author author = authorRepository.save(new Author(null, "Михаил Булгаков"));
         Genre genre = genreRepository.save(new Genre(null, "Роман"));
         BookRequestDto bookRequestDto = new BookRequestDto("Мастер и Маргарита", author.getId(),genre.getId(), BigDecimal.valueOf(250L));
@@ -62,11 +64,11 @@ class BookControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(bookRequestDto)));
 
-        response.andExpect(MockMvcResultMatchers.status().isCreated())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.id").isNumber())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.authorId").value(author.getId()))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.genreId").value(genre.getId()))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.title").value(bookRequestDto.title()));
+        response.andExpect(status().isCreated())
+                .andExpect(jsonPath("$.id").isNumber())
+                .andExpect(jsonPath("$.authorId").value(author.getId()))
+                .andExpect(jsonPath("$.genreId").value(genre.getId()))
+                .andExpect(jsonPath("$.title").value(bookRequestDto.title()));
     }
 
     @Test
@@ -77,10 +79,28 @@ class BookControllerTest {
 
         ResultActions response = mockMvc.perform(get("/api/books/{id}", savedBook.getId()));
 
-        response.andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.id").isNumber())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.authorId").value(author.getId()))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.genreId").value(genre.getId()))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.title").value(savedBook.getTitle()));
+        response.andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").isNumber())
+                .andExpect(jsonPath("$.authorId").value(author.getId()))
+                .andExpect(jsonPath("$.genreId").value(genre.getId()))
+                .andExpect(jsonPath("$.title").value(savedBook.getTitle()));
+    }
+
+    @Test
+    public void findAll_ValidJsonEntity_ReturnsBook() throws Exception {
+        Author author = authorRepository.save(new Author(null, "Михаил Булгаков"));
+        Genre genre = genreRepository.save(new Genre(null, "Роман"));
+        Book savedBook = bookRepository.save(new Book(null, "Мастер и Маргарита", author, genre, BigDecimal.valueOf(250L)));
+
+        ResultActions response = mockMvc.perform(get("/api/books")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(new BookFilter(author.getId(), genre.getId(), "мастер",
+                        "михаил", BigDecimal.valueOf(200), BigDecimal.valueOf(300), false))));
+
+        response.andExpect(status().isOk())
+                .andExpect(jsonPath("$.totalElements").value(1))
+                .andExpect(jsonPath("$.content[0].authorId").value(author.getId()))
+                .andExpect(jsonPath("$.content[0].genreId").value(genre.getId()))
+                .andExpect(jsonPath("$.content[0].title").value(savedBook.getTitle()));
     }
 }

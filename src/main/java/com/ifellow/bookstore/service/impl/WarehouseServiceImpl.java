@@ -58,8 +58,10 @@ public class WarehouseServiceImpl implements WarehouseService {
                 .orElseThrow(() -> new WarehouseNotFoundException("Warehouse not found with bookId: " + id));
     }
 
-    public void checkWarehouseExistence(Long id) {
-        findWarehouseById(id);
+    public void checkWarehouseExistence(Long id) throws WarehouseNotFoundException {
+        if (!warehouseRepository.existsById(id)) {
+            throw new WarehouseNotFoundException("Warehouse not found with id: " + id);
+        }
     }
 
     @Override

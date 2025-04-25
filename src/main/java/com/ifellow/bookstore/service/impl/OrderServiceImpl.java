@@ -1,7 +1,7 @@
 package com.ifellow.bookstore.service.impl;
 
 import com.ifellow.bookstore.dto.request.BookOrderDto;
-import com.ifellow.bookstore.dto.request.OrderFilter;
+import com.ifellow.bookstore.dto.filter.OrderFilter;
 import com.ifellow.bookstore.dto.response.OrderResponseDto;
 import com.ifellow.bookstore.enumeration.OrderStatus;
 import com.ifellow.bookstore.exception.ChangeOrderStatusException;

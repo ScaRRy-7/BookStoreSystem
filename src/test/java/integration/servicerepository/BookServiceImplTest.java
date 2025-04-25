@@ -1,4 +1,4 @@
-package integration;
+package integration.servicerepository;
 
 import com.ifellow.bookstore.dto.request.AuthorRequestDto;
 import com.ifellow.bookstore.dto.request.BookRequestDto;
@@ -9,11 +9,10 @@ import com.ifellow.bookstore.dto.response.GenreResponseDto;
 import com.ifellow.bookstore.service.api.AuthorService;
 import com.ifellow.bookstore.service.api.BookService;
 import com.ifellow.bookstore.service.api.GenreService;
+import integration.AbstractIntegrationTest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 
 import java.math.BigDecimal;
 

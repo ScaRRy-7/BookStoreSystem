@@ -1,11 +1,7 @@
 package com.ifellow.bookstore.specification;
 
-import com.ifellow.bookstore.dto.request.BookFilter;
+import com.ifellow.bookstore.dto.filter.BookFilter;
 import com.ifellow.bookstore.model.Book;
-import jakarta.persistence.criteria.CriteriaBuilder;
-import jakarta.persistence.criteria.CriteriaQuery;
-import jakarta.persistence.criteria.Predicate;
-import jakarta.persistence.criteria.Root;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.util.StringUtils;
 

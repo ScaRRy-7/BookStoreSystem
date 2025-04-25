@@ -1,6 +1,6 @@
 package com.ifellow.bookstore.specification;
 
-import com.ifellow.bookstore.dto.request.SaleFilter;
+import com.ifellow.bookstore.dto.filter.SaleFilter;
 import com.ifellow.bookstore.model.Sale;
 import org.springframework.data.jpa.domain.Specification;
 

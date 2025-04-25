@@ -1,9 +1,10 @@
-package integration;
+package integration.servicerepository;
 
 import com.ifellow.bookstore.dto.request.AuthorRequestDto;
 import com.ifellow.bookstore.dto.response.AuthorResponseDto;
 import com.ifellow.bookstore.model.Author;
 import com.ifellow.bookstore.service.api.AuthorService;
+import integration.AbstractIntegrationTest;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 

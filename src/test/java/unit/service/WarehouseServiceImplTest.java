@@ -145,7 +145,7 @@ class WarehouseServiceImplTest {
         wba.setWarehouse(warehouse);
         wba.setBook(book);
         wba.setAmount(initialAmount);
-        Mockito.when(warehouseRepository.findById(1L)).thenReturn(Optional.of(warehouse));
+        Mockito.when(warehouseRepository.existsById(1L)).thenReturn(true);
         Mockito.when(warehouseBookAmountRepository.findByWarehouseIdAndBookId(1L, 1L)).thenReturn(Optional.of(wba));
 
         warehouseService.removeBookFromWarehouse(1L, 1L, quantityToRemove);
@@ -159,7 +159,7 @@ class WarehouseServiceImplTest {
     void removeBookFromWarehouse_NotEnoughStock_ThrowsException() {
         WarehouseBookAmount wba = new WarehouseBookAmount();
         wba.setAmount(5);
-        Mockito.when(warehouseRepository.findById(1L)).thenReturn(Optional.of(warehouse));
+        Mockito.when(warehouseRepository.existsById(1L)).thenReturn(true);
         Mockito.when(warehouseBookAmountRepository.findByWarehouseIdAndBookId(1L, 1L)).thenReturn(Optional.of(wba));
 
         assertThrows(NotEnoughStockException.class, () -> warehouseService.removeBookFromWarehouse(1L, 1L, 10));
@@ -168,9 +168,8 @@ class WarehouseServiceImplTest {
     @Test
     @DisplayName("WarehouseServiceImpl выбрасывает исключение, если книга не найдена на складе")
     void removeBookFromWarehouse_BookNotFound_ThrowsException() {
-        Mockito.when(warehouseRepository.findById(1L)).thenReturn(Optional.of(warehouse));
+        Mockito.when(warehouseRepository.existsById(1L)).thenReturn(true);
         Mockito.when(warehouseBookAmountRepository.findByWarehouseIdAndBookId(1L, 1L)).thenReturn(Optional.empty());
-
         assertThrows(BookNotFoundException.class, () -> warehouseService.removeBookFromWarehouse(1L, 1L, 5));
     }
 

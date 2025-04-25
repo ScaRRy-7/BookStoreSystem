@@ -1,4 +1,4 @@
-package com.ifellow.bookstore.dto.request;
+package com.ifellow.bookstore.dto.filter;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -18,5 +18,5 @@ public class BookFilter {
     private String authorFullName;
     private BigDecimal minPrice;
     private BigDecimal maxPrice;
-    private Boolean groupByGenre;
+    private boolean groupByGenre;
 }

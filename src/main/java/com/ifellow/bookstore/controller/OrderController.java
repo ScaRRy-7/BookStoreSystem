@@ -1,23 +1,20 @@
 package com.ifellow.bookstore.controller;
 
 import com.ifellow.bookstore.dto.request.BookOrderDto;
-import com.ifellow.bookstore.dto.request.OrderFilter;
+import com.ifellow.bookstore.dto.filter.OrderFilter;
 import com.ifellow.bookstore.dto.response.OrderResponseDto;
-import com.ifellow.bookstore.enumeration.OrderStatus;
 import com.ifellow.bookstore.service.api.OrderService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("api")
+@RequestMapping("/api")
 public class OrderController {
 
     private final OrderService orderService;

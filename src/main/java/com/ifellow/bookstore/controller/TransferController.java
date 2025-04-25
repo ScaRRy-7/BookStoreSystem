@@ -14,7 +14,7 @@ public class TransferController {
     private final TransferService transferService;
 
     @ResponseStatus(HttpStatus.OK)
-    @PostMapping("/ fromwarehousetostore")
+    @PostMapping("/fromwarehousetostore")
     public void transferBookFromWarehouseToStore(@RequestBody TransferRequestDto transferRequestDto) {
         transferService.transferBookFromWarehouseToStore(
                 transferRequestDto.sourceId(),

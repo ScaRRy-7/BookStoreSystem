@@ -1,6 +1,6 @@
 package com.ifellow.bookstore.service.impl;
 
-import com.ifellow.bookstore.dto.request.BookFilter;
+import com.ifellow.bookstore.dto.filter.BookFilter;
 import com.ifellow.bookstore.dto.request.BookRequestDto;
 import com.ifellow.bookstore.dto.request.GroupedBookResponse;
 import com.ifellow.bookstore.dto.response.BookResponseDto;
@@ -57,11 +57,13 @@ public class BookServiceImpl implements BookService {
    }
 
    public void checkBookExistence(Long id) throws BookNotFoundException {
-        findById(id);
+        if (!bookRepository.existsById(id)) {
+            throw new BookNotFoundException("Book not found with bookId: " + id);
+        }
    }
 
    public Object findAll(BookFilter filter, Pageable pageable) {
-        if (filter.getGroupByGenre()) {
+        if (filter.isGroupByGenre()) {
             return findAllGroupedByGenre(filter, pageable);
         } else {
             return findAllFiltered(filter, pageable);

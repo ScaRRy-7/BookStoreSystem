@@ -1,7 +1,7 @@
 package com.ifellow.bookstore.service.impl;
 
 import com.ifellow.bookstore.dto.request.BookSaleDto;
-import com.ifellow.bookstore.dto.request.SaleFilter;
+import com.ifellow.bookstore.dto.filter.SaleFilter;
 import com.ifellow.bookstore.dto.response.SaleResponseDto;
 import com.ifellow.bookstore.exception.BookNotFoundException;
 import com.ifellow.bookstore.exception.NotEnoughStockException;
@@ -12,7 +12,6 @@ import com.ifellow.bookstore.model.Book;
 import com.ifellow.bookstore.model.Sale;
 import com.ifellow.bookstore.model.SaleItem;
 import com.ifellow.bookstore.model.Store;
-import com.ifellow.bookstore.repository.SaleItemRepository;
 import com.ifellow.bookstore.repository.SaleRepository;
 import com.ifellow.bookstore.service.api.BookService;
 import com.ifellow.bookstore.service.api.SaleService;

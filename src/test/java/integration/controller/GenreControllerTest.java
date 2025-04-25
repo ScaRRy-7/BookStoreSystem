@@ -19,6 +19,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest(classes = {RootConfiguration.class})
 @AutoConfigureMockMvc
@@ -34,11 +36,6 @@ class GenreControllerTest {
     @Autowired
     private GenreRepository genreRepository;
 
-    @BeforeEach
-    void setUp() {
-        genreRepository.deleteAll();
-    }
-
     @Test
     public void create_ValidJsonEntity_CreatesGenre() throws Exception {
         GenreRequestDto genreRequestDto = new GenreRequestDto("Роман");
@@ -47,9 +44,9 @@ class GenreControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(genreRequestDto)));
 
-        response.andExpect(MockMvcResultMatchers.status().isCreated())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.id").isNumber())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.name").value(genreRequestDto.name()));
+        response.andExpect(status().isCreated())
+                .andExpect(jsonPath("$.id").isNumber())
+                .andExpect(jsonPath("$.name").value(genreRequestDto.name()));
     }
 
     @Test
@@ -58,9 +55,9 @@ class GenreControllerTest {
 
         ResultActions response = mockMvc.perform(get("/api/genres/{id}", genre.getId()));
 
-        response.andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.id").isNumber())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.name").value(genre.getName()));
+        response.andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").isNumber())
+                .andExpect(jsonPath("$.name").value(genre.getName()));
     }
 
 }

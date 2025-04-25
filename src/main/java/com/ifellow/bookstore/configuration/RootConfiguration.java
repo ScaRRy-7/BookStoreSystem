@@ -34,15 +34,6 @@ public class RootConfiguration {
     @Value("${datasource.password}")
     private String password;
 
-    /*@Bean(initMethod = "start", destroyMethod = "stop")
-    public Server h2TcpServer() throws SQLException {
-        return Server.createTcpServer(
-                "-tcp",
-                "-tcpAllowOthers",
-                "-tcpPort", "5432"
-        );
-    }*/
-
     @Bean
     public DataSource dataSource() {
         DriverManagerDataSource dataSource = new DriverManagerDataSource();

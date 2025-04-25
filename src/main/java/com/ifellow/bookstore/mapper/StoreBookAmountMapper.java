@@ -9,8 +9,8 @@ public class StoreBookAmountMapper implements ToDtoMapper<StoreBookAmount, Store
 
     public StoreBookResponseDto toDto(StoreBookAmount storeBookAmount) {
         return new StoreBookResponseDto(storeBookAmount.getId(),
-                storeBookAmount.getBook().getId(),
                 storeBookAmount.getStore().getId(),
+                storeBookAmount.getBook().getId(),
                 storeBookAmount.getAmount());
     }
 }

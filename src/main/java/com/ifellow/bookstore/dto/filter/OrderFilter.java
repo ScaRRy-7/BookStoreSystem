@@ -1,5 +1,6 @@
-package com.ifellow.bookstore.dto.request;
+package com.ifellow.bookstore.dto.filter;
 
+import com.ifellow.bookstore.enumeration.OrderStatus;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -11,8 +12,9 @@ import java.time.LocalDateTime;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class SaleFilter {
-    private LocalDateTime startTime;
+public class OrderFilter {
+    private LocalDateTime beginTime;
     private LocalDateTime endTime;
-    private Long storeId;
+    private OrderStatus status;
+    private Long warehouseId;
 }
