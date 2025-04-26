@@ -32,7 +32,7 @@ public class BookController {
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<?> findAll(BookFilter filter, Pageable pageable) {
+    public ResponseEntity<?> findAll(@ModelAttribute BookFilter filter, Pageable pageable) {
         return ResponseEntity.ok(bookService.findAll(filter, pageable));
     }
 }

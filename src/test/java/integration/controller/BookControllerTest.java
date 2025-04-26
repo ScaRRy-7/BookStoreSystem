@@ -98,8 +98,10 @@ class BookControllerTest {
 
         ResultActions response = mockMvc.perform(get("/api/books")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(new BookFilter(author.getId(), genre.getId(), "мастер",
-                        "михаил", BigDecimal.valueOf(200), BigDecimal.valueOf(300), false))));
+                        .param("authorId", String.valueOf(author.getId()))
+                        .param("genreId", String.valueOf(genre.getId()))
+                        .param("title", "мастер")
+                        .param("authorFullName", "михаил"));
 
         response.andExpect(status().isOk())
                 .andExpect(jsonPath("$.totalElements").value(1))

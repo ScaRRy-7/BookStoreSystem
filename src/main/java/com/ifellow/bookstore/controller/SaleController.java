@@ -34,7 +34,7 @@ public class SaleController {
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public Page<SaleResponseDto> findAll(@RequestBody SaleFilter filter, Pageable pageable) {
+    public Page<SaleResponseDto> findAll(@ModelAttribute SaleFilter filter, Pageable pageable) {
         return saleService.findAll(filter, pageable);
     }
 }

@@ -46,7 +46,7 @@ public class OrderController {
 
     @GetMapping("/orders")
     @ResponseStatus(HttpStatus.OK)
-    public Page<OrderResponseDto> findAll(OrderFilter filter, Pageable pageable) {
+    public Page<OrderResponseDto> findAll(@ModelAttribute OrderFilter filter, Pageable pageable) {
         return orderService.findAll(filter, pageable);
     }
 }

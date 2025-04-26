@@ -1,6 +1,5 @@
 package unit.controller;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ifellow.bookstore.advice.GlobalExceptionHandler;
 import com.ifellow.bookstore.configuration.WebConfiguration;
@@ -16,15 +15,12 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.web.servlet.mvc.method.annotation.ExceptionHandlerExceptionResolver;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -54,10 +50,11 @@ class AuthorControllerTest {
     public void setUp() {
         objectMapper = new ObjectMapper();
 
+        GlobalExceptionHandler globalExceptionHandler = new GlobalExceptionHandler();
+
         mockMvc = MockMvcBuilders
                 .standaloneSetup(authorController)
-                .setHandlerExceptionResolvers(new ExceptionHandlerExceptionResolver())
-                .setControllerAdvice(GlobalExceptionHandler.class)
+                .setControllerAdvice(globalExceptionHandler)
                 .build();
 
         authorRequestDto = new AuthorRequestDto("Федор Достоевский");
@@ -105,4 +102,15 @@ class AuthorControllerTest {
                 .andExpect(jsonPath("$.fullName").value(authorResponseDto.fullName()));
     }
 
+    @Test
+    @DisplayName("POST /api/authors - возвращает ошибку 400 при невалидных данных")
+    public void create_InvalidRequest_ReturnsBadRequest() throws Exception {
+        AuthorRequestDto invalidDto = new AuthorRequestDto("");
+
+        ResultActions response = mockMvc.perform(post("/api/authors")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(invalidDto)));
+
+        response.andExpect(status().isBadRequest());
+    }
 }

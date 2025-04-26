@@ -30,7 +30,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @Transactional
 @AutoConfigureMockMvc
 @SpringBootTest(classes = {RootConfiguration.class})
-class SaleControllerTest {
+class SaleControllerTestTest {
 
     @Autowired
     private StoreRepository storeRepository;
@@ -109,8 +109,9 @@ class SaleControllerTest {
 
         ResultActions response = mockMvc.perform(get("/api/sales")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(
-                        new SaleFilter(LocalDateTime.now().minusDays(1), LocalDateTime.now().plusDays(1), savedStore.getId()))));
+                        .param("storeId", String.valueOf(savedStore.getId()))
+                        .param("startTime", String.valueOf(LocalDateTime.now().minusDays(1)))
+                        .param("endTime", String.valueOf(LocalDateTime.now().plusDays(1))));
 
         response.andExpect(status().isOk())
                 .andExpect(jsonPath("$.totalElements").value(1))

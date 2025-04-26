@@ -81,4 +81,10 @@ public class GlobalExceptionHandler {
 
         return errors;
     }
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(IllegalArgumentException.class)
+    public String handleValidationException(IllegalArgumentException e) {
+        return e.getMessage();
+    }
 }
