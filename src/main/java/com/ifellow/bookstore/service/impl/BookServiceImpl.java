@@ -51,14 +51,14 @@ public class BookServiceImpl implements BookService {
     @Override
     public BookResponseDto findById(Long id) throws BookNotFoundException {
         Book book = bookRepository.findById(id)
-                .orElseThrow(() -> new BookNotFoundException("Book not found with bookId: " + id));
+                .orElseThrow(() -> new BookNotFoundException("Book not found with id: " + id));
 
         return bookMapper.toDto(book);
    }
 
    public void checkBookExistence(Long id) throws BookNotFoundException {
         if (!bookRepository.existsById(id)) {
-            throw new BookNotFoundException("Book not found with bookId: " + id);
+            throw new BookNotFoundException("Book not found with id: " + id);
         }
    }
 
@@ -98,6 +98,6 @@ public class BookServiceImpl implements BookService {
    @Override
    public Book findBookById(Long id) throws BookNotFoundException {
         return bookRepository.findById(id)
-                .orElseThrow(() -> new BookNotFoundException("Book not found with bookId: " + id));
+                .orElseThrow(() -> new BookNotFoundException("Book not found with id: " + id));
    }
 }

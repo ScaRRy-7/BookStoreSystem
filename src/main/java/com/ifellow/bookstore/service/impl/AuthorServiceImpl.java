@@ -30,12 +30,12 @@ public class AuthorServiceImpl implements AuthorService {
     public AuthorResponseDto findById(Long id) throws AuthorNotFoundException {
         return authorRepository.findById(id)
                 .map(authorMapper::toDto)
-                .orElseThrow(() -> new AuthorNotFoundException("Author not found with bookId: " + id));
+                .orElseThrow(() -> new AuthorNotFoundException("Author not found with id: " + id));
     }
 
     @Override
     public Author findAuthorById(Long id) throws AuthorNotFoundException {
         return authorRepository.findById(id)
-                .orElseThrow(() -> new AuthorNotFoundException("Author not found with bookId: " + id));
+                .orElseThrow(() -> new AuthorNotFoundException("Author not found with id: " + id));
     }
 }
