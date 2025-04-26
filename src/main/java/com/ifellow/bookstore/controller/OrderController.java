@@ -4,6 +4,7 @@ import com.ifellow.bookstore.dto.request.BookOrderDto;
 import com.ifellow.bookstore.dto.filter.OrderFilter;
 import com.ifellow.bookstore.dto.response.OrderResponseDto;
 import com.ifellow.bookstore.service.api.OrderService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -21,7 +22,7 @@ public class OrderController {
 
     @PostMapping("/warehouses/{warehouseId}/orders")
     @ResponseStatus(HttpStatus.CREATED)
-    public OrderResponseDto create(@PathVariable Long warehouseId, @RequestBody List<BookOrderDto> bookOrderDtoList) {
+    public OrderResponseDto create(@PathVariable Long warehouseId, @Valid @RequestBody List<BookOrderDto> bookOrderDtoList) {
         return orderService.create(warehouseId, bookOrderDtoList);
     }
 

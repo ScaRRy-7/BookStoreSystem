@@ -8,6 +8,7 @@ import com.ifellow.bookstore.dto.response.SaleResponseDto;
 import com.ifellow.bookstore.model.*;
 import com.ifellow.bookstore.repository.*;
 import com.ifellow.bookstore.service.api.SaleService;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -56,7 +57,8 @@ class SaleControllerTest {
     private ObjectMapper objectMapper;
 
     @Test
-    public void processSale_ValidAndJsonEntity_Processes_Sale() throws Exception {
+    @DisplayName("Совершает продажу и возвращает Json")
+    public void processSale_ValidAndJsonEntity_ProcessesSale() throws Exception {
         Store savedStore = storeRepository.save(new Store(null, "Ул. Арбат"));
         Genre savedGenre = genreRepository.save(new Genre(null, "Роман"));
         Author savedAuthor = authorRepository.save(new Author(null, "Михаил Булгаков"));
@@ -75,6 +77,7 @@ class SaleControllerTest {
     }
 
     @Test
+    @DisplayName("Находит продажу по указанному и возвращает Json")
     public void findById_ValidId_ReturnsSale() throws Exception {
         Store savedStore = storeRepository.save(new Store(null, "Ул. Арбат"));
         Genre savedGenre = genreRepository.save(new Genre(null, "Роман"));
@@ -93,6 +96,7 @@ class SaleControllerTest {
     }
 
     @Test
+    @DisplayName("Находит все продажи по фильтру и возвращает Json")
     public void findAll_ValidJsonEntity_ReturnsSale() throws Exception {
         Store savedStore = storeRepository.save(new Store(null, "Ул. Арбат"));
         Genre savedGenre = genreRepository.save(new Genre(null, "Роман"));

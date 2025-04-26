@@ -3,6 +3,7 @@ package com.ifellow.bookstore.controller;
 import com.ifellow.bookstore.dto.request.GenreRequestDto;
 import com.ifellow.bookstore.dto.response.GenreResponseDto;
 import com.ifellow.bookstore.service.api.GenreService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -16,7 +17,7 @@ public class GenreController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public GenreResponseDto create(@RequestBody GenreRequestDto genreRequestDto) {
+    public GenreResponseDto create(@Valid @RequestBody GenreRequestDto genreRequestDto) {
         return genreService.save(genreRequestDto);
     }
 

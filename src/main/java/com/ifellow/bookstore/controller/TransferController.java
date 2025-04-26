@@ -2,6 +2,7 @@ package com.ifellow.bookstore.controller;
 
 import com.ifellow.bookstore.dto.request.TransferRequestDto;
 import com.ifellow.bookstore.service.api.TransferService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -15,7 +16,7 @@ public class TransferController {
 
     @ResponseStatus(HttpStatus.OK)
     @PostMapping("/fromwarehousetostore")
-    public void transferBookFromWarehouseToStore(@RequestBody TransferRequestDto transferRequestDto) {
+    public void transferBookFromWarehouseToStore(@Valid @RequestBody TransferRequestDto transferRequestDto) {
         transferService.transferBookFromWarehouseToStore(
                 transferRequestDto.sourceId(),
                 transferRequestDto.destinationId(),
@@ -26,7 +27,7 @@ public class TransferController {
 
     @ResponseStatus(HttpStatus.OK)
     @PostMapping("/fromstoretostore")
-    public void transferBookFromStoreToStore(@RequestBody TransferRequestDto transferRequestDto) {
+    public void transferBookFromStoreToStore(@Valid @RequestBody TransferRequestDto transferRequestDto) {
         transferService.transferBookFromStoreToStore(
                 transferRequestDto.sourceId(),
                 transferRequestDto.destinationId(),

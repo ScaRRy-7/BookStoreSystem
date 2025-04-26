@@ -7,6 +7,7 @@ import com.ifellow.bookstore.dto.response.GenreResponseDto;
 import com.ifellow.bookstore.model.Genre;
 import com.ifellow.bookstore.repository.GenreRepository;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -37,6 +38,7 @@ class GenreControllerTest {
     private GenreRepository genreRepository;
 
     @Test
+    @DisplayName("Создает жанр и возвращает Json")
     public void create_ValidJsonEntity_CreatesGenre() throws Exception {
         GenreRequestDto genreRequestDto = new GenreRequestDto("Роман");
 
@@ -50,6 +52,7 @@ class GenreControllerTest {
     }
 
     @Test
+    @DisplayName("Находит жанр по id и возвращает Json")
     public void findById_ValidId_ReturnsGenre() throws Exception {
         Genre genre = genreRepository.save(new Genre(null, "Роман"));
 

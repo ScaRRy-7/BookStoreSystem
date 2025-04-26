@@ -8,6 +8,7 @@ import com.ifellow.bookstore.model.*;
 import com.ifellow.bookstore.repository.*;
 import integration.AbstractIntegrationTest;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -52,6 +53,7 @@ public class WarehouseControllerTest {
     private ObjectMapper objectMapper;
 
     @Test
+    @DisplayName("Создает склад и возвращает Json")
     public void create_ValidJsonEntity_CreatesWarehouse() throws Exception {
         WarehouseRequestDto warehouseRequestDto = new WarehouseRequestDto("Ул. Арбат");
 
@@ -65,6 +67,7 @@ public class WarehouseControllerTest {
     }
 
     @Test
+    @DisplayName("Находит по указанному id склад и возвращает Json")
     public void findById_ValidId_FindsWarehouse() throws Exception {
         Warehouse savedWarehouse = warehouseRepository.save(new Warehouse(null, "Ул. Арбат"));
 
@@ -76,6 +79,7 @@ public class WarehouseControllerTest {
     }
 
     @Test
+    @DisplayName("Добавляет книги на склад и возвращает статус - ok")
     public void addBooksToWarehouse_ValidIdAndJsonEntity_AddsBooksToWarehouse() throws Exception {
         Author savedAuthor = authorRepository.save(new Author(null, "Михаил Булгаков"));
         Genre savedGenre = genreRepository.save(new Genre(null, "Роман"));
@@ -92,6 +96,7 @@ public class WarehouseControllerTest {
     }
 
     @Test
+    @DisplayName("Удаляет книги с магазина и возвращает статус - ok")
     public void removeBooksFromWarehouse_ValidIdAndJsonEntity_RemovesBooksFromWarehouse() throws Exception {
         Author savedAuthor = authorRepository.save(new Author(null, "Михаил Булгаков"));
         Genre savedGenre = genreRepository.save(new Genre(null, "Роман"));
@@ -109,6 +114,7 @@ public class WarehouseControllerTest {
     }
 
     @Test
+    @DisplayName("Получает ассортимент склада по указанному id и возвращает Json")
     public void getWarehouseStock_ValidId_ReturnsStock() throws Exception {
         Author savedAuthor = authorRepository.save(new Author(null, "Михаил Булгаков"));
         Genre savedGenre = genreRepository.save(new Genre(null, "Роман"));

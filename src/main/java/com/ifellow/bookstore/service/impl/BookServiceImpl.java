@@ -2,7 +2,7 @@ package com.ifellow.bookstore.service.impl;
 
 import com.ifellow.bookstore.dto.filter.BookFilter;
 import com.ifellow.bookstore.dto.request.BookRequestDto;
-import com.ifellow.bookstore.dto.request.GroupedBookResponse;
+import com.ifellow.bookstore.dto.response.GroupedBookResponse;
 import com.ifellow.bookstore.dto.response.BookResponseDto;
 import com.ifellow.bookstore.exception.BookNotFoundException;
 import com.ifellow.bookstore.mapper.BookMapper;

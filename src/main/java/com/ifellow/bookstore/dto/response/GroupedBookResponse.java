@@ -1,6 +1,5 @@
-package com.ifellow.bookstore.dto.request;
+package com.ifellow.bookstore.dto.response;
 
-import com.ifellow.bookstore.dto.response.BookResponseDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
@@ -16,5 +15,4 @@ public class GroupedBookResponse {
     private int currentPage;
     private int totalPages;
     private long totalElements;
-
 }

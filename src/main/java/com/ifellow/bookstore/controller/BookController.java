@@ -4,6 +4,7 @@ import com.ifellow.bookstore.dto.filter.BookFilter;
 import com.ifellow.bookstore.dto.request.BookRequestDto;
 import com.ifellow.bookstore.dto.response.BookResponseDto;
 import com.ifellow.bookstore.service.api.BookService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -19,7 +20,7 @@ public class BookController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public BookResponseDto create(@RequestBody BookRequestDto bookRequestDto) {
+    public BookResponseDto create(@Valid @RequestBody BookRequestDto bookRequestDto) {
         return bookService.save(bookRequestDto);
     }
 

@@ -6,6 +6,7 @@ import com.ifellow.bookstore.dto.request.BookBulkDto;
 import com.ifellow.bookstore.dto.request.StoreRequestDto;
 import com.ifellow.bookstore.model.*;
 import com.ifellow.bookstore.repository.*;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -50,6 +51,7 @@ class StoreControllerTest {
     private StoreBookAmountRepository storeBookAmountRepository;
 
     @Test
+    @DisplayName("Создает магазин и возвращает Json")
     public void create_ValidJsonEntity_CreatesStore() throws Exception {
         StoreRequestDto storeRequestDto = new StoreRequestDto("Ул. Арбат");
 
@@ -63,6 +65,7 @@ class StoreControllerTest {
     }
 
     @Test
+    @DisplayName("Находит магазин по указанному id и возвращает Json")
     public void findById_ValidId_ReturnsStore() throws Exception {
         Store savedStore = storeRepository.save(new Store(null, "Ул. Арбат"));
 
@@ -74,6 +77,7 @@ class StoreControllerTest {
     }
 
     @Test
+    @DisplayName("Добавляет книги в магазин и возвращает статус - ok")
     public void addBooksToStore_ValidJsonEntity_AddsBooksToStore() throws Exception {
         Store savedStore = storeRepository.save(new Store(null, "Ул. Арбат"));
         Author savedAuthor = authorRepository.save(new Author(null, "Михаил Булгаков"));
@@ -90,6 +94,7 @@ class StoreControllerTest {
     }
 
     @Test
+    @DisplayName("Удаляет книги с магазина и возвращает статус - ok")
     public void removeBooksFromStore_ValidIdAndJsonEntity_RemovesBooksFromStore() throws Exception {
         Store savedStore = storeRepository.save(new Store(null, "Ул. Арбат"));
         Author savedAuthor = authorRepository.save(new Author(null, "Михаил Булгаков"));
@@ -107,6 +112,7 @@ class StoreControllerTest {
     }
 
     @Test
+    @DisplayName("Находит ассортимент магазина по указанному id и возвращает Json")
     public void getStoreStock_ValidId_ReturnsStoreStock() throws Exception {
         Store savedStore = storeRepository.save(new Store(null, "Ул. Арбат"));
         Author savedAuthor = authorRepository.save(new Author(null, "Михаил Булгаков"));

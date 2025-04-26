@@ -5,6 +5,7 @@ import com.ifellow.bookstore.dto.request.WarehouseRequestDto;
 import com.ifellow.bookstore.dto.response.WarehouseBookResponseDto;
 import com.ifellow.bookstore.dto.response.WarehouseResponseDto;
 import com.ifellow.bookstore.service.api.WarehouseService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -20,7 +21,7 @@ public class WarehouseController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public WarehouseResponseDto create(@RequestBody WarehouseRequestDto warehouseRequestDto) {
+    public WarehouseResponseDto create(@Valid @RequestBody WarehouseRequestDto warehouseRequestDto) {
         return warehouseService.save(warehouseRequestDto);
     }
 
@@ -32,13 +33,13 @@ public class WarehouseController {
 
     @ResponseStatus(HttpStatus.OK)
     @PostMapping("/{id}/stock/add")
-    public void addBooksToWarehouse(@PathVariable Long id, @RequestBody BookBulkDto bookBulkDto) {
+    public void addBooksToWarehouse(@PathVariable Long id, @Valid @RequestBody BookBulkDto bookBulkDto) {
         warehouseService.addBookToWarehouse(id, bookBulkDto.bookId(), bookBulkDto.quantity());
     }
 
     @ResponseStatus(HttpStatus.OK)
     @PostMapping("/{id}/stock/remove")
-    public void removeBooksFromWarehouse(@PathVariable Long id, @RequestBody BookBulkDto bookBulkDto) {
+    public void removeBooksFromWarehouse(@PathVariable Long id, @Valid @RequestBody BookBulkDto bookBulkDto) {
         warehouseService.removeBookFromWarehouse(id, bookBulkDto.bookId(), bookBulkDto.quantity());
     }
 

@@ -4,6 +4,7 @@ import com.ifellow.bookstore.dto.request.BookSaleDto;
 import com.ifellow.bookstore.dto.filter.SaleFilter;
 import com.ifellow.bookstore.dto.response.SaleResponseDto;
 import com.ifellow.bookstore.service.api.SaleService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -21,7 +22,7 @@ public class SaleController {
 
     @PostMapping("/process/{storeId}")
     @ResponseStatus(HttpStatus.OK)
-    public SaleResponseDto processSale(@PathVariable Long storeId, @RequestBody List<BookSaleDto> bookSaleDtoList) {
+    public SaleResponseDto processSale(@PathVariable Long storeId, @Valid @RequestBody List<BookSaleDto> bookSaleDtoList) {
         return saleService.processSale(storeId, bookSaleDtoList);
     }
 

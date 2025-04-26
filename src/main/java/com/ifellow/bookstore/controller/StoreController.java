@@ -5,6 +5,7 @@ import com.ifellow.bookstore.dto.request.StoreRequestDto;
 import com.ifellow.bookstore.dto.response.StoreBookResponseDto;
 import com.ifellow.bookstore.dto.response.StoreResponseDto;
 import com.ifellow.bookstore.service.api.StoreService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -20,7 +21,7 @@ public class StoreController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public StoreResponseDto create(@RequestBody StoreRequestDto storeRequestDto) {
+    public StoreResponseDto create(@Valid @RequestBody StoreRequestDto storeRequestDto) {
         return storeService.save(storeRequestDto);
     }
 
@@ -32,13 +33,13 @@ public class StoreController {
 
     @ResponseStatus(HttpStatus.OK)
     @PostMapping("/{id}/stock/add")
-    public void addBooksToStore(@PathVariable Long id, @RequestBody BookBulkDto bookBulkDto) {
+    public void addBooksToStore(@PathVariable Long id, @Valid @RequestBody BookBulkDto bookBulkDto) {
         storeService.addBookToStore(id, bookBulkDto.bookId(), bookBulkDto.quantity());
     }
 
     @ResponseStatus(HttpStatus.OK)
     @PostMapping("/{id}/stock/remove")
-    public void deleteBooksFromStore(@PathVariable Long id, @RequestBody BookBulkDto bookBulkDto) {
+    public void deleteBooksFromStore(@PathVariable Long id, @Valid @RequestBody BookBulkDto bookBulkDto) {
         storeService.removeBookFromStore(id, bookBulkDto.bookId(), bookBulkDto.quantity());
     }
 

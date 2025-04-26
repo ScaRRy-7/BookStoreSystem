@@ -3,6 +3,7 @@ package com.ifellow.bookstore.controller;
 import com.ifellow.bookstore.dto.request.AuthorRequestDto;
 import com.ifellow.bookstore.dto.response.AuthorResponseDto;
 import com.ifellow.bookstore.service.api.AuthorService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -22,7 +23,7 @@ public class AuthorController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public AuthorResponseDto create(@RequestBody AuthorRequestDto authorRequestDto) {
+    public AuthorResponseDto create(@Valid @RequestBody AuthorRequestDto authorRequestDto) {
         return authorService.save(authorRequestDto);
     }
 

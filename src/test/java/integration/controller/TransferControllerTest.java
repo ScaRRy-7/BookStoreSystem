@@ -6,6 +6,7 @@ import com.ifellow.bookstore.dto.request.BookBulkDto;
 import com.ifellow.bookstore.dto.request.TransferRequestDto;
 import com.ifellow.bookstore.model.*;
 import com.ifellow.bookstore.repository.*;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -55,6 +56,7 @@ class TransferControllerTest {
     private ObjectMapper objectMapper;
 
     @Test
+    @DisplayName("Перевозит книги со склада в магазин")
     public void transferBookFromWarehouseToStore() throws Exception {
         Author savedAuthor = authorRepository.save(new Author(null, "Михаил Булгаков"));
         Genre savedGenre = genreRepository.save(new Genre(null, "Роман"));
@@ -75,6 +77,7 @@ class TransferControllerTest {
     }
 
     @Test
+    @DisplayName("Перевозит книги с магазина в магазин")
     public void transferBookFromStoreToStore() throws Exception {
         Author savedAuthor = authorRepository.save(new Author(null, "Михаил Булгаков"));
         Genre savedGenre = genreRepository.save(new Genre(null, "Роман"));

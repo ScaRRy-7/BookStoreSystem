@@ -6,6 +6,7 @@ import com.ifellow.bookstore.dto.request.AuthorRequestDto;
 import com.ifellow.bookstore.model.Author;
 import com.ifellow.bookstore.repository.AuthorRepository;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -35,6 +36,7 @@ class AuthorControllerTest {
     private AuthorRepository authorRepository;
 
     @Test
+    @DisplayName("Создает автора и возвращает Json")
     public void create_ValidJsonEntity_CreatesAuthor() throws Exception {
         AuthorRequestDto authorRequestDto = new AuthorRequestDto("Михаил Булгаков");
 
@@ -48,6 +50,7 @@ class AuthorControllerTest {
     }
 
     @Test
+    @DisplayName("Находит автора по id и возвращает Json")
     public void findById_ValidId_FindsAuthor() throws Exception {
         Author author = new Author(null, "Федор Достоевский");
         Author savedAuthor = authorRepository.save(author);

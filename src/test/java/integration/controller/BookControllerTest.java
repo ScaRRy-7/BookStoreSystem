@@ -12,6 +12,7 @@ import com.ifellow.bookstore.repository.AuthorRepository;
 import com.ifellow.bookstore.repository.BookRepository;
 import com.ifellow.bookstore.repository.GenreRepository;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -55,6 +56,7 @@ class BookControllerTest {
     }
 
     @Test
+    @DisplayName("Создает книгу и возвращает Json")
     public void create_ValidJsonEntity_CreatesBook() throws Exception {
         Author author = authorRepository.save(new Author(null, "Михаил Булгаков"));
         Genre genre = genreRepository.save(new Genre(null, "Роман"));
@@ -72,6 +74,7 @@ class BookControllerTest {
     }
 
     @Test
+    @DisplayName("Находит книгу по id и возвращает Json")
     public void findById_ValidId_ReturnsBook() throws Exception {
         Author author = authorRepository.save(new Author(null, "Михаил Булгаков"));
         Genre genre = genreRepository.save(new Genre(null, "Роман"));
@@ -87,6 +90,7 @@ class BookControllerTest {
     }
 
     @Test
+    @DisplayName("Находит все книги по фильтру и возвращает Json")
     public void findAll_ValidJsonEntity_ReturnsBook() throws Exception {
         Author author = authorRepository.save(new Author(null, "Михаил Булгаков"));
         Genre genre = genreRepository.save(new Genre(null, "Роман"));

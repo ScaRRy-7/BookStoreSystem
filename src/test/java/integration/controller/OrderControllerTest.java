@@ -7,6 +7,7 @@ import com.ifellow.bookstore.dto.response.OrderResponseDto;
 import com.ifellow.bookstore.model.*;
 import com.ifellow.bookstore.repository.*;
 import com.ifellow.bookstore.service.api.OrderService;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -58,6 +59,7 @@ class OrderControllerTest {
     private ObjectMapper objectMapper;
 
     @Test
+    @DisplayName("Создает заказ и возвращает Json")
     public void create_ValidWarehouseIdAndJsonEntity_CreatesOrder() throws Exception {
         Warehouse savedWarehouse = warehouseRepository.save(new Warehouse(null, "Ул. Арбат"));
         Genre savedGenre = genreRepository.save(new Genre(null, "Роман"));
@@ -76,6 +78,7 @@ class OrderControllerTest {
     }
 
     @Test
+    @DisplayName("Выполняет указанный по id заказ и возвращает Json")
     public void completeById_ValidId_CompletesOrder() throws Exception {
         Warehouse savedWarehouse = warehouseRepository.save(new Warehouse(null, "Ул. Арбат"));
         Genre savedGenre = genreRepository.save(new Genre(null, "Роман"));
@@ -93,6 +96,7 @@ class OrderControllerTest {
     }
 
     @Test
+    @DisplayName("Отменяет по указанному id заказ и возвращает Json")
     public void cancelById_ValidId_CancelsOrder() throws Exception {
         Warehouse savedWarehouse = warehouseRepository.save(new Warehouse(null, "Ул. Арбат"));
         Genre savedGenre = genreRepository.save(new Genre(null, "Роман"));
@@ -110,6 +114,7 @@ class OrderControllerTest {
     }
 
     @Test
+    @DisplayName("Находит по указанному id заказ и возвращает Json")
     public void findById_ValidId_ReturnsOrder() throws Exception {
         Warehouse savedWarehouse = warehouseRepository.save(new Warehouse(null, "Ул. Арбат"));
         Genre savedGenre = genreRepository.save(new Genre(null, "Роман"));
