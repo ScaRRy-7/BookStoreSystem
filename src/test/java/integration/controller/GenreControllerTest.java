@@ -3,10 +3,8 @@ package integration.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ifellow.bookstore.configuration.RootConfiguration;
 import com.ifellow.bookstore.dto.request.GenreRequestDto;
-import com.ifellow.bookstore.dto.response.GenreResponseDto;
 import com.ifellow.bookstore.model.Genre;
 import com.ifellow.bookstore.repository.GenreRepository;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +13,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.transaction.annotation.Transactional;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;

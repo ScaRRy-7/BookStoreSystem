@@ -170,6 +170,7 @@ class WarehouseServiceImplTest {
     void removeBookFromWarehouse_BookNotFound_ThrowsException() {
         Mockito.when(warehouseRepository.existsById(1L)).thenReturn(true);
         Mockito.when(warehouseBookAmountRepository.findByWarehouseIdAndBookId(1L, 1L)).thenReturn(Optional.empty());
+
         assertThrows(BookNotFoundException.class, () -> warehouseService.removeBookFromWarehouse(1L, 1L, 5));
     }
 
@@ -184,7 +185,6 @@ class WarehouseServiceImplTest {
         wba.setBook(book);
         Page<WarehouseBookAmount> page = new PageImpl<>(List.of(wba));
         WarehouseBookResponseDto responseDto = new WarehouseBookResponseDto(1L, 1L, 1L, 10);
-
         Mockito.when(warehouseBookAmountRepository.findByWarehouseId(1L, pageable)).thenReturn(page);
         Mockito.when(warehouseBookAmountMapper.toDto(wba)).thenReturn(responseDto);
 
@@ -207,7 +207,6 @@ class WarehouseServiceImplTest {
         Mockito.when(bookService.findBookById(1L)).thenReturn(book);
         Mockito.when(warehouseBookAmountRepository.findByWarehouseIdAndBookId(1L, 1L)).thenReturn(Optional.empty());
         Mockito.when(warehouseBookAmountRepository.save(Mockito.any(WarehouseBookAmount.class))).thenReturn(new WarehouseBookAmount());
-
         Mockito.when(bookService.findBookById(2L)).thenReturn(new Book());
         Mockito.when(warehouseBookAmountRepository.findByWarehouseIdAndBookId(1L, 2L)).thenReturn(Optional.empty());
 

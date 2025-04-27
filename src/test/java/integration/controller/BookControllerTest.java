@@ -3,7 +3,6 @@ package integration.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ifellow.bookstore.configuration.RootConfiguration;
-import com.ifellow.bookstore.dto.filter.BookFilter;
 import com.ifellow.bookstore.dto.request.BookRequestDto;
 import com.ifellow.bookstore.model.Author;
 import com.ifellow.bookstore.model.Book;
