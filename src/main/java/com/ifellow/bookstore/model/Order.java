@@ -38,4 +38,8 @@ public class Order {
     @ManyToOne
     @JoinColumn(name = "warehouse_id")
     private Warehouse warehouse;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
 }

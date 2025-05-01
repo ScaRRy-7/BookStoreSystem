@@ -8,10 +8,10 @@ import com.ifellow.bookstore.controller.SaleController;
 import com.ifellow.bookstore.dto.filter.SaleFilter;
 import com.ifellow.bookstore.dto.request.BookSaleDto;
 import com.ifellow.bookstore.dto.response.SaleResponseDto;
-import com.ifellow.bookstore.exception.BookNotFoundException;
+import com.ifellow.bookstore.exception.BookException;
 import com.ifellow.bookstore.exception.NotEnoughStockException;
-import com.ifellow.bookstore.exception.SaleNotFoundException;
-import com.ifellow.bookstore.exception.StoreNotFoundException;
+import com.ifellow.bookstore.exception.SaleException;
+import com.ifellow.bookstore.exception.StoreException;
 import com.ifellow.bookstore.service.api.SaleService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -108,7 +108,7 @@ class SaleControllerTest {
     public void processSale_StoreNotFound_ReturnsNotFound() throws Exception {
         Long storeId = 999L;
         when(saleService.processSale(storeId, bookSaleDtoList))
-                .thenThrow(new StoreNotFoundException("Store not found with id: " + storeId));
+                .thenThrow(new StoreException("Store not found with id: " + storeId));
 
         ResultActions response = mockMvc.perform(post("/api/sales/process/{storeId}", storeId)
                 .contentType(MediaType.APPLICATION_JSON)
@@ -122,7 +122,7 @@ class SaleControllerTest {
     public void processSale_BookNotFound_ReturnsNotFound() throws Exception {
         Long storeId = 1L;
         when(saleService.processSale(storeId, bookSaleDtoList))
-                .thenThrow(new BookNotFoundException("Book not found"));
+                .thenThrow(new BookException("Book not found"));
 
         ResultActions response = mockMvc.perform(post("/api/sales/process/{storeId}", storeId)
                 .contentType(MediaType.APPLICATION_JSON)
@@ -165,7 +165,7 @@ class SaleControllerTest {
     public void findById_InvalidId_Returns404() throws Exception {
         Long saleId = 1L;
         when(saleService.findById(saleId))
-                .thenThrow(new SaleNotFoundException("Sale not found with id: " + saleId));
+                .thenThrow(new SaleException("Sale not found with id: " + saleId));
 
         ResultActions response = mockMvc.perform(get("/api/sales/{id}", saleId));
 

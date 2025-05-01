@@ -4,8 +4,8 @@ import com.ifellow.bookstore.dto.request.BookOrderDto;
 import com.ifellow.bookstore.dto.filter.OrderFilter;
 import com.ifellow.bookstore.dto.response.OrderResponseDto;
 import com.ifellow.bookstore.enumeration.OrderStatus;
-import com.ifellow.bookstore.exception.ChangeOrderStatusException;
-import com.ifellow.bookstore.exception.OrderNotFoundException;
+import com.ifellow.bookstore.exception.OrderStatusException;
+import com.ifellow.bookstore.exception.OrderException;
 import com.ifellow.bookstore.mapper.OrderMapper;
 import com.ifellow.bookstore.model.Book;
 import com.ifellow.bookstore.model.Order;
@@ -68,12 +68,12 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     @Transactional
-    public OrderResponseDto completeById(Long orderId) throws OrderNotFoundException, ChangeOrderStatusException {
+    public OrderResponseDto completeById(Long orderId) throws OrderException, OrderStatusException {
         Order order = orderRepository.findById(orderId)
-                .orElseThrow(() -> new OrderNotFoundException("Order not found with id: " + orderId));
+                .orElseThrow(() -> new OrderException("Order not found with id: " + orderId));
 
         if (order.getOrderStatus() != OrderStatus.CREATED)
-            throw new ChangeOrderStatusException("Order can't be completed because it isn't CREATED");
+            throw new OrderStatusException("Order can't be completed because it isn't CREATED");
 
         order.setOrderStatus(OrderStatus.COMPLETED);
         orderRepository.save(order);
@@ -83,12 +83,12 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     @Transactional
-    public OrderResponseDto cancelById(Long orderId) throws OrderNotFoundException {
+    public OrderResponseDto cancelById(Long orderId) throws OrderException {
         Order order = orderRepository.findById(orderId)
-                .orElseThrow(() -> new OrderNotFoundException("Order not found with id: " + orderId));
+                .orElseThrow(() -> new OrderException("Order not found with id: " + orderId));
 
         if (order.getOrderStatus() != OrderStatus.CREATED)
-            throw new ChangeOrderStatusException("Order can't be canceled because it isn't CREATED");
+            throw new OrderStatusException("Order can't be canceled because it isn't CREATED");
 
         List<OrderItem> orderItems = order.getOrderItemList();
         for (OrderItem orderItem : orderItems) {
@@ -102,9 +102,9 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public OrderResponseDto findById(Long orderId) throws OrderNotFoundException {
+    public OrderResponseDto findById(Long orderId) throws OrderException {
         Order order = orderRepository.findById(orderId)
-                .orElseThrow(() -> new OrderNotFoundException("Order not found with id: " + orderId));
+                .orElseThrow(() -> new OrderException("Order not found with id: " + orderId));
 
         return orderMapper.toDto(order);
     }

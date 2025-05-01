@@ -3,9 +3,9 @@ package unit.service;
 import com.ifellow.bookstore.dto.request.StoreRequestDto;
 import com.ifellow.bookstore.dto.response.StoreBookResponseDto;
 import com.ifellow.bookstore.dto.response.StoreResponseDto;
-import com.ifellow.bookstore.exception.BookNotFoundException;
+import com.ifellow.bookstore.exception.BookException;
 import com.ifellow.bookstore.exception.NotEnoughStockException;
-import com.ifellow.bookstore.exception.StoreNotFoundException;
+import com.ifellow.bookstore.exception.StoreException;
 import com.ifellow.bookstore.mapper.StoreBookAmountMapper;
 import com.ifellow.bookstore.mapper.StoreMapper;
 import com.ifellow.bookstore.model.Book;
@@ -111,7 +111,7 @@ class StoreServiceImplTest {
     void findStoreById_NotExistingId_ThrowsException() {
         Mockito.when(storeRepository.findById(storeId)).thenReturn(Optional.empty());
 
-        assertThrows(StoreNotFoundException.class, () -> storeService.findStoreById(storeId));
+        assertThrows(StoreException.class, () -> storeService.findStoreById(storeId));
         Mockito.verify(storeRepository).findById(storeId);
     }
 
@@ -203,7 +203,7 @@ class StoreServiceImplTest {
         Mockito.when(storeRepository.findById(storeId)).thenReturn(Optional.of(store));
         Mockito.when(storeBookAmountRepository.findByStoreIdAndBookId(storeId, bookId)).thenReturn(Optional.empty());
 
-        assertThrows(BookNotFoundException.class, () -> storeService.removeBookFromStore(storeId, bookId, quantity));
+        assertThrows(BookException.class, () -> storeService.removeBookFromStore(storeId, bookId, quantity));
         Mockito.verify(storeBookAmountRepository, Mockito.never()).save(Mockito.any());
     }
 

@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -20,18 +21,21 @@ public class BookController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
+    @PreAuthorize("hasRole('MANAGER')")
     public BookResponseDto create(@Valid @RequestBody BookRequestDto bookRequestDto) {
         return bookService.save(bookRequestDto);
     }
 
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
+    @PreAuthorize("hasAnyRole('CLIENT', 'MANAGER', 'ADMIN')")
     public BookResponseDto findById(@PathVariable Long id) {
         return bookService.findById(id);
     }
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
+    @PreAuthorize("hasAnyRole('CLIENT', 'MANAGER', 'ADMIN')")
     public ResponseEntity<?> findAll(@ModelAttribute BookFilter filter, Pageable pageable) {
         return ResponseEntity.ok(bookService.findAll(filter, pageable));
     }

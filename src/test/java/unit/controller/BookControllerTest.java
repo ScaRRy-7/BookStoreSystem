@@ -7,7 +7,7 @@ import com.ifellow.bookstore.controller.BookController;
 import com.ifellow.bookstore.dto.filter.BookFilter;
 import com.ifellow.bookstore.dto.request.BookRequestDto;
 import com.ifellow.bookstore.dto.response.BookResponseDto;
-import com.ifellow.bookstore.exception.BookNotFoundException;
+import com.ifellow.bookstore.exception.BookException;
 import com.ifellow.bookstore.service.api.BookService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -121,7 +121,7 @@ class BookControllerTest {
     public void findById_InvalidId_Returns404() throws Exception {
         Long bookId = 1L;
         when(bookService.findById(bookId))
-                .thenThrow(new BookNotFoundException("Book not found with id: " + bookId));
+                .thenThrow(new BookException("Book not found with id: " + bookId));
 
         ResultActions response = mockMvc.perform(get("/api/books/{id}", bookId));
 

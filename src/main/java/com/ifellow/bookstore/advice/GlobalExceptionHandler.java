@@ -1,7 +1,9 @@
 package com.ifellow.bookstore.advice;
 
 import com.ifellow.bookstore.exception.*;
+import io.jsonwebtoken.JwtException;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -15,44 +17,44 @@ import java.util.Map;
 public class GlobalExceptionHandler {
 
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    @ExceptionHandler(AuthorNotFoundException.class)
-    public String handleAuthorNotFoundException(AuthorNotFoundException e) {
+    @ExceptionHandler(AuthorException.class)
+    public String handleAuthorNotFoundException(AuthorException e) {
         return e.getMessage();
     }
 
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    @ExceptionHandler(BookNotFoundException.class)
-    public String handleBookNotFoundException(BookNotFoundException e) {
+    @ExceptionHandler(BookException.class)
+    public String handleBookNotFoundException(BookException e) {
         return e.getMessage();
     }
 
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    @ExceptionHandler(GenreNotFoundException.class)
-    public String handleGenreNotFoundException(GenreNotFoundException e) {
+    @ExceptionHandler(GenreException.class)
+    public String handleGenreNotFoundException(GenreException e) {
         return e.getMessage();
     }
 
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    @ExceptionHandler(StoreNotFoundException.class)
-    public String handleStoreNotFoundException(StoreNotFoundException e) {
+    @ExceptionHandler(StoreException.class)
+    public String handleStoreNotFoundException(StoreException e) {
         return e.getMessage();
     }
 
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    @ExceptionHandler(WarehouseNotFoundException.class)
-    public String handleWarehouseNotFoundException(WarehouseNotFoundException e) {
+    @ExceptionHandler(WarehouseException.class)
+    public String handleWarehouseNotFoundException(WarehouseException e) {
         return e.getMessage();
     }
 
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    @ExceptionHandler(SaleNotFoundException.class)
-    public String handleSaleNotFoundException(SaleNotFoundException e) {
+    @ExceptionHandler(SaleException.class)
+    public String handleSaleNotFoundException(SaleException e) {
         return e.getMessage();
     }
 
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    @ExceptionHandler(OrderNotFoundException.class)
-    public String handleOrderNotFoundException(OrderNotFoundException e) {
+    @ExceptionHandler(OrderException.class)
+    public String handleOrderNotFoundException(OrderException e) {
         return e.getMessage();
     }
 
@@ -63,8 +65,8 @@ public class GlobalExceptionHandler {
     }
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    @ExceptionHandler(ChangeOrderStatusException.class)
-    public String handleChangeOrderStatusException(ChangeOrderStatusException e) {
+    @ExceptionHandler(OrderStatusException.class)
+    public String handleChangeOrderStatusException(OrderStatusException e) {
         return e.getMessage();
     }
 
@@ -84,7 +86,31 @@ public class GlobalExceptionHandler {
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(IllegalArgumentException.class)
-    public String handleValidationException(IllegalArgumentException e) {
+    public String handleIllegalArgumentException(IllegalArgumentException e) {
+        return e.getMessage();
+    }
+
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    @ExceptionHandler(AuthenticationException.class)
+    public String handleAuthenticationException(AuthenticationException e) {
+        return e.getMessage();
+    }
+
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    @ExceptionHandler(JwtException.class)
+    public String handleJwtException(JwtException e) {
+        return e.getMessage();
+    }
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(UserException.class)
+    public String handleUserException(UserException e) {
+        return e.getMessage();
+    }
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(RefreshTokenException.class)
+    public String handleRefreshTokenException(RefreshTokenException e) {
         return e.getMessage();
     }
 }

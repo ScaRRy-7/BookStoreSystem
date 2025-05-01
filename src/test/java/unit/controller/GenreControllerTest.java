@@ -6,7 +6,7 @@ import com.ifellow.bookstore.configuration.WebConfiguration;
 import com.ifellow.bookstore.controller.GenreController;
 import com.ifellow.bookstore.dto.request.GenreRequestDto;
 import com.ifellow.bookstore.dto.response.GenreResponseDto;
-import com.ifellow.bookstore.exception.GenreNotFoundException;
+import com.ifellow.bookstore.exception.GenreException;
 import com.ifellow.bookstore.service.api.GenreService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -102,7 +102,7 @@ class GenreControllerTest {
     public void findById_InvalidId_ReturnsNotFound() throws Exception {
         Long genreId = 1L;
         when(genreService.findById(genreId))
-                .thenThrow(new GenreNotFoundException("Genre not found with id: " + genreId));
+                .thenThrow(new GenreException("Genre not found with id: " + genreId));
 
         ResultActions response = mockMvc.perform(get("/api/genres/{id}", genreId));
 

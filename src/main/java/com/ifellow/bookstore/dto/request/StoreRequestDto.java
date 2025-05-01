@@ -5,8 +5,8 @@ import jakarta.validation.constraints.Size;
 
 public record StoreRequestDto(
 
-    @NotBlank(message = "Адрес магазина не должен быть null или пустым")
-    @Size(min = 3, max = 80, message = "Длина адреса должна содержать от 3 до 80 символов")
+    @NotBlank(message = "Store address must not be null or empty")
+    @Size(min = 3, max = 80, message = "The address length must be between 3 and 80 characters.")
     String address
 ) {
 }

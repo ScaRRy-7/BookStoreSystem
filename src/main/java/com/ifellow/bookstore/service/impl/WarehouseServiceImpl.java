@@ -4,9 +4,9 @@ import com.ifellow.bookstore.dto.request.BookBulkDto;
 import com.ifellow.bookstore.dto.request.WarehouseRequestDto;
 import com.ifellow.bookstore.dto.response.WarehouseBookResponseDto;
 import com.ifellow.bookstore.dto.response.WarehouseResponseDto;
-import com.ifellow.bookstore.exception.BookNotFoundException;
+import com.ifellow.bookstore.exception.BookException;
 import com.ifellow.bookstore.exception.NotEnoughStockException;
-import com.ifellow.bookstore.exception.WarehouseNotFoundException;
+import com.ifellow.bookstore.exception.WarehouseException;
 import com.ifellow.bookstore.mapper.WarehouseBookAmountMapper;
 import com.ifellow.bookstore.mapper.WarehouseMapper;
 import com.ifellow.bookstore.model.Book;
@@ -45,22 +45,22 @@ public class WarehouseServiceImpl implements WarehouseService {
     }
 
     @Override
-    public WarehouseResponseDto findById(Long id) throws WarehouseNotFoundException {
+    public WarehouseResponseDto findById(Long id) throws WarehouseException {
         Warehouse warehouse = warehouseRepository.findById(id).orElseThrow(
-                () -> new WarehouseNotFoundException("Warehouse not found with id: " + id)
+                () -> new WarehouseException("Warehouse not found with id: " + id)
         );
         return warehouseMapper.toDto(warehouse);
     }
 
     @Override
-    public Warehouse findWarehouseById(Long id) throws WarehouseNotFoundException {
+    public Warehouse findWarehouseById(Long id) throws WarehouseException {
         return warehouseRepository.findById(id)
-                .orElseThrow(() -> new WarehouseNotFoundException("Warehouse not found with bookId: " + id));
+                .orElseThrow(() -> new WarehouseException("Warehouse not found with bookId: " + id));
     }
 
-    public void checkWarehouseExistence(Long id) throws WarehouseNotFoundException {
+    public void checkWarehouseExistence(Long id) throws WarehouseException {
         if (!warehouseRepository.existsById(id)) {
-            throw new WarehouseNotFoundException("Warehouse not found with id: " + id);
+            throw new WarehouseException("Warehouse not found with id: " + id);
         }
     }
 
@@ -107,7 +107,7 @@ public class WarehouseServiceImpl implements WarehouseService {
             warehouseBookAmount.setAmount(warehouseBookAmount.getAmount() - quantity);
             warehouseBookAmountRepository.save(warehouseBookAmount);
         } else {
-            throw new BookNotFoundException("Book not found with id: " + bookId + " in warehouse with id: " + id);
+            throw new BookException("Book not found with id: " + bookId + " in warehouse with id: " + id);
         }
     }
 

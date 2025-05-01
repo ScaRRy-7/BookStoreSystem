@@ -1,8 +1,8 @@
 package com.ifellow.bookstore.service.impl;
 
 import com.ifellow.bookstore.exception.NotEnoughStockException;
-import com.ifellow.bookstore.exception.StoreNotFoundException;
-import com.ifellow.bookstore.exception.WarehouseNotFoundException;
+import com.ifellow.bookstore.exception.StoreException;
+import com.ifellow.bookstore.exception.WarehouseException;
 import com.ifellow.bookstore.service.api.StoreService;
 import com.ifellow.bookstore.service.api.TransferService;
 import com.ifellow.bookstore.service.api.WarehouseService;
@@ -20,7 +20,7 @@ public class TransferServiceImpl implements TransferService {
     @Override
     @Transactional
     public void transferBookFromWarehouseToStore(Long warehouseId, Long storeId, Long bookId, int quantity)
-            throws WarehouseNotFoundException, StoreNotFoundException, NotEnoughStockException {
+            throws WarehouseException, StoreException, NotEnoughStockException {
 
         warehouseService.removeBookFromWarehouse(warehouseId, bookId, quantity);
         storeService.addBookToStore(storeId, bookId, quantity);
@@ -29,7 +29,7 @@ public class TransferServiceImpl implements TransferService {
     @Override
     @Transactional
     public void transferBookFromStoreToStore(Long storeIdFrom, Long storeIdTo, Long bookId, int quantity)
-            throws WarehouseNotFoundException, StoreNotFoundException, NotEnoughStockException {
+            throws WarehouseException, StoreException, NotEnoughStockException {
 
         storeService.removeBookFromStore(storeIdFrom, bookId, quantity);
         storeService.addBookToStore(storeIdTo, bookId, quantity);

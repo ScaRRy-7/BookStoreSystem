@@ -6,7 +6,7 @@ import com.ifellow.bookstore.configuration.WebConfiguration;
 import com.ifellow.bookstore.controller.AuthorController;
 import com.ifellow.bookstore.dto.request.AuthorRequestDto;
 import com.ifellow.bookstore.dto.response.AuthorResponseDto;
-import com.ifellow.bookstore.exception.AuthorNotFoundException;
+import com.ifellow.bookstore.exception.AuthorException;
 import com.ifellow.bookstore.service.api.AuthorService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -80,7 +80,7 @@ class AuthorControllerTest {
     public void findById_AuthorNotFound_Returns404() throws Exception {
         Long authorId = 1L;
         when(authorService.findById(authorId))
-                .thenThrow(new AuthorNotFoundException("Author not found with id: " + authorId));
+                .thenThrow(new AuthorException("Author not found with id: " + authorId));
 
         ResultActions response = mockMvc.perform(get("/api/authors/{id}", authorId));
 

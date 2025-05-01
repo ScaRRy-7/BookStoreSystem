@@ -3,10 +3,10 @@ package com.ifellow.bookstore.service.impl;
 import com.ifellow.bookstore.dto.request.BookSaleDto;
 import com.ifellow.bookstore.dto.filter.SaleFilter;
 import com.ifellow.bookstore.dto.response.SaleResponseDto;
-import com.ifellow.bookstore.exception.BookNotFoundException;
+import com.ifellow.bookstore.exception.BookException;
 import com.ifellow.bookstore.exception.NotEnoughStockException;
-import com.ifellow.bookstore.exception.SaleNotFoundException;
-import com.ifellow.bookstore.exception.StoreNotFoundException;
+import com.ifellow.bookstore.exception.SaleException;
+import com.ifellow.bookstore.exception.StoreException;
 import com.ifellow.bookstore.mapper.SaleMapper;
 import com.ifellow.bookstore.model.Book;
 import com.ifellow.bookstore.model.Sale;
@@ -40,7 +40,7 @@ public class SaleServiceImpl implements SaleService {
     @Override
     @Transactional
     public SaleResponseDto processSale(Long storeId, List<BookSaleDto> bookSaleDtoList)
-            throws StoreNotFoundException, BookNotFoundException, NotEnoughStockException {
+            throws StoreException, BookException, NotEnoughStockException {
 
         Store store = storeService.findStoreById(storeId);
 
@@ -72,7 +72,7 @@ public class SaleServiceImpl implements SaleService {
     @Override
     public SaleResponseDto findById(Long id) {
         Sale sale = saleRepository.findById(id)
-                .orElseThrow(() -> new SaleNotFoundException("Sale not found with id: " + id));
+                .orElseThrow(() -> new SaleException("Sale not found with id: " + id));
         return saleMapper.toDto(sale);
     }
 

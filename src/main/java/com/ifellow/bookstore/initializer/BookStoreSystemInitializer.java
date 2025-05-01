@@ -1,6 +1,7 @@
-package com.ifellow.bookstore;
+package com.ifellow.bookstore.initializer;
 
 import com.ifellow.bookstore.configuration.RootConfiguration;
+import com.ifellow.bookstore.configuration.SecurityConfiguration;
 import com.ifellow.bookstore.configuration.WebConfiguration;
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
@@ -8,7 +9,7 @@ public class BookStoreSystemInitializer extends AbstractAnnotationConfigDispatch
 
     @Override
     protected Class<?>[] getRootConfigClasses() {
-        return new Class<?>[]{RootConfiguration.class};
+        return new Class<?>[]{RootConfiguration.class, SecurityConfiguration.class};
     }
 
     @Override

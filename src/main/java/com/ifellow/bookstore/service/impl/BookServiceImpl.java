@@ -4,7 +4,7 @@ import com.ifellow.bookstore.dto.filter.BookFilter;
 import com.ifellow.bookstore.dto.request.BookRequestDto;
 import com.ifellow.bookstore.dto.response.GroupedBookResponse;
 import com.ifellow.bookstore.dto.response.BookResponseDto;
-import com.ifellow.bookstore.exception.BookNotFoundException;
+import com.ifellow.bookstore.exception.BookException;
 import com.ifellow.bookstore.mapper.BookMapper;
 import com.ifellow.bookstore.model.Author;
 import com.ifellow.bookstore.model.Book;
@@ -49,16 +49,16 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public BookResponseDto findById(Long id) throws BookNotFoundException {
+    public BookResponseDto findById(Long id) throws BookException {
         Book book = bookRepository.findById(id)
-                .orElseThrow(() -> new BookNotFoundException("Book not found with id: " + id));
+                .orElseThrow(() -> new BookException("Book not found with id: " + id));
 
         return bookMapper.toDto(book);
    }
 
-   public void checkBookExistence(Long id) throws BookNotFoundException {
+   public void checkBookExistence(Long id) throws BookException {
         if (!bookRepository.existsById(id)) {
-            throw new BookNotFoundException("Book not found with id: " + id);
+            throw new BookException("Book not found with id: " + id);
         }
    }
 
@@ -96,8 +96,8 @@ public class BookServiceImpl implements BookService {
    }
 
    @Override
-   public Book findBookById(Long id) throws BookNotFoundException {
+   public Book findBookById(Long id) throws BookException {
         return bookRepository.findById(id)
-                .orElseThrow(() -> new BookNotFoundException("Book not found with id: " + id));
+                .orElseThrow(() -> new BookException("Book not found with id: " + id));
    }
 }

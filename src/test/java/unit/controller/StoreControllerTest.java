@@ -8,9 +8,9 @@ import com.ifellow.bookstore.dto.request.BookBulkDto;
 import com.ifellow.bookstore.dto.request.StoreRequestDto;
 import com.ifellow.bookstore.dto.response.StoreBookResponseDto;
 import com.ifellow.bookstore.dto.response.StoreResponseDto;
-import com.ifellow.bookstore.exception.BookNotFoundException;
+import com.ifellow.bookstore.exception.BookException;
 import com.ifellow.bookstore.exception.NotEnoughStockException;
-import com.ifellow.bookstore.exception.StoreNotFoundException;
+import com.ifellow.bookstore.exception.StoreException;
 import com.ifellow.bookstore.service.api.StoreService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -122,7 +122,7 @@ class StoreControllerTest {
     public void findById_InvalidId_Returns404() throws Exception {
         Long storeId = 999L;
         when(storeService.findById(storeId))
-                .thenThrow(new StoreNotFoundException("Store not found with id: " + storeId));
+                .thenThrow(new StoreException("Store not found with id: " + storeId));
 
         ResultActions response = mockMvc.perform(get("/api/stores/{id}", storeId));
 
@@ -145,7 +145,7 @@ class StoreControllerTest {
     @DisplayName("POST /api/stores/{id}/stock/add - возвращает 404 при отсутствии магазина")
     public void addBooksToStore_StoreNotFound_Returns404() throws Exception {
         Long storeId = 999L;
-        doThrow(new StoreNotFoundException("Store not found with id: " + storeId))
+        doThrow(new StoreException("Store not found with id: " + storeId))
                 .when(storeService).addBookToStore(storeId, bookBulkDto.bookId(), bookBulkDto.quantity());
 
         ResultActions response = mockMvc.perform(post("/api/stores/{id}/stock/add", storeId)
@@ -159,7 +159,7 @@ class StoreControllerTest {
     @DisplayName("POST /api/stores/{id}/stock/add - возвращает 404 при отсутствии книги")
     public void addBooksToStore_BookNotFound_Returns404() throws Exception {
         Long storeId = 1L;
-        doThrow(new BookNotFoundException("Book not found with id: " + bookBulkDto.bookId()))
+        doThrow(new BookException("Book not found with id: " + bookBulkDto.bookId()))
                 .when(storeService).addBookToStore(storeId, bookBulkDto.bookId(), bookBulkDto.quantity());
 
         ResultActions response = mockMvc.perform(post("/api/stores/{id}/stock/add", storeId)
@@ -199,7 +199,7 @@ class StoreControllerTest {
     @DisplayName("POST /api/stores/{id}/stock/remove - возвращает 404 при отсутствии магазина")
     public void deleteBooksFromStore_StoreNotFound_Returns404() throws Exception {
         Long storeId = 999L;
-        doThrow(new StoreNotFoundException("Store not found with id: " + storeId))
+        doThrow(new StoreException("Store not found with id: " + storeId))
                 .when(storeService).removeBookFromStore(storeId, bookBulkDto.bookId(), bookBulkDto.quantity());
 
         ResultActions response = mockMvc.perform(post("/api/stores/{id}/stock/remove", storeId)
@@ -213,7 +213,7 @@ class StoreControllerTest {
     @DisplayName("POST /api/stores/{id}/stock/remove - возвращает 404 при отсутствии книги")
     public void deleteBooksFromStore_BookNotFound_Returns404() throws Exception {
         Long storeId = 1L;
-        doThrow(new BookNotFoundException("Book not found with id: " + bookBulkDto.bookId()))
+        doThrow(new BookException("Book not found with id: " + bookBulkDto.bookId()))
                 .when(storeService).removeBookFromStore(storeId, bookBulkDto.bookId(), bookBulkDto.quantity());
 
         ResultActions response = mockMvc.perform(post("/api/stores/{id}/stock/remove", storeId)

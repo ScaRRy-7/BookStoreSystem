@@ -3,9 +3,9 @@ package com.ifellow.bookstore.service.impl;
 import com.ifellow.bookstore.dto.request.StoreRequestDto;
 import com.ifellow.bookstore.dto.response.StoreBookResponseDto;
 import com.ifellow.bookstore.dto.response.StoreResponseDto;
-import com.ifellow.bookstore.exception.BookNotFoundException;
+import com.ifellow.bookstore.exception.BookException;
 import com.ifellow.bookstore.exception.NotEnoughStockException;
-import com.ifellow.bookstore.exception.StoreNotFoundException;
+import com.ifellow.bookstore.exception.StoreException;
 import com.ifellow.bookstore.mapper.StoreBookAmountMapper;
 import com.ifellow.bookstore.mapper.StoreMapper;
 import com.ifellow.bookstore.model.Book;
@@ -43,28 +43,28 @@ public class StoreServiceImpl implements StoreService {
     }
 
     @Override
-    public StoreResponseDto findById(Long id) throws StoreNotFoundException {
+    public StoreResponseDto findById(Long id) throws StoreException {
         Store store = storeRepository.findById(id)
-                .orElseThrow(() -> new StoreNotFoundException("Store not found with id " + id));
+                .orElseThrow(() -> new StoreException("Store not found with id " + id));
         return storeMapper.toDto(store);
 
     }
 
     @Override
-    public Store findStoreById(Long id) throws StoreNotFoundException {
+    public Store findStoreById(Long id) throws StoreException {
         return storeRepository.findById(id)
-                .orElseThrow(() -> new StoreNotFoundException("Store not found with id: " + id));
+                .orElseThrow(() -> new StoreException("Store not found with id: " + id));
     }
 
 
-    public void checkStoreExistence(Long id) throws StoreNotFoundException {
+    public void checkStoreExistence(Long id) throws StoreException {
         findStoreById(id);
     }
 
     @Override
     @Transactional
     public void addBookToStore(Long id, Long bookId, int quantity)
-            throws IllegalArgumentException, StoreNotFoundException, BookNotFoundException {
+            throws IllegalArgumentException, StoreException, BookException {
 
         if (quantity <= EMPTY_STOCK) throw new IllegalArgumentException("quantity must be greater than zero");
 
@@ -89,7 +89,7 @@ public class StoreServiceImpl implements StoreService {
     @Override
     @Transactional
     public void removeBookFromStore(Long id, Long bookId, int quantity)
-            throws IllegalArgumentException, NotEnoughStockException, BookNotFoundException, StoreNotFoundException {
+            throws IllegalArgumentException, NotEnoughStockException, BookException, StoreException {
 
         if (quantity <= EMPTY_STOCK) throw new IllegalArgumentException("quantity must be greater than zero");
 
@@ -104,7 +104,7 @@ public class StoreServiceImpl implements StoreService {
                     sba.setAmount(sba.getAmount() - quantity);
                     storeBookAmountRepository.save(sba);
                 }, () -> {
-                    throw new BookNotFoundException("Book not found with id: " + bookId + " in store with id: " + id);
+                    throw new BookException("Book not found with id: " + bookId + " in store with id: " + id);
                 });
     }
 

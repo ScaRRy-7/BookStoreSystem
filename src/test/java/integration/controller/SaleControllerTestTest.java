@@ -2,6 +2,7 @@ package integration.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ifellow.bookstore.configuration.RootConfiguration;
+import com.ifellow.bookstore.configuration.SecurityConfiguration;
 import com.ifellow.bookstore.dto.request.BookSaleDto;
 import com.ifellow.bookstore.dto.response.SaleResponseDto;
 import com.ifellow.bookstore.model.*;
@@ -10,6 +11,7 @@ import com.ifellow.bookstore.service.api.SaleService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
@@ -27,7 +29,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @Transactional
-@AutoConfigureMockMvc
+@AutoConfigureMockMvc(addFilters = false)
 @SpringBootTest(classes = {RootConfiguration.class})
 class SaleControllerTestTest {
 

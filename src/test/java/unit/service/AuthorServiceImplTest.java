@@ -2,7 +2,7 @@ package unit.service;
 
 import com.ifellow.bookstore.dto.request.AuthorRequestDto;
 import com.ifellow.bookstore.dto.response.AuthorResponseDto;
-import com.ifellow.bookstore.exception.AuthorNotFoundException;
+import com.ifellow.bookstore.exception.AuthorException;
 import com.ifellow.bookstore.mapper.AuthorMapper;
 import com.ifellow.bookstore.model.Author;
 import com.ifellow.bookstore.repository.AuthorRepository;
@@ -84,7 +84,7 @@ class AuthorServiceImplTest {
     void findById_NotExistingId_ThrowsException() {
         Mockito.when(authorRepository.findById(authorId)).thenReturn(Optional.empty());
 
-        assertThrows(AuthorNotFoundException.class, () -> authorService.findById(authorId));
+        assertThrows(AuthorException.class, () -> authorService.findById(authorId));
         Mockito.verify(authorRepository).findById(authorId);
         Mockito.verify(authorMapper, Mockito.never()).toDto(Mockito.any(Author.class));
     }
@@ -106,7 +106,7 @@ class AuthorServiceImplTest {
     void findAuthorById_NotExistingId_ThrowsException() {
         Mockito.when(authorRepository.findById(authorId)).thenReturn(Optional.empty());
 
-        assertThrows(AuthorNotFoundException.class, () -> authorService.findAuthorById(authorId));
+        assertThrows(AuthorException.class, () -> authorService.findAuthorById(authorId));
         Mockito.verify(authorRepository).findById(authorId);
     }
 }

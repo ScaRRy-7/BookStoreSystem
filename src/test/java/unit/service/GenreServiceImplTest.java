@@ -2,7 +2,7 @@ package unit.service;
 
 import com.ifellow.bookstore.dto.request.GenreRequestDto;
 import com.ifellow.bookstore.dto.response.GenreResponseDto;
-import com.ifellow.bookstore.exception.GenreNotFoundException;
+import com.ifellow.bookstore.exception.GenreException;
 import com.ifellow.bookstore.mapper.GenreMapper;
 import com.ifellow.bookstore.model.Genre;
 import com.ifellow.bookstore.repository.GenreRepository;
@@ -82,7 +82,7 @@ class GenreServiceImplTest {
     void findGenreById_NotExistingId_ThrowsException() {
         Mockito.when(genreRepository.findById(genreId)).thenReturn(Optional.empty());
 
-        assertThrows(GenreNotFoundException.class, () -> genreService.findGenreById(genreId));
+        assertThrows(GenreException.class, () -> genreService.findGenreById(genreId));
         Mockito.verify(genreRepository).findById(genreId);
     }
 
@@ -105,7 +105,7 @@ class GenreServiceImplTest {
     void findById_NotExistingId_ThrowsException() {
         Mockito.when(genreRepository.findById(genreId)).thenReturn(Optional.empty());
 
-        assertThrows(GenreNotFoundException.class, () -> genreService.findById(genreId));
+        assertThrows(GenreException.class, () -> genreService.findById(genreId));
         Mockito.verify(genreRepository).findById(genreId);
         Mockito.verify(genreMapper, Mockito.never()).toDto(Mockito.any(Genre.class));
     }

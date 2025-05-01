@@ -2,7 +2,7 @@ package unit.service;
 
 import com.ifellow.bookstore.dto.request.BookRequestDto;
 import com.ifellow.bookstore.dto.response.BookResponseDto;
-import com.ifellow.bookstore.exception.BookNotFoundException;
+import com.ifellow.bookstore.exception.BookException;
 import com.ifellow.bookstore.mapper.BookMapper;
 import com.ifellow.bookstore.model.Author;
 import com.ifellow.bookstore.model.Book;
@@ -19,12 +19,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.Pageable;
 
 import java.math.BigDecimal;
-import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -120,7 +116,7 @@ class BookServiceImplTest {
     void findById_NotExistingId_ThrowsException() {
         Mockito.when(bookRepository.findById(bookId)).thenReturn(Optional.empty());
 
-        assertThrows(BookNotFoundException.class, () -> bookService.findById(bookId));
+        assertThrows(BookException.class, () -> bookService.findById(bookId));
         Mockito.verify(bookRepository).findById(bookId);
         Mockito.verify(bookMapper, Mockito.never()).toDto(Mockito.any(Book.class));
     }
@@ -142,7 +138,7 @@ class BookServiceImplTest {
     void findBookById_NotExistingId_ThrowsException() {
         Mockito.when(bookRepository.findById(bookId)).thenReturn(Optional.empty());
 
-        assertThrows(BookNotFoundException.class, () -> bookService.findBookById(bookId));
+        assertThrows(BookException.class, () -> bookService.findBookById(bookId));
         Mockito.verify(bookRepository).findById(bookId);
     }
 }

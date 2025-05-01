@@ -6,10 +6,10 @@ import com.ifellow.bookstore.configuration.WebConfiguration;
 import com.ifellow.bookstore.controller.TransferController;
 import com.ifellow.bookstore.dto.request.BookBulkDto;
 import com.ifellow.bookstore.dto.request.TransferRequestDto;
-import com.ifellow.bookstore.exception.BookNotFoundException;
+import com.ifellow.bookstore.exception.BookException;
 import com.ifellow.bookstore.exception.NotEnoughStockException;
-import com.ifellow.bookstore.exception.StoreNotFoundException;
-import com.ifellow.bookstore.exception.WarehouseNotFoundException;
+import com.ifellow.bookstore.exception.StoreException;
+import com.ifellow.bookstore.exception.WarehouseException;
 import com.ifellow.bookstore.service.api.TransferService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -94,7 +94,7 @@ class TransferControllerTest {
     @Test
     @DisplayName("POST /api/transfer/fromwarehousetostore - склад не найден")
     public void transferFromWarehouseToStore_WarehouseNotFound_ReturnsNotFound() throws Exception {
-        doThrow(new WarehouseNotFoundException("Warehouse not found with id: 1"))
+        doThrow(new WarehouseException("Warehouse not found with id: 1"))
                 .when(transferService).transferBookFromWarehouseToStore(anyLong(), anyLong(), anyLong(), anyInt());
 
         ResultActions response = mockMvc.perform(post("/api/transfer/fromwarehousetostore")
@@ -148,7 +148,7 @@ class TransferControllerTest {
     @Test
     @DisplayName("POST /api/transfer/fromstoretostore - магазин не найден")
     public void transferFromStoreToStore_StoreNotFound_ReturnsNotFound() throws Exception {
-        doThrow(new StoreNotFoundException("Store not found with id: 1"))
+        doThrow(new StoreException("Store not found with id: 1"))
                 .when(transferService).transferBookFromStoreToStore(anyLong(), anyLong(), anyLong(), anyInt());
 
         ResultActions response = mockMvc.perform(post("/api/transfer/fromstoretostore")
@@ -174,7 +174,7 @@ class TransferControllerTest {
     @Test
     @DisplayName("POST /api/transfer/fromstoretostore - книга не найдена")
     public void transferFromStoreToStore_BookNotFound_ReturnsNotFound() throws Exception {
-        doThrow(new BookNotFoundException("Book not found with id: 1"))
+        doThrow(new BookException("Book not found with id: 1"))
                 .when(transferService).transferBookFromStoreToStore(anyLong(), anyLong(), anyLong(), anyInt());
 
         ResultActions response = mockMvc.perform(post("/api/transfer/fromstoretostore")

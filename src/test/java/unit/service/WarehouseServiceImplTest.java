@@ -4,9 +4,9 @@ import com.ifellow.bookstore.dto.request.BookBulkDto;
 import com.ifellow.bookstore.dto.request.WarehouseRequestDto;
 import com.ifellow.bookstore.dto.response.WarehouseBookResponseDto;
 import com.ifellow.bookstore.dto.response.WarehouseResponseDto;
-import com.ifellow.bookstore.exception.BookNotFoundException;
+import com.ifellow.bookstore.exception.BookException;
 import com.ifellow.bookstore.exception.NotEnoughStockException;
-import com.ifellow.bookstore.exception.WarehouseNotFoundException;
+import com.ifellow.bookstore.exception.WarehouseException;
 import com.ifellow.bookstore.mapper.WarehouseBookAmountMapper;
 import com.ifellow.bookstore.mapper.WarehouseMapper;
 import com.ifellow.bookstore.model.Book;
@@ -104,7 +104,7 @@ class WarehouseServiceImplTest {
     void findWarehouseById_NotExistingId_ThrowsException() {
         Mockito.when(warehouseRepository.findById(1L)).thenReturn(Optional.empty());
 
-        assertThrows(WarehouseNotFoundException.class, () -> warehouseService.findWarehouseById(1L));
+        assertThrows(WarehouseException.class, () -> warehouseService.findWarehouseById(1L));
         Mockito.verify(warehouseRepository, Mockito.times(1)).findById(1L);
     }
 
@@ -171,7 +171,7 @@ class WarehouseServiceImplTest {
         Mockito.when(warehouseRepository.existsById(1L)).thenReturn(true);
         Mockito.when(warehouseBookAmountRepository.findByWarehouseIdAndBookId(1L, 1L)).thenReturn(Optional.empty());
 
-        assertThrows(BookNotFoundException.class, () -> warehouseService.removeBookFromWarehouse(1L, 1L, 5));
+        assertThrows(BookException.class, () -> warehouseService.removeBookFromWarehouse(1L, 1L, 5));
     }
 
     @Test

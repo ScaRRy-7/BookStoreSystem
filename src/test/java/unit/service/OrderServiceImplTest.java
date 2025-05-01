@@ -3,9 +3,9 @@ package unit.service;
 import com.ifellow.bookstore.dto.request.BookOrderDto;
 import com.ifellow.bookstore.dto.response.OrderResponseDto;
 import com.ifellow.bookstore.enumeration.OrderStatus;
-import com.ifellow.bookstore.exception.ChangeOrderStatusException;
+import com.ifellow.bookstore.exception.OrderStatusException;
 import com.ifellow.bookstore.exception.NotEnoughStockException;
-import com.ifellow.bookstore.exception.OrderNotFoundException;
+import com.ifellow.bookstore.exception.OrderException;
 import com.ifellow.bookstore.mapper.OrderMapper;
 import com.ifellow.bookstore.model.Book;
 import com.ifellow.bookstore.model.Order;
@@ -23,9 +23,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.Pageable;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -144,7 +141,7 @@ class OrderServiceImplTest {
     void completeById_NotExistingOrder_ThrowsException() {
         Mockito.when(orderRepository.findById(orderId)).thenReturn(Optional.empty());
 
-        assertThrows(OrderNotFoundException.class, () -> orderService.completeById(orderId));
+        assertThrows(OrderException.class, () -> orderService.completeById(orderId));
         Mockito.verify(orderRepository, Mockito.never()).save(Mockito.any(Order.class));
     }
 
@@ -154,7 +151,7 @@ class OrderServiceImplTest {
         order.setOrderStatus(OrderStatus.COMPLETED);
         Mockito.when(orderRepository.findById(orderId)).thenReturn(Optional.of(order));
 
-        assertThrows(ChangeOrderStatusException.class, () -> orderService.completeById(orderId));
+        assertThrows(OrderStatusException.class, () -> orderService.completeById(orderId));
         Mockito.verify(orderRepository, Mockito.never()).save(Mockito.any(Order.class));
     }
 
@@ -178,7 +175,7 @@ class OrderServiceImplTest {
     void cancelById_NotExistingOrder_ThrowsException() {
         Mockito.when(orderRepository.findById(orderId)).thenReturn(Optional.empty());
 
-        assertThrows(OrderNotFoundException.class, () -> orderService.cancelById(orderId));
+        assertThrows(OrderException.class, () -> orderService.cancelById(orderId));
         Mockito.verify(orderRepository, Mockito.never()).save(Mockito.any(Order.class));
     }
 
@@ -188,7 +185,7 @@ class OrderServiceImplTest {
         order.setOrderStatus(OrderStatus.COMPLETED);
         Mockito.when(orderRepository.findById(orderId)).thenReturn(Optional.of(order));
 
-        assertThrows(ChangeOrderStatusException.class, () -> orderService.cancelById(orderId));
+        assertThrows(OrderStatusException.class, () -> orderService.cancelById(orderId));
         Mockito.verify(orderRepository, Mockito.never()).save(Mockito.any(Order.class));
     }
 
@@ -210,6 +207,6 @@ class OrderServiceImplTest {
     void findById_NotExistingOrder_ThrowsException() {
         Mockito.when(orderRepository.findById(orderId)).thenReturn(Optional.empty());
 
-        assertThrows(OrderNotFoundException.class, () -> orderService.findById(orderId));
+        assertThrows(OrderException.class, () -> orderService.findById(orderId));
     }
 }

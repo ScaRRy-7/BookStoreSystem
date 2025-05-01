@@ -8,17 +8,17 @@ import java.math.BigDecimal;
 
 public record BookRequestDto (
 
-    @NotBlank(message = "Название книги не может быть null или пустым")
-    @Size(min = 1, max = 50, message = "Название книги должно содержать от 1 до 50 символов")
+    @NotBlank(message = "Book title cannot be null or empty")
+    @Size(min = 1, max = 50, message = "The book title must contain from 1 to 50 characters")
     String title,
 
-    @Min(value = 1, message = "authorId должен быть не менее 1")
+    @Min(value = 1, message = "authorId must be at least 1")
     Long authorId,
 
-    @Min(value = 1, message = "genreId должен быть не менее 1")
+    @Min(value = 1, message = "genreId must be at least 1")
     Long genreId,
 
-    @Min(value = 1, message = "Цена должна быть не менее 1")
+    @Min(value = 1, message = "The price must be at least 1")
     BigDecimal price
 ) {
 }

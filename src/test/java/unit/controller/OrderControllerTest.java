@@ -8,8 +8,8 @@ import com.ifellow.bookstore.controller.OrderController;
 import com.ifellow.bookstore.dto.request.BookOrderDto;
 import com.ifellow.bookstore.dto.response.OrderResponseDto;
 import com.ifellow.bookstore.enumeration.OrderStatus;
-import com.ifellow.bookstore.exception.ChangeOrderStatusException;
-import com.ifellow.bookstore.exception.OrderNotFoundException;
+import com.ifellow.bookstore.exception.OrderStatusException;
+import com.ifellow.bookstore.exception.OrderException;
 import com.ifellow.bookstore.service.api.OrderService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -109,7 +109,7 @@ class OrderControllerTest {
     @DisplayName("POST /api/orders/{orderId}/complete - ошибка при неверном статусе")
     void completeOrder_InvalidStatus_ReturnsBadRequest() throws Exception {
         when(orderService.completeById(anyLong()))
-                .thenThrow(new ChangeOrderStatusException("Invalid status"));
+                .thenThrow(new OrderStatusException("Invalid status"));
 
         ResultActions response = mockMvc.perform(post("/api/orders/{orderId}/complete", 1L));
 
@@ -133,7 +133,7 @@ class OrderControllerTest {
     @DisplayName("POST /api/orders/{orderId}/cancel - ошибка при неверном статусе")
     void cancelOrder_InvalidStatus_ReturnsBadRequest() throws Exception {
         when(orderService.cancelById(anyLong()))
-                .thenThrow(new ChangeOrderStatusException("Invalid status"));
+                .thenThrow(new OrderStatusException("Invalid status"));
 
         ResultActions response = mockMvc.perform(post("/api/orders/{orderId}/cancel", 1L));
 
@@ -158,7 +158,7 @@ class OrderControllerTest {
     @DisplayName("GET /api/orders/{orderId} - заказ не найден")
     void getOrder_NotFound_ReturnsNotFound() throws Exception {
         when(orderService.findById(anyLong()))
-                .thenThrow(new OrderNotFoundException("Order not found"));
+                .thenThrow(new OrderException("Order not found"));
 
         ResultActions response = mockMvc.perform(get("/api/orders/{orderId}", 1L));
 

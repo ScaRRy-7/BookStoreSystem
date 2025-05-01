@@ -2,7 +2,7 @@ package com.ifellow.bookstore.service.impl;
 
 import com.ifellow.bookstore.dto.request.GenreRequestDto;
 import com.ifellow.bookstore.dto.response.GenreResponseDto;
-import com.ifellow.bookstore.exception.GenreNotFoundException;
+import com.ifellow.bookstore.exception.GenreException;
 import com.ifellow.bookstore.mapper.GenreMapper;
 import com.ifellow.bookstore.model.Genre;
 import com.ifellow.bookstore.repository.GenreRepository;
@@ -27,16 +27,16 @@ public class GenreServiceImpl implements GenreService {
     }
 
     @Override
-    public Genre findGenreById(Long id) throws GenreNotFoundException {
+    public Genre findGenreById(Long id) throws GenreException {
         return genreRepository.findById(id).orElseThrow(
-                () -> new GenreNotFoundException("Genre not found with id: " + id)
+                () -> new GenreException("Genre not found with id: " + id)
         );
     }
 
     @Override
-    public GenreResponseDto findById(Long id) throws GenreNotFoundException {
+    public GenreResponseDto findById(Long id) throws GenreException {
         return genreRepository.findById(id)
                 .map(genreMapper::toDto)
-                .orElseThrow(() -> new GenreNotFoundException("Genre not found with id: " + id));
+                .orElseThrow(() -> new GenreException("Genre not found with id: " + id));
     }
 }

@@ -5,8 +5,8 @@ import jakarta.validation.constraints.Size;
 
 public record AuthorRequestDto(
 
-        @NotBlank(message = "ФИО автора не может быть null или пустым")
-        @Size(min = 3, max = 50, message = "ФИО автора должно содержать от 3 до 50 символов")
+        @NotBlank(message = "Author fullName can't be null or empty")
+        @Size(min = 3, max = 50, message = "Author fullName must contains between 3 and 50 characters")
         String fullName
 ) {
 }

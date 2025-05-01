@@ -8,9 +8,9 @@ import com.ifellow.bookstore.dto.request.BookBulkDto;
 import com.ifellow.bookstore.dto.request.WarehouseRequestDto;
 import com.ifellow.bookstore.dto.response.WarehouseBookResponseDto;
 import com.ifellow.bookstore.dto.response.WarehouseResponseDto;
-import com.ifellow.bookstore.exception.BookNotFoundException;
+import com.ifellow.bookstore.exception.BookException;
 import com.ifellow.bookstore.exception.NotEnoughStockException;
-import com.ifellow.bookstore.exception.WarehouseNotFoundException;
+import com.ifellow.bookstore.exception.WarehouseException;
 import com.ifellow.bookstore.service.api.WarehouseService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -120,7 +120,7 @@ class WarehouseControllerTest {
     @DisplayName("GET /api/warehouses/{id} - склад не найден")
     void getWarehouseById_NotFound_ReturnsNotFound() throws Exception {
         when(warehouseService.findById(1L))
-                .thenThrow(new WarehouseNotFoundException("Warehouse not found"));
+                .thenThrow(new WarehouseException("Warehouse not found"));
 
         ResultActions response = mockMvc.perform(get("/api/warehouses/{id}", 1L));
 
@@ -153,7 +153,7 @@ class WarehouseControllerTest {
     @Test
     @DisplayName("POST /api/warehouses/{id}/stock/add - книга не найдена")
     void addBooksToWarehouse_BookNotFound_ReturnsNotFound() throws Exception {
-        doThrow(new BookNotFoundException("Book not found"))
+        doThrow(new BookException("Book not found"))
                 .when(warehouseService).addBookToWarehouse(1L, 1L, 5);
 
         ResultActions response = mockMvc.perform(post("/api/warehouses/{id}/stock/add", 1L)
@@ -214,7 +214,7 @@ class WarehouseControllerTest {
     void getWarehouseStock_WarehouseNotFound_ReturnsNotFound() throws Exception {
         Pageable pageable = PageRequest.of(0, 10);
         when(warehouseService.getWarehouseStock(1L, pageable))
-                .thenThrow(new WarehouseNotFoundException("Warehouse not found"));
+                .thenThrow(new WarehouseException("Warehouse not found"));
 
         ResultActions response = mockMvc.perform(get("/api/warehouses/{id}/stock", 1L)
                         .param("page", "0")

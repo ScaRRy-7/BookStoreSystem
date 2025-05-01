@@ -3,7 +3,7 @@ package integration.servicerepository;
 import com.ifellow.bookstore.dto.request.*;
 import com.ifellow.bookstore.dto.response.*;
 import com.ifellow.bookstore.enumeration.OrderStatus;
-import com.ifellow.bookstore.exception.ChangeOrderStatusException;
+import com.ifellow.bookstore.exception.OrderStatusException;
 import com.ifellow.bookstore.model.OrderItem;
 import com.ifellow.bookstore.repository.OrderItemRepository;
 import com.ifellow.bookstore.service.api.*;
@@ -154,7 +154,7 @@ public class OrderServiceImplTest extends AbstractIntegrationTest {
 
 
 
-        assertThrows(ChangeOrderStatusException.class, () -> orderService.cancelById(orderCanceledDto.id()));
+        assertThrows(OrderStatusException.class, () -> orderService.cancelById(orderCanceledDto.id()));
 
     }
 }

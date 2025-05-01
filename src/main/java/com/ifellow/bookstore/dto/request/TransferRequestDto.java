@@ -5,10 +5,10 @@ import jakarta.validation.constraints.NotNull;
 
 public record TransferRequestDto(
 
-        @Min(value = 1, message = "id источника книг не должен быть меньше 1")
+        @Min(value = 1, message = "Book source id must not be less than 1")
         Long sourceId,
 
-        @Min(value = 1, message = "id таргета книг не должен быть меньше 1")
+        @Min(value = 1, message = "Book destionation id must not be less than 1")
         Long destinationId,
 
         @NotNull

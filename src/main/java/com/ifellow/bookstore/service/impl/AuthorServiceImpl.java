@@ -2,7 +2,7 @@ package com.ifellow.bookstore.service.impl;
 
 import com.ifellow.bookstore.dto.request.AuthorRequestDto;
 import com.ifellow.bookstore.dto.response.AuthorResponseDto;
-import com.ifellow.bookstore.exception.AuthorNotFoundException;
+import com.ifellow.bookstore.exception.AuthorException;
 import com.ifellow.bookstore.mapper.AuthorMapper;
 import com.ifellow.bookstore.model.Author;
 import com.ifellow.bookstore.repository.AuthorRepository;
@@ -27,15 +27,15 @@ public class AuthorServiceImpl implements AuthorService {
     }
 
     @Override
-    public AuthorResponseDto findById(Long id) throws AuthorNotFoundException {
+    public AuthorResponseDto findById(Long id) throws AuthorException {
         return authorRepository.findById(id)
                 .map(authorMapper::toDto)
-                .orElseThrow(() -> new AuthorNotFoundException("Author not found with id: " + id));
+                .orElseThrow(() -> new AuthorException("Author not found with id: " + id));
     }
 
     @Override
-    public Author findAuthorById(Long id) throws AuthorNotFoundException {
+    public Author findAuthorById(Long id) throws AuthorException {
         return authorRepository.findById(id)
-                .orElseThrow(() -> new AuthorNotFoundException("Author not found with id: " + id));
+                .orElseThrow(() -> new AuthorException("Author not found with id: " + id));
     }
 }
