@@ -146,7 +146,7 @@ class StoreControllerTest {
     public void addBooksToStore_StoreNotFound_Returns404() throws Exception {
         Long storeId = 999L;
         doThrow(new StoreException("Store not found with id: " + storeId))
-                .when(storeService).addBookToStore(storeId, bookBulkDto.bookId(), bookBulkDto.quantity());
+                .when(storeService).addBookToStore(storeId, new BookBulkDto(bookBulkDto.bookId(), bookBulkDto.quantity()));
 
         ResultActions response = mockMvc.perform(post("/api/stores/{id}/stock/add", storeId)
                 .contentType(MediaType.APPLICATION_JSON)
@@ -160,7 +160,7 @@ class StoreControllerTest {
     public void addBooksToStore_BookNotFound_Returns404() throws Exception {
         Long storeId = 1L;
         doThrow(new BookException("Book not found with id: " + bookBulkDto.bookId()))
-                .when(storeService).addBookToStore(storeId, bookBulkDto.bookId(), bookBulkDto.quantity());
+                .when(storeService).addBookToStore(storeId, new BookBulkDto(bookBulkDto.bookId(), bookBulkDto.quantity()));
 
         ResultActions response = mockMvc.perform(post("/api/stores/{id}/stock/add", storeId)
                 .contentType(MediaType.APPLICATION_JSON)
@@ -174,7 +174,7 @@ class StoreControllerTest {
     public void addBooksToStore_InvalidQuantity_ReturnsBadRequest() throws Exception {
         Long storeId = 1L;
         doThrow(new IllegalArgumentException("quantity must be greater than zero"))
-                .when(storeService).addBookToStore(storeId, bookBulkDto.bookId(), bookBulkDto.quantity());
+                .when(storeService).addBookToStore(storeId, new BookBulkDto(bookBulkDto.bookId(), bookBulkDto.quantity()));
 
         ResultActions response = mockMvc.perform(post("/api/stores/{id}/stock/add", storeId)
                 .contentType(MediaType.APPLICATION_JSON)
@@ -200,7 +200,7 @@ class StoreControllerTest {
     public void deleteBooksFromStore_StoreNotFound_Returns404() throws Exception {
         Long storeId = 999L;
         doThrow(new StoreException("Store not found with id: " + storeId))
-                .when(storeService).removeBookFromStore(storeId, bookBulkDto.bookId(), bookBulkDto.quantity());
+                .when(storeService).removeBookFromStore(storeId, new BookBulkDto(bookBulkDto.bookId(), bookBulkDto.quantity()));
 
         ResultActions response = mockMvc.perform(post("/api/stores/{id}/stock/remove", storeId)
                 .contentType(MediaType.APPLICATION_JSON)
@@ -214,7 +214,7 @@ class StoreControllerTest {
     public void deleteBooksFromStore_BookNotFound_Returns404() throws Exception {
         Long storeId = 1L;
         doThrow(new BookException("Book not found with id: " + bookBulkDto.bookId()))
-                .when(storeService).removeBookFromStore(storeId, bookBulkDto.bookId(), bookBulkDto.quantity());
+                .when(storeService).removeBookFromStore(storeId, new BookBulkDto(bookBulkDto.bookId(), bookBulkDto.quantity()));
 
         ResultActions response = mockMvc.perform(post("/api/stores/{id}/stock/remove", storeId)
                 .contentType(MediaType.APPLICATION_JSON)
@@ -228,7 +228,7 @@ class StoreControllerTest {
     public void deleteBooksFromStore_NotEnoughStock_ReturnsBadRequest() throws Exception {
         Long storeId = 1L;
         doThrow(new NotEnoughStockException("Not enough stock of book with id: " + bookBulkDto.bookId()))
-                .when(storeService).removeBookFromStore(storeId, bookBulkDto.bookId(), bookBulkDto.quantity());
+                .when(storeService).removeBookFromStore(storeId, new BookBulkDto(bookBulkDto.bookId(), bookBulkDto.quantity()));
 
         ResultActions response = mockMvc.perform(post("/api/stores/{id}/stock/remove", storeId)
                 .contentType(MediaType.APPLICATION_JSON)

@@ -11,8 +11,10 @@ import java.util.List;
 public interface OrderService {
 
     OrderResponseDto create(Long warehouseId, List<BookOrderDto> bookOrderDtoList);
+    Page<OrderResponseDto> findByUserId(Long userId, Pageable pageable);
     OrderResponseDto completeById(Long orderId);
     OrderResponseDto cancelById(Long orderId);
     OrderResponseDto findById(Long orderId);
     Page<OrderResponseDto> findAll(OrderFilter filter, Pageable pageable);
 }
+;

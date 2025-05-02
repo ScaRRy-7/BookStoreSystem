@@ -1,5 +1,6 @@
 package unit.service;
 
+import com.ifellow.bookstore.dto.request.BookBulkDto;
 import com.ifellow.bookstore.exception.NotEnoughStockException;
 import com.ifellow.bookstore.service.api.StoreService;
 import com.ifellow.bookstore.service.api.WarehouseService;
@@ -45,42 +46,42 @@ class TransferServiceImplTest {
     @Test
     @DisplayName("Успешный перенос книги со склада в магазин")
     void transferBookFromWarehouseToStore_ValidData_TransferBook() {
-        transferService.transferBookFromWarehouseToStore(warehouseId, storeIdTo, bookId, quantity);
+        transferService.transferBookFromWarehouseToStore(warehouseId, storeIdTo, new BookBulkDto(bookId, quantity));
 
-        Mockito.verify(warehouseService, Mockito.times(1)).removeBookFromWarehouse(warehouseId, bookId, quantity);
-        Mockito.verify(storeService, Mockito.times(1)).addBookToStore(storeIdTo, bookId, quantity);
+        Mockito.verify(warehouseService, Mockito.times(1)).removeBookFromWarehouse(warehouseId, new BookBulkDto(bookId, quantity));
+        Mockito.verify(storeService, Mockito.times(1)).addBookToStore(storeIdTo, new BookBulkDto(bookId, quantity));
     }
 
     @Test
     @DisplayName("Успешный перенос книги из одного магазина в другой")
     void transferBookFromStoreToStore_ValidData_TransferBook() {
-        transferService.transferBookFromStoreToStore(storeIdFrom, storeIdTo, bookId, quantity);
+        transferService.transferBookFromStoreToStore(storeIdFrom, storeIdTo, new BookBulkDto(bookId, quantity));
 
-        Mockito.verify(storeService, Mockito.times(1)).removeBookFromStore(storeIdFrom, bookId, quantity);
-        Mockito.verify(storeService, Mockito.times(1)).addBookToStore(storeIdTo, bookId, quantity);
+        Mockito.verify(storeService, Mockito.times(1)).removeBookFromStore(storeIdFrom, new BookBulkDto(bookId, quantity));
+        Mockito.verify(storeService, Mockito.times(1)).addBookToStore(storeIdTo, new BookBulkDto(bookId, quantity));
     }
 
     @Test
     @DisplayName("Исключение при переносе книги со склада из-за недостатка книг")
     void transferBookFromWarehouseToStore_NotEnoughStock_ThrowsException() {
         Mockito.doThrow(new NotEnoughStockException("Not enough stock"))
-                .when(warehouseService).removeBookFromWarehouse(warehouseId, bookId, quantity);
+                .when(warehouseService).removeBookFromWarehouse(warehouseId, new BookBulkDto(bookId, quantity));
 
         assertThrows(NotEnoughStockException.class, () ->
-                transferService.transferBookFromWarehouseToStore(warehouseId, storeIdTo, bookId, quantity));
-        Mockito.verify(warehouseService, Mockito.times(1)).removeBookFromWarehouse(warehouseId, bookId, quantity);
-        Mockito.verify(storeService, Mockito.never()).addBookToStore(Mockito.anyLong(), Mockito.anyLong(), Mockito.anyInt());
+                transferService.transferBookFromWarehouseToStore(warehouseId, storeIdTo, new BookBulkDto(bookId, quantity)));
+        Mockito.verify(warehouseService, Mockito.times(1)).removeBookFromWarehouse(warehouseId, new BookBulkDto(bookId, quantity));
+        Mockito.verify(storeService, Mockito.never()).addBookToStore(Mockito.anyLong(), Mockito.any());
     }
 
     @Test
     @DisplayName("Исключение при переносе книги из магазина из-за недостатка книг")
     void transferBookFromStoreToStore_NotEnoughStock_ThrowsException() {
         Mockito.doThrow(new NotEnoughStockException("Not enough stock"))
-                .when(storeService).removeBookFromStore(storeIdFrom, bookId, quantity);
+                .when(storeService).removeBookFromStore(storeIdFrom, new BookBulkDto(bookId, quantity));
 
         assertThrows(NotEnoughStockException.class, () ->
-                transferService.transferBookFromStoreToStore(storeIdFrom, storeIdTo, bookId, quantity));
-        Mockito.verify(storeService, Mockito.times(1)).removeBookFromStore(storeIdFrom, bookId, quantity);
-        Mockito.verify(storeService, Mockito.never()).addBookToStore(Mockito.anyLong(), Mockito.anyLong(), Mockito.anyInt());
+                transferService.transferBookFromStoreToStore(storeIdFrom, storeIdTo, new BookBulkDto(bookId, quantity)));
+        Mockito.verify(storeService, Mockito.times(1)).removeBookFromStore(storeIdFrom, new BookBulkDto(bookId, quantity));
+        Mockito.verify(storeService, Mockito.never()).addBookToStore(Mockito.anyLong(), Mockito.any());
     }
 }

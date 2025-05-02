@@ -1,5 +1,6 @@
 package com.ifellow.bookstore.service.impl;
 
+import com.ifellow.bookstore.dto.request.BookBulkDto;
 import com.ifellow.bookstore.dto.request.StoreRequestDto;
 import com.ifellow.bookstore.dto.response.StoreBookResponseDto;
 import com.ifellow.bookstore.dto.response.StoreResponseDto;
@@ -21,6 +22,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -63,8 +65,10 @@ public class StoreServiceImpl implements StoreService {
 
     @Override
     @Transactional
-    public void addBookToStore(Long id, Long bookId, int quantity)
+    public void addBookToStore(Long id, BookBulkDto bookBulkDto)
             throws IllegalArgumentException, StoreException, BookException {
+        int quantity = bookBulkDto.quantity();
+        Long bookId = bookBulkDto.bookId();
 
         if (quantity <= EMPTY_STOCK) throw new IllegalArgumentException("quantity must be greater than zero");
 
@@ -88,8 +92,10 @@ public class StoreServiceImpl implements StoreService {
 
     @Override
     @Transactional
-    public void removeBookFromStore(Long id, Long bookId, int quantity)
+    public void removeBookFromStore(Long id, BookBulkDto bookBulkDto)
             throws IllegalArgumentException, NotEnoughStockException, BookException, StoreException {
+        int quantity = bookBulkDto.quantity();
+        Long bookId = bookBulkDto.bookId();
 
         if (quantity <= EMPTY_STOCK) throw new IllegalArgumentException("quantity must be greater than zero");
 
@@ -106,6 +112,22 @@ public class StoreServiceImpl implements StoreService {
                 }, () -> {
                     throw new BookException("Book not found with id: " + bookId + " in store with id: " + id);
                 });
+    }
+
+    @Override
+    @Transactional
+    public void addBooksToStore(Long id, List<BookBulkDto> bookBulkDtos) {
+        for (BookBulkDto bookBulkDto : bookBulkDtos) {
+            addBookToStore(id, bookBulkDto);
+        }
+    }
+
+    @Override
+    @Transactional
+    public void removeBooksFromStore(Long id, List<BookBulkDto> bookBulkDtos) {
+        for (BookBulkDto bookBulkDto : bookBulkDtos) {
+            removeBookFromStore(id, bookBulkDto);
+        }
     }
 
     @Override

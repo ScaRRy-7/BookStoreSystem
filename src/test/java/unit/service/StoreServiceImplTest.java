@@ -1,5 +1,6 @@
 package unit.service;
 
+import com.ifellow.bookstore.dto.request.BookBulkDto;
 import com.ifellow.bookstore.dto.request.StoreRequestDto;
 import com.ifellow.bookstore.dto.response.StoreBookResponseDto;
 import com.ifellow.bookstore.dto.response.StoreResponseDto;
@@ -128,7 +129,7 @@ class StoreServiceImplTest {
         Mockito.when(storeBookAmountRepository.findByStoreIdAndBookId(storeId, bookId)).thenReturn(Optional.empty());
         Mockito.when(storeBookAmountRepository.save(Mockito.any(StoreBookAmount.class))).thenReturn(sba);
 
-        storeService.addBookToStore(storeId, bookId, quantity);
+        storeService.addBookToStore(storeId, new BookBulkDto(bookId, quantity));
 
         Mockito.verify(storeRepository).findById(storeId);
         Mockito.verify(bookService).findBookById(bookId);
@@ -150,7 +151,7 @@ class StoreServiceImplTest {
         Mockito.when(storeBookAmountRepository.findByStoreIdAndBookId(storeId, bookId)).thenReturn(Optional.of(sba));
         Mockito.when(storeBookAmountRepository.save(sba)).thenReturn(sba);
 
-        storeService.addBookToStore(storeId, bookId, quantity);
+        storeService.addBookToStore(storeId, new BookBulkDto(bookId, quantity));
 
         assertEquals(initialAmount + quantity, sba.getAmount());
         Mockito.verify(storeBookAmountRepository).save(sba);
@@ -159,8 +160,8 @@ class StoreServiceImplTest {
     @Test
     @DisplayName("Выбрасывает IllegalArgumentException когда quantity <= 0")
     void addBookToStore_InvalidQuantity_ThrowsException() {
-        assertThrows(IllegalArgumentException.class, () -> storeService.addBookToStore(storeId, bookId, 0));
-        assertThrows(IllegalArgumentException.class, () -> storeService.addBookToStore(storeId, bookId, -1));
+        assertThrows(IllegalArgumentException.class, () -> storeService.addBookToStore(storeId, new BookBulkDto(bookId, 0)));
+        assertThrows(IllegalArgumentException.class, () -> storeService.addBookToStore(storeId, new BookBulkDto(bookId, -1)));
         Mockito.verify(storeRepository, Mockito.never()).findById(Mockito.anyLong());
     }
 
@@ -178,7 +179,7 @@ class StoreServiceImplTest {
         Mockito.when(storeBookAmountRepository.findByStoreIdAndBookId(storeId, bookId)).thenReturn(Optional.of(sba));
         Mockito.when(storeBookAmountRepository.save(sba)).thenReturn(sba);
 
-        storeService.removeBookFromStore(storeId, bookId, quantityToRemove);
+        storeService.removeBookFromStore(storeId, new BookBulkDto(bookId, quantityToRemove));
 
         assertEquals(initialAmount - quantityToRemove, sba.getAmount());
         Mockito.verify(storeBookAmountRepository).save(sba);
@@ -193,7 +194,7 @@ class StoreServiceImplTest {
         Mockito.when(storeRepository.findById(storeId)).thenReturn(Optional.of(store));
         Mockito.when(storeBookAmountRepository.findByStoreIdAndBookId(storeId, bookId)).thenReturn(Optional.of(sba));
 
-        assertThrows(NotEnoughStockException.class, () -> storeService.removeBookFromStore(storeId, bookId, 10));
+        assertThrows(NotEnoughStockException.class, () -> storeService.removeBookFromStore(storeId, new BookBulkDto(bookId, 10)));
         Mockito.verify(storeBookAmountRepository, Mockito.never()).save(Mockito.any());
     }
 
@@ -203,7 +204,7 @@ class StoreServiceImplTest {
         Mockito.when(storeRepository.findById(storeId)).thenReturn(Optional.of(store));
         Mockito.when(storeBookAmountRepository.findByStoreIdAndBookId(storeId, bookId)).thenReturn(Optional.empty());
 
-        assertThrows(BookException.class, () -> storeService.removeBookFromStore(storeId, bookId, quantity));
+        assertThrows(BookException.class, () -> storeService.removeBookFromStore(storeId, new BookBulkDto(bookId, quantity)));
         Mockito.verify(storeBookAmountRepository, Mockito.never()).save(Mockito.any());
     }
 

@@ -15,8 +15,9 @@ public interface WarehouseService {
     WarehouseResponseDto save(WarehouseRequestDto warehouseRequestDto);
     WarehouseResponseDto findById(Long id);
     Warehouse findWarehouseById(Long id);
-    void addBookToWarehouse(Long id, Long bookId, int quantity);
-    void removeBookFromWarehouse(Long id, Long bookId, int quantity);
+    void addBookToWarehouse(Long id, BookBulkDto bookBulkDto);
+    void removeBookFromWarehouse(Long id, BookBulkDto bookBulkDto);
     Page<WarehouseBookResponseDto> getWarehouseStock(Long id, Pageable pageable);
-    void bulkAddBooks(Long id, List<BookBulkDto> booksToAdd);
+    void addBooksToWarehouse(Long id, List<BookBulkDto> booksToAdd);
+    void removeBooksFromWarehouse(Long id, List<BookBulkDto> booksToRemove);
 }

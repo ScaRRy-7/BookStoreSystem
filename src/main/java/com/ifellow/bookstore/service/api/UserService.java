@@ -1,6 +1,5 @@
 package com.ifellow.bookstore.service.api;
 
-import com.ifellow.bookstore.dto.response.UserResponseDto;
 import com.ifellow.bookstore.model.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -11,7 +10,6 @@ public interface UserService extends UserDetailsService {
     UserDetails loadUserByUsername(String username) throws UsernameNotFoundException;
     User findUserByUsername(String username) throws UsernameNotFoundException;
     void saveUser(User user);
-    UserResponseDto getProfile();
     User findById(Long id);
     void updateUser(User user);
 }

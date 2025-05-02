@@ -1,15 +1,14 @@
 package unit.service;
 
+import com.ifellow.bookstore.dto.request.BookBulkDto;
 import com.ifellow.bookstore.dto.request.BookSaleDto;
 import com.ifellow.bookstore.dto.response.SaleResponseDto;
 import com.ifellow.bookstore.exception.NotEnoughStockException;
 import com.ifellow.bookstore.mapper.SaleMapper;
-import com.ifellow.bookstore.model.Book;
-import com.ifellow.bookstore.model.Sale;
-import com.ifellow.bookstore.model.SaleItem;
-import com.ifellow.bookstore.model.Store;
+import com.ifellow.bookstore.model.*;
 import com.ifellow.bookstore.repository.SaleItemRepository;
 import com.ifellow.bookstore.repository.SaleRepository;
+import com.ifellow.bookstore.service.api.AuthenticationService;
 import com.ifellow.bookstore.service.api.BookService;
 import com.ifellow.bookstore.service.api.StoreService;
 import com.ifellow.bookstore.service.impl.SaleServiceImpl;
@@ -21,14 +20,12 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.Pageable;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -46,6 +43,9 @@ class SaleServiceImplTest {
 
     @Mock
     private BookService bookService;
+
+    @Mock
+    private AuthenticationService authenticationService;
 
     @Mock
     private SaleMapper saleMapper;
@@ -96,6 +96,7 @@ class SaleServiceImplTest {
         saleResponseDto = new SaleResponseDto(sale.getId(), 1L, saleTime, storeId, sale.getTotalPrice());
     }
 
+
     @Test
     @DisplayName("Успешная продажа книг")
     void processSale_ValidData_ProcessesSale() {
@@ -103,12 +104,13 @@ class SaleServiceImplTest {
         Mockito.when(bookService.findBookById(bookId)).thenReturn(book);
         Mockito.when(saleRepository.save(Mockito.any(Sale.class))).thenReturn(sale);
         Mockito.when(saleMapper.toDto(Mockito.any(Sale.class))).thenReturn(saleResponseDto);
+        Mockito.when(authenticationService.getUserInCurrentContext()).thenReturn(new User(1L, "username", "password", Set.of(), List.of(), List.of()));
 
         SaleResponseDto result = saleService.processSale(storeId, List.of(bookSaleDto));
 
         assertNotNull(result);
         assertEquals(saleResponseDto, result);
-        Mockito.verify(storeService).removeBookFromStore(storeId, bookId, quantity);
+        Mockito.verify(storeService).removeBookFromStore(storeId, new BookBulkDto(bookId, quantity));
         Mockito.verify(saleRepository).save(Mockito.any(Sale.class));
     }
 
@@ -131,10 +133,10 @@ class SaleServiceImplTest {
     @DisplayName("Исключение при недостатке книг на складе")
     void processSale_NotEnoughStock_ThrowsException() {
         Mockito.when(storeService.findStoreById(storeId)).thenReturn(store);
-        Mockito.doThrow(new NotEnoughStockException("Not enough stock")).when(storeService).removeBookFromStore(storeId, bookId, quantity);
+        Mockito.doThrow(new NotEnoughStockException("Not enough stock")).when(storeService).removeBookFromStore(storeId, new BookBulkDto(bookId, quantity));
 
         assertThrows(NotEnoughStockException.class, () -> saleService.processSale(storeId, List.of(bookSaleDto)));
-        Mockito.verify(storeService).removeBookFromStore(storeId, bookId, quantity);
+        Mockito.verify(storeService).removeBookFromStore(storeId, new BookBulkDto(bookId, quantity));
         Mockito.verify(saleRepository, Mockito.never()).save(Mockito.any(Sale.class));
     }
 }

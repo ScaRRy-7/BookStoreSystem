@@ -1,5 +1,6 @@
 package com.ifellow.bookstore.service.impl;
 
+import com.ifellow.bookstore.dto.request.BookBulkDto;
 import com.ifellow.bookstore.dto.request.BookSaleDto;
 import com.ifellow.bookstore.dto.filter.SaleFilter;
 import com.ifellow.bookstore.dto.response.SaleResponseDto;
@@ -50,7 +51,7 @@ public class SaleServiceImpl implements SaleService {
         sale.setSaleDateTime(LocalDateTime.now());
 
         for (BookSaleDto bookSaleDto : bookSaleDtoList) {
-            storeService.removeBookFromStore(storeId, bookSaleDto.bookId(), bookSaleDto.quantity());
+            storeService.removeBookFromStore(storeId, new BookBulkDto(bookSaleDto.bookId(), bookSaleDto.quantity()));
 
             Book book = bookService.findBookById(bookSaleDto.bookId());
 
@@ -81,6 +82,11 @@ public class SaleServiceImpl implements SaleService {
     public Page<SaleResponseDto> findAll(SaleFilter filter, Pageable pageable) {
         Specification<Sale> spec = SaleSpecification.withFilter(filter);
         return saleRepository.findAll(spec, pageable).map(saleMapper::toDto);
+    }
+
+    @Override
+    public Page<SaleResponseDto> findByUserId(Long userId, Pageable pageable) {
+        return saleRepository.findByUserId(userId, pageable).map(saleMapper::toDto);
     }
 
     private BigDecimal calculateTotalPrice(List<SaleItem> saleItemList) {

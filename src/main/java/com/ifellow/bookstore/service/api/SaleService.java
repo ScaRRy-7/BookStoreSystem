@@ -13,4 +13,5 @@ public interface SaleService {
     SaleResponseDto processSale(Long storeId, List<BookSaleDto> bookSaleDtoList);
     SaleResponseDto findById(Long id);
     Page<SaleResponseDto> findAll(SaleFilter filter, Pageable pageable);
+    Page<SaleResponseDto> findByUserId(Long userId, Pageable pageable);
 }

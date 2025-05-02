@@ -130,7 +130,7 @@ class WarehouseControllerTest {
     @Test
     @DisplayName("POST /api/warehouses/{id}/stock/add - успешное добавление книг")
     void addBooksToWarehouse_ValidRequest_ReturnsOk() throws Exception {
-        doNothing().when(warehouseService).addBookToWarehouse(1L, 1L, 5);
+        doNothing().when(warehouseService).addBookToWarehouse(1L, new BookBulkDto(1L, 5));
 
         ResultActions response = mockMvc.perform(post("/api/warehouses/{id}/stock/add", 1L)
                         .contentType(MediaType.APPLICATION_JSON)
@@ -154,7 +154,7 @@ class WarehouseControllerTest {
     @DisplayName("POST /api/warehouses/{id}/stock/add - книга не найдена")
     void addBookToWarehouse_BookNotFound_ReturnsNotFound() throws Exception {
         doThrow(new BookException("Book not found"))
-                .when(warehouseService).addBookToWarehouse(1L, 1L, 5);
+                .when(warehouseService).addBookToWarehouse(1L, new BookBulkDto(1L, 5));
 
         ResultActions response = mockMvc.perform(post("/api/warehouses/{id}/stock/add", 1L)
                         .contentType(MediaType.APPLICATION_JSON)
@@ -166,7 +166,7 @@ class WarehouseControllerTest {
     @Test
     @DisplayName("POST /api/warehouses/{id}/stock/remove - успешное удаление книг")
     void removeBooksFromWarehouse_ValidRequest_ReturnsOk() throws Exception {
-        doNothing().when(warehouseService).removeBookFromWarehouse(1L, 1L, 5);
+        doNothing().when(warehouseService).removeBookFromWarehouse(1L, new BookBulkDto(1L, 5));
 
         ResultActions response = mockMvc.perform(post("/api/warehouses/{id}/stock/remove", 1L)
                         .contentType(MediaType.APPLICATION_JSON)
@@ -179,7 +179,7 @@ class WarehouseControllerTest {
     @DisplayName("POST /api/warehouses/{id}/stock/remove - недостаточно книг на складе")
     void removeBooksFromWarehouse_NotEnoughStock_ReturnsBadRequest() throws Exception {
         doThrow(new NotEnoughStockException("Not enough stock"))
-                .when(warehouseService).removeBookFromWarehouse(1L, 1L, 5);
+                .when(warehouseService).removeBookFromWarehouse(1L, new BookBulkDto(1L, 5));
 
         ResultActions response = mockMvc.perform(post("/api/warehouses/{id}/stock/remove", 1L)
                         .contentType(MediaType.APPLICATION_JSON)

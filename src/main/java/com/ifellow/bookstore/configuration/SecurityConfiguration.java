@@ -69,7 +69,7 @@ public class SecurityConfiguration {
                         .requestMatchers(HttpMethod.GET, "/api/orders/**").hasAnyRole("MANAGER", "ADMIN")
 
                         .requestMatchers(HttpMethod.POST, "/api/stores").hasRole("ADMIN")
-                        .requestMatchers(HttpMethod.POST, "/api/stores/stock/**").hasRole("MANAGER")
+                        .requestMatchers(HttpMethod.POST, "/api/stores/{storeId}/stock/**").hasRole("MANAGER")
                         .requestMatchers(HttpMethod.GET, "/api/stores/**").permitAll()
 
                         .requestMatchers(HttpMethod.POST, "/api/transfer/**").hasRole("MANAGER")

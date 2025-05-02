@@ -36,13 +36,13 @@ public class WarehouseController {
     @ResponseStatus(HttpStatus.OK)
     @PostMapping("/{id}/stock/add")
     public void addBookToWarehouse(@PathVariable Long id, @Valid @RequestBody BookBulkDto bookBulkDto) {
-        warehouseService.addBookToWarehouse(id, bookBulkDto.bookId(), bookBulkDto.quantity());
+        warehouseService.addBookToWarehouse(id, bookBulkDto);
     }
 
     @ResponseStatus(HttpStatus.OK)
     @PostMapping("/{id}/stock/remove")
     public void removeBooksFromWarehouse(@PathVariable Long id, @Valid @RequestBody BookBulkDto bookBulkDto) {
-        warehouseService.removeBookFromWarehouse(id, bookBulkDto.bookId(), bookBulkDto.quantity());
+        warehouseService.removeBookFromWarehouse(id, bookBulkDto);
     }
 
     @GetMapping("/{id}/stock")
@@ -52,8 +52,14 @@ public class WarehouseController {
     }
 
     @ResponseStatus(HttpStatus.OK)
-    @PostMapping("/{id}/stock/bulkadd")
-    public void addBooksToWarehouse(@PathVariable Long id, @Valid @RequestBody List<BookBulkDto> bookBulkDto) {
-        warehouseService.bulkAddBooks(id, bookBulkDto);
+    @PostMapping("/{id}/stock/bulk-add")
+    public void addBooksToWarehouse(@PathVariable Long id, @Valid @RequestBody List<BookBulkDto> bookBulkDtos) {
+        warehouseService.addBooksToWarehouse(id, bookBulkDtos);
+    }
+
+    @ResponseStatus(HttpStatus.OK)
+    @PostMapping("/{id}/stock/bulk-remove")
+    public void removeBooksFromWarehouse(@PathVariable Long id, @Valid @RequestBody List<BookBulkDto> bookBulkDtos) {
+        warehouseService.removeBooksFromWarehouse(id, bookBulkDtos);
     }
 }

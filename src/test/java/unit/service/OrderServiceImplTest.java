@@ -1,5 +1,6 @@
 package unit.service;
 
+import com.ifellow.bookstore.dto.request.BookBulkDto;
 import com.ifellow.bookstore.dto.request.BookOrderDto;
 import com.ifellow.bookstore.dto.response.OrderResponseDto;
 import com.ifellow.bookstore.enumeration.OrderStatus;
@@ -7,11 +8,9 @@ import com.ifellow.bookstore.exception.OrderStatusException;
 import com.ifellow.bookstore.exception.NotEnoughStockException;
 import com.ifellow.bookstore.exception.OrderException;
 import com.ifellow.bookstore.mapper.OrderMapper;
-import com.ifellow.bookstore.model.Book;
-import com.ifellow.bookstore.model.Order;
-import com.ifellow.bookstore.model.OrderItem;
-import com.ifellow.bookstore.model.Warehouse;
+import com.ifellow.bookstore.model.*;
 import com.ifellow.bookstore.repository.OrderRepository;
+import com.ifellow.bookstore.service.api.AuthenticationService;
 import com.ifellow.bookstore.service.api.BookService;
 import com.ifellow.bookstore.service.api.WarehouseService;
 import com.ifellow.bookstore.service.impl.OrderServiceImpl;
@@ -28,6 +27,7 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -42,6 +42,9 @@ class OrderServiceImplTest {
 
     @Mock
     private BookService bookService;
+
+    @Mock
+    private AuthenticationService authenticationService;
 
     @Mock
     private OrderMapper orderMapper;
@@ -102,12 +105,13 @@ class OrderServiceImplTest {
         Mockito.when(bookService.findBookById(bookId)).thenReturn(book);
         Mockito.when(orderRepository.save(Mockito.any(Order.class))).thenReturn(order);
         Mockito.when(orderMapper.toDto(Mockito.any(Order.class))).thenReturn(orderResponseDto);
+        Mockito.when(authenticationService.getUserInCurrentContext()).thenReturn(new User(1L, "username", "password", Set.of(), List.of(), List.of()));
 
         OrderResponseDto result = orderService.create(warehouseId, List.of(bookOrderDto));
 
         assertNotNull(result);
         assertEquals(orderResponseDto, result);
-        Mockito.verify(warehouseService).removeBookFromWarehouse(warehouseId, bookId, quantity);
+        Mockito.verify(warehouseService).removeBookFromWarehouse(warehouseId, new BookBulkDto(bookId, quantity));
         Mockito.verify(orderRepository).save(Mockito.any(Order.class));
     }
 
@@ -115,10 +119,10 @@ class OrderServiceImplTest {
     @DisplayName("Исключение при недостатке книг на складе")
     void create_NotEnoughStock_ThrowsException() {
         Mockito.when(warehouseService.findWarehouseById(warehouseId)).thenReturn(warehouse);
-        Mockito.doThrow(new NotEnoughStockException("Not enough stock")).when(warehouseService).removeBookFromWarehouse(warehouseId, bookId, quantity);
+        Mockito.doThrow(new NotEnoughStockException("Not enough stock")).when(warehouseService).removeBookFromWarehouse(warehouseId, new BookBulkDto(bookId, quantity));
 
         assertThrows(NotEnoughStockException.class, () -> orderService.create(warehouseId, List.of(bookOrderDto)));
-        Mockito.verify(warehouseService).removeBookFromWarehouse(warehouseId, bookId, quantity);
+        Mockito.verify(warehouseService).removeBookFromWarehouse(warehouseId, new BookBulkDto(bookId, quantity));
         Mockito.verify(orderRepository, Mockito.never()).save(Mockito.any(Order.class));
     }
 
@@ -166,7 +170,7 @@ class OrderServiceImplTest {
 
         assertNotNull(result);
         assertEquals(OrderStatus.CANCELED, order.getOrderStatus());
-        Mockito.verify(warehouseService).addBookToWarehouse(warehouseId, bookId, quantity);
+        Mockito.verify(warehouseService).addBookToWarehouse(warehouseId, new BookBulkDto(bookId, quantity));
         Mockito.verify(orderRepository).save(order);
     }
 

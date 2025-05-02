@@ -8,10 +8,17 @@ import com.ifellow.bookstore.model.OrderItem;
 import com.ifellow.bookstore.repository.OrderItemRepository;
 import com.ifellow.bookstore.service.api.*;
 import integration.AbstractIntegrationTest;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -34,6 +41,20 @@ public class OrderServiceImplTest extends AbstractIntegrationTest {
     @Autowired
     private OrderItemRepository orderItemRepository;
 
+    @BeforeEach
+    void setUp() {
+        UserDetails userDetails = new User(
+                "client", "", List.of(
+                        new SimpleGrantedAuthority("ROLE_CLIENT"),
+                new SimpleGrantedAuthority("ROLE_MANAGER"),
+                new SimpleGrantedAuthority("ROLE_ADMIN"))
+        );
+        UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
+                userDetails, null, userDetails.getAuthorities());
+
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+    }
+
     @Test
     @DisplayName("Успешно создает заказ и возвращает OrderResponseDto")
     public void create_ValidBookOrderDtoList_ReturnsOrderResponseDto() {
@@ -48,7 +69,7 @@ public class OrderServiceImplTest extends AbstractIntegrationTest {
 
         WarehouseRequestDto warehouseRequestDto = new WarehouseRequestDto("Ул. Арбат");
         WarehouseResponseDto warehouseResponseDto = warehouseService.save(warehouseRequestDto);
-        warehouseService.addBookToWarehouse(warehouseResponseDto.id(), bookResponseDto.id(), 20);
+        warehouseService.addBookToWarehouse(warehouseResponseDto.id(), new BookBulkDto(bookResponseDto.id(), 20));
 
         List<BookOrderDto> bookOrderDtoList= new ArrayList<>();
         bookOrderDtoList.add(new BookOrderDto(bookResponseDto.id(), 20));
@@ -80,7 +101,7 @@ public class OrderServiceImplTest extends AbstractIntegrationTest {
 
         WarehouseRequestDto warehouseRequestDto = new WarehouseRequestDto("Ул. Арбат");
         WarehouseResponseDto warehouseResponseDto = warehouseService.save(warehouseRequestDto);
-        warehouseService.addBookToWarehouse(warehouseResponseDto.id(), bookResponseDto.id(), 20);
+        warehouseService.addBookToWarehouse(warehouseResponseDto.id(), new BookBulkDto(bookResponseDto.id(), 20));
 
         List<BookOrderDto> bookOrderDtoList= new ArrayList<>();
         bookOrderDtoList.add(new BookOrderDto(bookResponseDto.id(), 20));
@@ -111,7 +132,7 @@ public class OrderServiceImplTest extends AbstractIntegrationTest {
 
         WarehouseRequestDto warehouseRequestDto = new WarehouseRequestDto("Ул. Арбат");
         WarehouseResponseDto warehouseResponseDto = warehouseService.save(warehouseRequestDto);
-        warehouseService.addBookToWarehouse(warehouseResponseDto.id(), bookResponseDto.id(), 20);
+        warehouseService.addBookToWarehouse(warehouseResponseDto.id(), new BookBulkDto(bookResponseDto.id(), 20));
 
         List<BookOrderDto> bookOrderDtoList= new ArrayList<>();
         bookOrderDtoList.add(new BookOrderDto(bookResponseDto.id(), 20));
@@ -142,7 +163,7 @@ public class OrderServiceImplTest extends AbstractIntegrationTest {
 
         WarehouseRequestDto warehouseRequestDto = new WarehouseRequestDto("Ул. Арбат");
         WarehouseResponseDto warehouseResponseDto = warehouseService.save(warehouseRequestDto);
-        warehouseService.addBookToWarehouse(warehouseResponseDto.id(), bookResponseDto.id(), 20);
+        warehouseService.addBookToWarehouse(warehouseResponseDto.id(), new BookBulkDto(bookResponseDto.id(), 20));
 
         List<BookOrderDto> bookOrderDtoList= new ArrayList<>();
         bookOrderDtoList.add(new BookOrderDto(bookResponseDto.id(), 20));

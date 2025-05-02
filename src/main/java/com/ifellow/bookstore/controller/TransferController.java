@@ -20,8 +20,7 @@ public class TransferController {
         transferService.transferBookFromWarehouseToStore(
                 transferRequestDto.sourceId(),
                 transferRequestDto.destinationId(),
-                transferRequestDto.bookBulkDto().bookId(),
-                transferRequestDto.bookBulkDto().quantity()
+                transferRequestDto.bookBulkDto()
         );
     }
 
@@ -31,8 +30,7 @@ public class TransferController {
         transferService.transferBookFromStoreToStore(
                 transferRequestDto.sourceId(),
                 transferRequestDto.destinationId(),
-                transferRequestDto.bookBulkDto().bookId(),
-                transferRequestDto.bookBulkDto().quantity()
+                transferRequestDto.bookBulkDto()
         );
     }
 }

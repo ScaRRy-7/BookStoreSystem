@@ -88,12 +88,12 @@ class SaleControllerTest {
     }
 
     @Test
-    @DisplayName("POST /api/sales/process/{storeId} - успешная обработка продажи")
+    @DisplayName("POST /api/stores/{storeId}/sales - успешная обработка продажи")
     public void processSale_ValidRequest_ReturnsProcessedSale() throws Exception {
         Long storeId = 1L;
         when(saleService.processSale(storeId, bookSaleDtoList)).thenReturn(saleResponseDto);
 
-        ResultActions response = mockMvc.perform(post("/api/sales/process/{storeId}", storeId)
+        ResultActions response = mockMvc.perform(post("/api/stores/{storeId}/sales", storeId)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(bookSaleDtoList)));
 
@@ -105,13 +105,12 @@ class SaleControllerTest {
     }
 
     @Test
-    @DisplayName("POST /api/sales/process/{storeId} - возвращает ошибку при отсутствии магазина")
+    @DisplayName("POST /api/stores/{storeId}/sales - возвращает ошибку при отсутствии магазина")
     public void processSale_StoreNotFound_ReturnsNotFound() throws Exception {
+        when(saleService.processSale(any(), any())).thenThrow(new StoreException("Store not found"));
         Long storeId = 999L;
-        when(saleService.processSale(storeId, bookSaleDtoList))
-                .thenThrow(new StoreException("Store not found with id: " + storeId));
 
-        ResultActions response = mockMvc.perform(post("/api/sales/process/{storeId}", storeId)
+        ResultActions response = mockMvc.perform(post("/api/stores/{storeId}/sales", storeId)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(bookSaleDtoList)));
 
@@ -119,13 +118,13 @@ class SaleControllerTest {
     }
 
     @Test
-    @DisplayName("POST /api/sales/process/{storeId} - возвращает ошибку при отсутствии книги")
+    @DisplayName("POST /api/stores/{storeId}/sales - возвращает ошибку при отсутствии книги")
     public void processSale_BookNotFound_ReturnsNotFound() throws Exception {
         Long storeId = 1L;
         when(saleService.processSale(storeId, bookSaleDtoList))
                 .thenThrow(new BookException("Book not found"));
 
-        ResultActions response = mockMvc.perform(post("/api/sales/process/{storeId}", storeId)
+        ResultActions response = mockMvc.perform(post("/api/stores/{storeId}/sales", storeId)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(bookSaleDtoList)));
 
@@ -133,13 +132,13 @@ class SaleControllerTest {
     }
 
     @Test
-    @DisplayName("POST /api/sales/process/{storeId} - возвращает ошибку при недостаточном количестве книг")
+    @DisplayName("POST /api/stores/{storeId}/sales - возвращает ошибку при недостаточном количестве книг")
     public void processSale_NotEnoughStock_ReturnsBadRequest() throws Exception {
         Long storeId = 1L;
         when(saleService.processSale(storeId, bookSaleDtoList))
                 .thenThrow(new NotEnoughStockException("Not enough stock"));
 
-        ResultActions response = mockMvc.perform(post("/api/sales/process/{storeId}", storeId)
+        ResultActions response = mockMvc.perform(post("/api/stores/{storeId}/sales", storeId)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(bookSaleDtoList)));
 

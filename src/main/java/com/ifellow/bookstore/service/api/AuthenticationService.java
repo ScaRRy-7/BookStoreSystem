@@ -5,6 +5,7 @@ import com.ifellow.bookstore.dto.request.RefreshTokenDto;
 import com.ifellow.bookstore.dto.request.RegistrationUserDto;
 import com.ifellow.bookstore.dto.response.JwtResponse;
 import com.ifellow.bookstore.model.User;
+import org.springframework.security.core.userdetails.UserDetails;
 
 public interface AuthenticationService {
     JwtResponse login(JwtRequest request);
@@ -12,4 +13,5 @@ public interface AuthenticationService {
     String logout(RefreshTokenDto refreshToken);
     String register(RegistrationUserDto registrationUserDto);
     User getUserInCurrentContext();
+    UserDetails getCurrentPrincipal();
 }

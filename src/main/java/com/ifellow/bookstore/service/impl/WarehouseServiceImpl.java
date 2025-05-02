@@ -66,7 +66,10 @@ public class WarehouseServiceImpl implements WarehouseService {
 
     @Override
     @Transactional
-    public void addBookToWarehouse(Long id, Long bookId, int quantity) {
+    public void addBookToWarehouse(Long id, BookBulkDto bookBulkDto) {
+        int quantity = bookBulkDto.quantity();
+        Long bookId = bookBulkDto.bookId();
+
         if (quantity <= EMPTY_STOCK) throw new IllegalArgumentException("quantity must be greater than zero");
 
         Warehouse warehouse = findWarehouseById(id);
@@ -90,7 +93,10 @@ public class WarehouseServiceImpl implements WarehouseService {
 
     @Override
     @Transactional
-    public void removeBookFromWarehouse(Long id, Long bookId, int quantity) {
+    public void removeBookFromWarehouse(Long id, BookBulkDto bookBulkDto) {
+        int quantity = bookBulkDto.quantity();
+        Long bookId = bookBulkDto.bookId();
+
         if (quantity <= EMPTY_STOCK) throw new IllegalArgumentException("quantity must be greater than zero");
 
         checkWarehouseExistence(id);
@@ -119,9 +125,17 @@ public class WarehouseServiceImpl implements WarehouseService {
 
     @Override
     @Transactional
-    public void bulkAddBooks(Long id, List<BookBulkDto> booksToAdd) {
-        for (BookBulkDto bookDto : booksToAdd) {
-            addBookToWarehouse(id, bookDto.bookId(), bookDto.quantity());
+    public void addBooksToWarehouse(Long id, List<BookBulkDto> bookBulkDtos) {
+        for (BookBulkDto bookBulkDto : bookBulkDtos) {
+            addBookToWarehouse(id, bookBulkDto);
+        }
+    }
+
+    @Override
+    @Transactional
+    public void removeBooksFromWarehouse(Long id, List<BookBulkDto> bookBulkDtos) {
+        for (BookBulkDto bookBulkDto : bookBulkDtos) {
+            removeBookFromWarehouse(id, bookBulkDto);
         }
     }
 }

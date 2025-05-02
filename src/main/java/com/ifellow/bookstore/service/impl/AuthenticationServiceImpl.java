@@ -93,4 +93,9 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         return userService.findUserByUsername(userDetails.getUsername());
     }
+
+    @Override
+    public UserDetails getCurrentPrincipal() {
+        return (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+    }
 }

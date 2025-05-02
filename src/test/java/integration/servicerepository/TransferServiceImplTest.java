@@ -46,11 +46,11 @@ class TransferServiceImplTest extends AbstractIntegrationTest {
         BookRequestDto bookRequestDto = new BookRequestDto("Преступление и наказание", authorResponseDto.id(), genreResponseDto.id(), BigDecimal.valueOf(250L));
         BookResponseDto bookResponseDto = bookService.save(bookRequestDto);
 
-        warehouseService.addBookToWarehouse(warehouseResponseDto.id(), bookResponseDto.id(), 30);
+        warehouseService.addBookToWarehouse(warehouseResponseDto.id(), new BookBulkDto(bookResponseDto.id(), 30));
 
 
 
-        transferService.transferBookFromWarehouseToStore(warehouseResponseDto.id(), sRespDto.id(), bookResponseDto.id(), 25);
+        transferService.transferBookFromWarehouseToStore(warehouseResponseDto.id(), sRespDto.id(), new BookBulkDto(bookResponseDto.id(), 25));
 
 
 
@@ -78,12 +78,12 @@ class TransferServiceImplTest extends AbstractIntegrationTest {
         BookRequestDto bookRequestDto = new BookRequestDto("Преступление и наказание", authorResponseDto.id(), genreResponseDto.id(), BigDecimal.valueOf(250L));
         BookResponseDto bookResponseDto = bookService.save(bookRequestDto);
 
-        warehouseService.addBookToWarehouse(warehouseResponseDto.id(), bookResponseDto.id(), 30);
-        transferService.transferBookFromWarehouseToStore(warehouseResponseDto.id(), storeResponseDto.id(), bookResponseDto.id(), 25);
+        warehouseService.addBookToWarehouse(warehouseResponseDto.id(), new BookBulkDto(bookResponseDto.id(), 30));
+        transferService.transferBookFromWarehouseToStore(warehouseResponseDto.id(), storeResponseDto.id(), new BookBulkDto(bookResponseDto.id(), 25));
 
 
 
-        transferService.transferBookFromStoreToStore(storeResponseDto.id(), storeResponseDto2.id(), bookResponseDto.id(), 15);
+        transferService.transferBookFromStoreToStore(storeResponseDto.id(), storeResponseDto2.id(), new BookBulkDto(bookResponseDto.id(), 15));
 
 
 

@@ -59,17 +59,6 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserResponseDto getProfile() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        WebAuthenticationDetails webAuthenticationDetails = (WebAuthenticationDetails) authentication.getDetails();
-
-        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-
-        return new UserResponseDto(
-                userDetails.getUsername(), userDetails.getAuthorities().stream().map(authority -> RoleName.valueOf(authority.getAuthority())).toList());
-    }
-
-    @Override
     public User findById(Long id) {
         return userRepository.findById(id)
                 .orElseThrow(() -> new UserException("User not found"));

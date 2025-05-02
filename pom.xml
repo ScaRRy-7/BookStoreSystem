@@ -21,7 +21,6 @@
         <h2.version>2.2.224</h2.version>
         <hibernate.version>6.5.2.Final</hibernate.version>
         <spring-boot-starter-test.version>3.4.3</spring-boot-starter-test.version>
-        <skipTests>true</skipTests>
     </properties>
 
     <dependencies>

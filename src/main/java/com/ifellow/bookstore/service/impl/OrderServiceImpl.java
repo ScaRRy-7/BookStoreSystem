@@ -1,5 +1,6 @@
 package com.ifellow.bookstore.service.impl;
 
+import com.ifellow.bookstore.dto.request.BookBulkDto;
 import com.ifellow.bookstore.dto.request.BookOrderDto;
 import com.ifellow.bookstore.dto.filter.OrderFilter;
 import com.ifellow.bookstore.dto.response.OrderResponseDto;
@@ -48,7 +49,7 @@ public class OrderServiceImpl implements OrderService {
         order.setOrderStatus(OrderStatus.CREATED);
 
         for (BookOrderDto bookOrderDto : bookOrderDtoList) {
-            warehouseService.removeBookFromWarehouse(warehouseId, bookOrderDto.bookId(), bookOrderDto.quantity());
+            warehouseService.removeBookFromWarehouse(warehouseId, new BookBulkDto(bookOrderDto.bookId(), bookOrderDto.quantity()));
 
             Book book = bookService.findBookById(bookOrderDto.bookId());
 
@@ -94,7 +95,7 @@ public class OrderServiceImpl implements OrderService {
 
         List<OrderItem> orderItems = order.getOrderItemList();
         for (OrderItem orderItem : orderItems) {
-            warehouseService.addBookToWarehouse(order.getWarehouse().getId(), orderItem.getBook().getId(), orderItem.getQuantity());
+            warehouseService.addBookToWarehouse(order.getWarehouse().getId(), new BookBulkDto(orderItem.getBook().getId(), orderItem.getQuantity()));
         }
 
         order.setOrderStatus(OrderStatus.CANCELED);
@@ -116,6 +117,11 @@ public class OrderServiceImpl implements OrderService {
         Specification<Order> spec = OrderSpecification.withFilter(filter);
         return orderRepository.findAll(spec, pageable)
                 .map(orderMapper::toDto);
+    }
+
+    @Override
+    public Page<OrderResponseDto> findByUserId(Long userId, Pageable pageable) {
+        return orderRepository.findByUserId(userId, pageable).map(orderMapper::toDto);
     }
 
     private BigDecimal calculateTotalPrice(List<OrderItem> orderItemList) {

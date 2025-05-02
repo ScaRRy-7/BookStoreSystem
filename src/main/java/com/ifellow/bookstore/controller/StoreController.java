@@ -12,6 +12,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/stores")
@@ -34,18 +36,30 @@ public class StoreController {
     @ResponseStatus(HttpStatus.OK)
     @PostMapping("/{id}/stock/add")
     public void addBooksToStore(@PathVariable Long id, @Valid @RequestBody BookBulkDto bookBulkDto) {
-        storeService.addBookToStore(id, bookBulkDto.bookId(), bookBulkDto.quantity());
+        storeService.addBookToStore(id, bookBulkDto);
     }
 
     @ResponseStatus(HttpStatus.OK)
     @PostMapping("/{id}/stock/remove")
     public void deleteBooksFromStore(@PathVariable Long id, @Valid @RequestBody BookBulkDto bookBulkDto) {
-        storeService.removeBookFromStore(id, bookBulkDto.bookId(), bookBulkDto.quantity());
+        storeService.removeBookFromStore(id, bookBulkDto);
     }
 
     @GetMapping("/{id}/stock")
     @ResponseStatus(HttpStatus.OK)
     public Page<StoreBookResponseDto> getStoreStock(@PathVariable Long id, Pageable pageable) {
         return storeService.getStoreStock(id, pageable);
+    }
+
+    @ResponseStatus(HttpStatus.OK)
+    @PostMapping("/{id}/stock/bulk-add")
+    public void addBooksToStore(@PathVariable Long id, @Valid @RequestBody List<BookBulkDto> bookBulkDtos) {
+        storeService.addBooksToStore(id, bookBulkDtos);
+    }
+
+    @ResponseStatus(HttpStatus.OK)
+    @PostMapping("/{id}/stock/bulk-remove")
+    public void removeBooksFromStore(@PathVariable Long id, @Valid @RequestBody List<BookBulkDto> bookBulkDtos) {
+        storeService.removeBooksFromStore(id, bookBulkDtos);
     }
 }

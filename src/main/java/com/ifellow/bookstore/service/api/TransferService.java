@@ -1,7 +1,9 @@
 package com.ifellow.bookstore.service.api;
 
+import com.ifellow.bookstore.dto.request.BookBulkDto;
+
 public interface TransferService {
 
-    void transferBookFromWarehouseToStore(Long warehouseId, Long storeId, Long bookId, int quantity);
-    void transferBookFromStoreToStore(Long storeIdFrom, Long storeIdTo, Long bookId, int quantity);
+    void transferBookFromWarehouseToStore(Long warehouseId, Long storeId, BookBulkDto bookBulkDto);
+    void transferBookFromStoreToStore(Long warehouseId, Long storeId, BookBulkDto bookBulkDto);
 }
