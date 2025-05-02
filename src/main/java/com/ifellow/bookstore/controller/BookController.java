@@ -21,21 +21,18 @@ public class BookController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    @PreAuthorize("hasRole('MANAGER')")
     public BookResponseDto create(@Valid @RequestBody BookRequestDto bookRequestDto) {
         return bookService.save(bookRequestDto);
     }
 
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    @PreAuthorize("hasAnyRole('CLIENT', 'MANAGER', 'ADMIN')")
     public BookResponseDto findById(@PathVariable Long id) {
         return bookService.findById(id);
     }
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    @PreAuthorize("hasAnyRole('CLIENT', 'MANAGER', 'ADMIN')")
     public ResponseEntity<?> findAll(@ModelAttribute BookFilter filter, Pageable pageable) {
         return ResponseEntity.ok(bookService.findAll(filter, pageable));
     }

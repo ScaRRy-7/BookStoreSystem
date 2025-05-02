@@ -2,10 +2,7 @@ package com.ifellow.bookstore.model;
 
 import com.ifellow.bookstore.enumeration.RoleName;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Data
 @Entity
@@ -16,6 +13,7 @@ import lombok.NoArgsConstructor;
 public class Role {
 
     @Id
+    @EqualsAndHashCode.Exclude
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 

@@ -26,6 +26,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Set;
 
 @Service
 @Component
@@ -78,7 +79,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                 .username(registrationUserDto.getUsername())
                 .password(passwordEncoder.encode(registrationUserDto.getPassword()))
                 .roles(
-                        List.of(roleService.findByName(RoleName.ROLE_CLIENT)))
+                        Set.of(roleService.findByName(RoleName.ROLE_CLIENT)))
                 .build();
         userService.saveUser(user);
 

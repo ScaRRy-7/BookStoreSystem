@@ -1,6 +1,7 @@
 package com.ifellow.bookstore.advice;
 
 import com.ifellow.bookstore.exception.*;
+import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.JwtException;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.AuthenticationException;
@@ -111,6 +112,12 @@ public class GlobalExceptionHandler {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(RefreshTokenException.class)
     public String handleRefreshTokenException(RefreshTokenException e) {
+        return e.getMessage();
+    }
+
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    @ExceptionHandler(ExpiredJwtException.class)
+    public String handleExpiredJwtException(ExpiredJwtException e) {
         return e.getMessage();
     }
 }

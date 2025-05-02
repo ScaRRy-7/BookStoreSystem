@@ -12,4 +12,6 @@ public interface UserService extends UserDetailsService {
     User findUserByUsername(String username) throws UsernameNotFoundException;
     void saveUser(User user);
     UserResponseDto getProfile();
+    User findById(Long id);
+    void updateUser(User user);
 }

@@ -1,5 +1,8 @@
 package com.ifellow.bookstore.util;
 
+import com.ifellow.bookstore.enumeration.RoleName;
+import com.ifellow.bookstore.model.Role;
+import com.ifellow.bookstore.model.User;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
@@ -16,6 +19,7 @@ import org.springframework.stereotype.Component;
 
 import javax.crypto.SecretKey;
 import java.time.Instant;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Date;
@@ -56,8 +60,8 @@ public class JwtUtils {
         return Jwts.builder()
                 .subject(userDetails.getUsername())
                 .expiration(accessExpiration)
-                .signWith(jwtAccessSecret)
                 .claim("roles", userDetails.getAuthorities().stream().map(GrantedAuthority::getAuthority).toList())
+                .signWith(jwtAccessSecret)
                 .compact();
     }
 
@@ -88,6 +92,18 @@ public class JwtUtils {
         List<String> roles = claims.get("roles", List.class);
 
         return roles.stream().map(SimpleGrantedAuthority::new).toList();
+    }
+
+    public String generateLongLivedAccessTokenForInitializingUsers(User user) {
+        Instant expiration = LocalDateTime.now().plusMonths(2).atZone(ZoneId.systemDefault()).toInstant();
+        Date expirationDate = Date.from(expiration);
+
+        return Jwts.builder()
+                .expiration(expirationDate)
+                .subject(user.getUsername())
+                .claim("roles", user.getRoles().stream().map(Role::getName).map(RoleName::name).toList())
+                .signWith(jwtAccessSecret)
+                .compact();
     }
 
 }

@@ -18,8 +18,8 @@ import java.util.List;
 public class Sale {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @EqualsAndHashCode.Exclude
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @OneToMany(mappedBy = "sale", cascade = CascadeType.PERSIST, orphanRemoval = true) // cascade = CascadeType.ALL

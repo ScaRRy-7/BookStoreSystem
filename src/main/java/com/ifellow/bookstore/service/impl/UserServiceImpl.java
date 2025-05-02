@@ -50,6 +50,15 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
+    public void updateUser(User user) {
+        if (!userRepository.existsByUsername(user.getUsername()))
+            throw new UserException("A user with this username does not exist!");
+
+        userRepository.save(user);
+    }
+
+    @Override
     public UserResponseDto getProfile() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         WebAuthenticationDetails webAuthenticationDetails = (WebAuthenticationDetails) authentication.getDetails();
@@ -57,6 +66,12 @@ public class UserServiceImpl implements UserService {
         UserDetails userDetails = (UserDetails) authentication.getPrincipal();
 
         return new UserResponseDto(
-                userDetails.getUsername() + " remoteAddress: " + webAuthenticationDetails.getRemoteAddress() + " sessionId" + webAuthenticationDetails.getSessionId() , userDetails.getAuthorities().stream().map(authority -> RoleName.valueOf(authority.getAuthority())).toList());
+                userDetails.getUsername(), userDetails.getAuthorities().stream().map(authority -> RoleName.valueOf(authority.getAuthority())).toList());
+    }
+
+    @Override
+    public User findById(Long id) {
+        return userRepository.findById(id)
+                .orElseThrow(() -> new UserException("User not found"));
     }
 }
