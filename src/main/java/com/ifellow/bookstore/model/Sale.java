@@ -22,7 +22,7 @@ public class Sale {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToMany(mappedBy = "sale", cascade = CascadeType.PERSIST, orphanRemoval = true) // cascade = CascadeType.ALL
+    @OneToMany(mappedBy = "sale", cascade = CascadeType.PERSIST, orphanRemoval = true)
     private List<SaleItem> saleItemList = new ArrayList<>();
 
     @Column(name = "sale_date_time")

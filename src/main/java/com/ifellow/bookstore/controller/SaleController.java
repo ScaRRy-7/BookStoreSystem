@@ -15,24 +15,24 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/sales")
+@RequestMapping("/api")
 public class SaleController {
 
     private final SaleService saleService;
 
-    @PostMapping("/process/{storeId}")
+    @PostMapping("/stores/{storeId}/sales")
     @ResponseStatus(HttpStatus.OK)
     public SaleResponseDto processSale(@PathVariable Long storeId, @Valid @RequestBody List<BookSaleDto> bookSaleDtoList) {
         return saleService.processSale(storeId, bookSaleDtoList);
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/sales/{id}")
     @ResponseStatus(HttpStatus.OK)
     public SaleResponseDto findById(@PathVariable Long id) {
         return saleService.findById(id);
     }
 
-    @GetMapping
+    @GetMapping("/sales")
     @ResponseStatus(HttpStatus.OK)
     public Page<SaleResponseDto> findAll(@ModelAttribute SaleFilter filter, Pageable pageable) {
         return saleService.findAll(filter, pageable);

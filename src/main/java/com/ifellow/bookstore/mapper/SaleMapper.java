@@ -10,6 +10,7 @@ public class SaleMapper implements ToDtoMapper<Sale, SaleResponseDto> {
     public SaleResponseDto toDto(Sale sale) {
         return new SaleResponseDto(
                 sale.getId(),
+                sale.getUser().getId(),
                 sale.getSaleDateTime(),
                 sale.getStore().getId(),
                 sale.getTotalPrice()

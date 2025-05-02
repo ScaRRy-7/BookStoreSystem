@@ -7,6 +7,7 @@ import java.time.LocalDateTime;
 
 public record OrderResponseDto(
         Long id,
+        Long userId,
         LocalDateTime orderDateTime,
         OrderStatus orderStatus,
         Long warehouseId,

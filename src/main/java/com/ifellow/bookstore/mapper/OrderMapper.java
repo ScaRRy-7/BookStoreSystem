@@ -10,6 +10,7 @@ public class OrderMapper implements ToDtoMapper<Order, OrderResponseDto> {
     public OrderResponseDto toDto(Order order) {
         return new OrderResponseDto(
                 order.getId(),
+                order.getUser().getId(),
                 order.getOrderDateTime(),
                 order.getOrderStatus(),
                 order.getWarehouse().getId(),

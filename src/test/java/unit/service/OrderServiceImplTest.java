@@ -92,7 +92,7 @@ class OrderServiceImplTest {
         order.setOrderItemList(List.of(orderItem));
         order.setTotalPrice(BigDecimal.valueOf(200));
 
-        orderResponseDto = new OrderResponseDto(orderId, orderTime, OrderStatus.CREATED, warehouseId, BigDecimal.valueOf(200));
+        orderResponseDto = new OrderResponseDto(orderId, 1L, orderTime, OrderStatus.CREATED, warehouseId, BigDecimal.valueOf(200));
     }
 
     @Test

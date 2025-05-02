@@ -93,7 +93,7 @@ class SaleServiceImplTest {
         sale.setSaleItemList(List.of(saleItem));
         sale.setTotalPrice(BigDecimal.valueOf(200));
 
-        saleResponseDto = new SaleResponseDto(sale.getId(), saleTime, storeId, sale.getTotalPrice());
+        saleResponseDto = new SaleResponseDto(sale.getId(), 1L, saleTime, storeId, sale.getTotalPrice());
     }
 
     @Test

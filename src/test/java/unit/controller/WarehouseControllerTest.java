@@ -152,7 +152,7 @@ class WarehouseControllerTest {
 
     @Test
     @DisplayName("POST /api/warehouses/{id}/stock/add - книга не найдена")
-    void addBooksToWarehouse_BookNotFound_ReturnsNotFound() throws Exception {
+    void addBookToWarehouse_BookNotFound_ReturnsNotFound() throws Exception {
         doThrow(new BookException("Book not found"))
                 .when(warehouseService).addBookToWarehouse(1L, 1L, 5);
 

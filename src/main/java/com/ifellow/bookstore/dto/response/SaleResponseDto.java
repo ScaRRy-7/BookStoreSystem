@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 
 public record SaleResponseDto(
         Long id,
+        Long userId,
         LocalDateTime time,
         Long storeId,
         BigDecimal totalPrice

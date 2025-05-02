@@ -63,9 +63,9 @@ public class SecurityConfiguration {
                         .requestMatchers(HttpMethod.POST, "/api/sales/process/**").hasRole("CLIENT")
                         .requestMatchers(HttpMethod.GET, "/api/sales/**").hasAnyRole("MANAGER", "ADMIN")
 
-                        .requestMatchers(HttpMethod.POST, "/api/warehouses/+/orders").hasRole("CLIENT")
-                        .requestMatchers(HttpMethod.POST, "/api/orders/+/cancel").hasAnyRole("CLIENT", "MANAGER")
-                        .requestMatchers(HttpMethod.POST, "/api/orders/+/complete").hasRole("MANAGER")
+                        .requestMatchers(HttpMethod.POST, "/api/warehouses/{warehouseId}/orders").hasRole("CLIENT")
+                        .requestMatchers(HttpMethod.POST, "/api/orders/{orderId}/cancel").hasAnyRole("CLIENT", "MANAGER")
+                        .requestMatchers(HttpMethod.POST, "/api/orders/{orderId}/complete").hasRole("MANAGER")
                         .requestMatchers(HttpMethod.GET, "/api/orders/**").hasAnyRole("MANAGER", "ADMIN")
 
                         .requestMatchers(HttpMethod.POST, "/api/stores").hasRole("ADMIN")
@@ -75,7 +75,7 @@ public class SecurityConfiguration {
                         .requestMatchers(HttpMethod.POST, "/api/transfer/**").hasRole("MANAGER")
 
                         .requestMatchers(HttpMethod.GET, "/api/warehouses/**").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/api/warehouses/+/stock**").hasRole("MANAGER")
+                        .requestMatchers(HttpMethod.POST, "/api/warehouses/{warehouseId}/stock**").hasRole("MANAGER")
                         .requestMatchers(HttpMethod.POST, "/api/warehouses").hasRole("ADMIN")
 
                         .requestMatchers("/api/adminpanel/**").hasRole("ADMIN")

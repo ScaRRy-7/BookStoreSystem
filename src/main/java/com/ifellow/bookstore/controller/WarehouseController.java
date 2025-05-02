@@ -12,6 +12,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/warehouses")
@@ -33,7 +35,7 @@ public class WarehouseController {
 
     @ResponseStatus(HttpStatus.OK)
     @PostMapping("/{id}/stock/add")
-    public void addBooksToWarehouse(@PathVariable Long id, @Valid @RequestBody BookBulkDto bookBulkDto) {
+    public void addBookToWarehouse(@PathVariable Long id, @Valid @RequestBody BookBulkDto bookBulkDto) {
         warehouseService.addBookToWarehouse(id, bookBulkDto.bookId(), bookBulkDto.quantity());
     }
 
@@ -47,5 +49,11 @@ public class WarehouseController {
     @ResponseStatus(HttpStatus.OK)
     public Page<WarehouseBookResponseDto> getWarehouseStock(@PathVariable Long id, Pageable pageable) {
         return warehouseService.getWarehouseStock(id, pageable);
+    }
+
+    @ResponseStatus(HttpStatus.OK)
+    @PostMapping("/{id}/stock/bulkadd")
+    public void addBooksToWarehouse(@PathVariable Long id, @Valid @RequestBody List<BookBulkDto> bookBulkDto) {
+        warehouseService.bulkAddBooks(id, bookBulkDto);
     }
 }

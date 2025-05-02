@@ -67,7 +67,7 @@ class OrderControllerTest {
     @DisplayName("POST /api/warehouses/{warehouseId}/orders - успешное создание заказа")
     void createOrder_ValidRequest_ReturnsCreatedOrder() throws Exception {
         OrderResponseDto responseDto = new OrderResponseDto(
-                1L, testDateTime, OrderStatus.CREATED, 1L, BigDecimal.valueOf(500));
+                1L, 1L, testDateTime, OrderStatus.CREATED, 1L, BigDecimal.valueOf(500));
         when(orderService.create(anyLong(), any())).thenReturn(responseDto);
 
         ResultActions response = mockMvc.perform(post("/api/warehouses/{warehouseId}/orders", 1L)
@@ -95,7 +95,7 @@ class OrderControllerTest {
     @DisplayName("POST /api/orders/{orderId}/complete - успешное завершение заказа")
     void completeOrder_ValidId_ReturnsCompletedOrder() throws Exception {
         OrderResponseDto responseDto = new OrderResponseDto(
-                1L, testDateTime, OrderStatus.COMPLETED, 1L, BigDecimal.valueOf(500));
+                1L, 1L, testDateTime, OrderStatus.COMPLETED, 1L, BigDecimal.valueOf(500));
 
         when(orderService.completeById(anyLong())).thenReturn(responseDto);
 
@@ -120,7 +120,7 @@ class OrderControllerTest {
     @DisplayName("POST /api/orders/{orderId}/cancel - успешная отмена заказа")
     void cancelOrder_ValidId_ReturnsCanceledOrder() throws Exception {
         OrderResponseDto responseDto = new OrderResponseDto(
-                1L, testDateTime, OrderStatus.CANCELED, 1L, BigDecimal.valueOf(500));
+                1L, 1L, testDateTime, OrderStatus.CANCELED, 1L, BigDecimal.valueOf(500));
         when(orderService.cancelById(anyLong())).thenReturn(responseDto);
 
         ResultActions response = mockMvc.perform(post("/api/orders/{orderId}/cancel", 1L));
@@ -144,7 +144,7 @@ class OrderControllerTest {
     @DisplayName("GET /api/orders/{orderId} - успешное получение заказа")
     void getOrder_ValidId_ReturnsOrder() throws Exception {
         OrderResponseDto responseDto = new OrderResponseDto(
-                1L, testDateTime, OrderStatus.CREATED, 1L, BigDecimal.valueOf(500));
+                1L, 1L, testDateTime, OrderStatus.CREATED, 1L, BigDecimal.valueOf(500));
         when(orderService.findById(anyLong())).thenReturn(responseDto);
 
         ResultActions response = mockMvc.perform(get("/api/orders/{orderId}", 1L));

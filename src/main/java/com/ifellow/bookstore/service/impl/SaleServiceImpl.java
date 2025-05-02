@@ -13,9 +13,7 @@ import com.ifellow.bookstore.model.Sale;
 import com.ifellow.bookstore.model.SaleItem;
 import com.ifellow.bookstore.model.Store;
 import com.ifellow.bookstore.repository.SaleRepository;
-import com.ifellow.bookstore.service.api.BookService;
-import com.ifellow.bookstore.service.api.SaleService;
-import com.ifellow.bookstore.service.api.StoreService;
+import com.ifellow.bookstore.service.api.*;
 import com.ifellow.bookstore.specification.SaleSpecification;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -33,8 +31,11 @@ import java.util.List;
 public class SaleServiceImpl implements SaleService {
 
     private final SaleRepository saleRepository;
+
     private final StoreService storeService;
     private final BookService bookService;
+    private final AuthenticationService authenticationService;
+
     private final SaleMapper saleMapper;
 
     @Override
@@ -63,6 +64,7 @@ public class SaleServiceImpl implements SaleService {
         }
 
         sale.setTotalPrice(calculateTotalPrice(sale.getSaleItemList()));
+        sale.setUser(authenticationService.getUserInCurrentContext());
         saleRepository.save(sale);
 
         return saleMapper.toDto(sale);

@@ -80,6 +80,7 @@ class SaleControllerTest {
 
         saleResponseDto = new SaleResponseDto(
                 1L,
+                1L,
                 LocalDateTime.now(),
                 1L,
                 BigDecimal.valueOf(500)
