@@ -169,7 +169,7 @@ class OrderServiceImplTest {
         OrderResponseDto result = orderService.cancelById(orderId);
 
         assertNotNull(result);
-        assertEquals(OrderStatus.CANCELED, order.getOrderStatus());
+        assertEquals(OrderStatus.CANCELLED, order.getOrderStatus());
         Mockito.verify(warehouseService).addBookToWarehouse(warehouseId, new BookBulkDto(bookId, quantity));
         Mockito.verify(orderRepository).save(order);
     }

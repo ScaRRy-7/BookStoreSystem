@@ -25,6 +25,4 @@ public class AdminPanelController {
     public void deleteTheRole(@PathVariable Long userId, @Valid @RequestBody RoleDto roleDto) {
         adminPanelService.deleteTheRole(userId, roleDto);
     }
-
-
 }

@@ -2,9 +2,7 @@ package com.ifellow.bookstore.model;
 
 import com.ifellow.bookstore.enumeration.OrderStatus;
 import jakarta.persistence.*;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -14,6 +12,9 @@ import java.util.List;
 @Entity
 @Getter
 @Setter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @EqualsAndHashCode
 @Table(name = "orders")
 public class Order {
@@ -42,4 +43,5 @@ public class Order {
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
+
 }

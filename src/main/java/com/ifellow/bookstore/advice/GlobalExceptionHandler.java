@@ -111,6 +111,12 @@ public class GlobalExceptionHandler {
     }
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(RoleException.class)
+    public String handleRoleException(RoleException e) {
+        return e.getMessage();
+    }
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(RefreshTokenException.class)
     public String handleRefreshTokenException(RefreshTokenException e) {
         return e.getMessage();

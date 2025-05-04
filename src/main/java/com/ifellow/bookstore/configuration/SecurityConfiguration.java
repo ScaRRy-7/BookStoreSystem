@@ -1,6 +1,7 @@
 package com.ifellow.bookstore.configuration;
 
 import com.ifellow.bookstore.filter.JwtAuthenticationFilter;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -16,7 +17,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.authentication.logout.LogoutFilter;
 
 
 @Configuration
@@ -60,7 +61,7 @@ public class SecurityConfiguration {
                         .requestMatchers(HttpMethod.GET, "/api/authors/**").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/authors/**").hasRole("MANAGER")
 
-                        .requestMatchers(HttpMethod.POST, "/api/sales/process/**").hasRole("CLIENT")
+                        .requestMatchers(HttpMethod.POST, "/api/stores/{storeId}/sales").hasRole("CLIENT")
                         .requestMatchers(HttpMethod.GET, "/api/sales/**").hasAnyRole("MANAGER", "ADMIN")
 
                         .requestMatchers(HttpMethod.POST, "/api/warehouses/{warehouseId}/orders").hasRole("CLIENT")
@@ -83,7 +84,11 @@ public class SecurityConfiguration {
 
                         .requestMatchers("/api/auth/**").permitAll()
                         .anyRequest().authenticated()
-                ).addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
+                )
+                .exceptionHandling(exception -> exception
+                        .authenticationEntryPoint(((request, response, authException) ->
+                                response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Unauthorized"))))
+                .addFilterAfter(jwtAuthenticationFilter, LogoutFilter.class)
                 .build();
     }
 }

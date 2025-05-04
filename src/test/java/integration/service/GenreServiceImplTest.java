@@ -1,4 +1,4 @@
-package integration.servicerepository;
+package integration.service;
 
 import com.ifellow.bookstore.dto.request.GenreRequestDto;
 import com.ifellow.bookstore.dto.response.GenreResponseDto;

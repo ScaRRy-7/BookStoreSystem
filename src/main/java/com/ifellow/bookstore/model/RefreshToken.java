@@ -1,15 +1,15 @@
 package com.ifellow.bookstore.model;
 
 import jakarta.persistence.*;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.Instant;
 
 @Entity
 @Table(name = "refresh_tokens")
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @Data
 public class RefreshToken {
 

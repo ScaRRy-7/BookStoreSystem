@@ -98,7 +98,7 @@ public class OrderServiceImpl implements OrderService {
             warehouseService.addBookToWarehouse(order.getWarehouse().getId(), new BookBulkDto(orderItem.getBook().getId(), orderItem.getQuantity()));
         }
 
-        order.setOrderStatus(OrderStatus.CANCELED);
+        order.setOrderStatus(OrderStatus.CANCELLED);
         orderRepository.save(order);
 
         return orderMapper.toDto(order);

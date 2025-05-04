@@ -1,4 +1,4 @@
-package integration.servicerepository;
+package integration.service;
 
 import com.ifellow.bookstore.dto.request.*;
 import com.ifellow.bookstore.dto.response.*;
@@ -18,7 +18,6 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -145,7 +144,7 @@ public class OrderServiceImplTest extends AbstractIntegrationTest {
 
 
         assertNotNull(orderCanceledDto);
-        assertEquals(OrderStatus.CANCELED, orderCanceledDto.orderStatus());
+        assertEquals(OrderStatus.CANCELLED, orderCanceledDto.orderStatus());
         assertEquals(20, warehouseService.getWarehouseStock(warehouseResponseDto.id(), PageRequest.of(0, 1)).getContent().getFirst().quantity());
     }
 

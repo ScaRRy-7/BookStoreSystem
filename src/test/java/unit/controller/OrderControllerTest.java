@@ -118,15 +118,15 @@ class OrderControllerTest {
 
     @Test
     @DisplayName("POST /api/orders/{orderId}/cancel - успешная отмена заказа")
-    void cancelOrder_ValidId_ReturnsCanceledOrder() throws Exception {
+    void cancelOrder_ValidId_ReturnsCancelledOrder() throws Exception {
         OrderResponseDto responseDto = new OrderResponseDto(
-                1L, 1L, testDateTime, OrderStatus.CANCELED, 1L, BigDecimal.valueOf(500));
+                1L, 1L, testDateTime, OrderStatus.CANCELLED, 1L, BigDecimal.valueOf(500));
         when(orderService.cancelById(anyLong())).thenReturn(responseDto);
 
         ResultActions response = mockMvc.perform(post("/api/orders/{orderId}/cancel", 1L));
 
         response.andExpect(status().isOk())
-                .andExpect(jsonPath("$.orderStatus").value("CANCELED"));
+                .andExpect(jsonPath("$.orderStatus").value("CANCELLED"));
     }
 
     @Test
