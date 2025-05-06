@@ -2,7 +2,6 @@ package integration.service;
 
 import com.ifellow.bookstore.dto.request.*;
 import com.ifellow.bookstore.dto.response.*;
-import com.ifellow.bookstore.repository.SaleItemRepository;
 import com.ifellow.bookstore.service.api.*;
 import integration.AbstractIntegrationTest;
 import org.junit.jupiter.api.BeforeEach;
@@ -33,8 +32,6 @@ class SaleServiceImplTest extends AbstractIntegrationTest {
     private GenreService genreService;;
     @Autowired
     private AuthorService authorService;
-    @Autowired
-    private SaleItemRepository saleItemRepository;
     @Autowired
     private StoreService storeService;
     @Autowired

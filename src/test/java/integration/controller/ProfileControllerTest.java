@@ -1,14 +1,9 @@
 package integration.controller;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ifellow.bookstore.configuration.RootConfiguration;
-import com.ifellow.bookstore.dto.response.OrderResponseDto;
-import com.ifellow.bookstore.dto.response.SaleResponseDto;
 import com.ifellow.bookstore.enumeration.OrderStatus;
-import com.ifellow.bookstore.enumeration.RoleName;
 import com.ifellow.bookstore.model.*;
 import com.ifellow.bookstore.repository.*;
-import com.ifellow.bookstore.service.api.ProfileService;
 import com.ifellow.bookstore.util.JwtUtils;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -18,70 +13,44 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.web.servlet.MockMvc;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-@SpringBootTest(classes = RootConfiguration.class)
 @AutoConfigureMockMvc
+@SpringBootTest(classes = RootConfiguration.class)
 public class ProfileControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
-
-    @Autowired
-    private ObjectMapper objectMapper;
-
-    @Autowired
-    private ProfileService profileService;
-
     @Autowired
     private UserRepository userRepository;
-
-    @Autowired
-    private RoleRepository roleRepository;
-
     @Autowired
     private OrderRepository orderRepository;
-
     @Autowired
     private OrderItemRepository orderItemRepository;
-
     @Autowired
     private SaleRepository saleRepository;
-
     @Autowired
     private SaleItemRepository saleItemRepository;
-
     @Autowired
     private BookRepository bookRepository;
-
     @Autowired
     private AuthorRepository authorRepository;
-
     @Autowired
     private GenreRepository genreRepository;
-
     @Autowired
     private WarehouseRepository warehouseRepository;
-
     @Autowired
     private StoreRepository storeRepository;
-
     @Autowired
     private WarehouseBookAmountRepository warehouseBookAmountRepository;
-
     @Autowired
     private StoreBookAmountRepository storeBookAmountRepository;
-
     @Autowired
     private JwtUtils jwtUtils;
-
-    @Autowired
-    private PasswordEncoder passwordEncoder;
 
     private String clientToken;
 
@@ -107,7 +76,7 @@ public class ProfileControllerTest {
 
     @Test
     @DisplayName("Получение профиля с ролью CLIENT возвращает данные профиля")
-    public void getProfileClientRoleReturnsProfile() throws Exception {
+    public void getProfile_ClientRole_ReturnsProfile() throws Exception {
         mockMvc.perform(get("/api/profile")
                         .accept(MediaType.APPLICATION_JSON)
                         .header("Authorization", "Bearer " + clientToken))
@@ -118,7 +87,7 @@ public class ProfileControllerTest {
 
     @Test
     @DisplayName("Получение профиля без аутентификации возвращает ошибку")
-    public void getProfileNoAuthenticationReturnsError() throws Exception {
+    public void getProfile_NoAuthentication_ReturnsError() throws Exception {
         mockMvc.perform(get("/api/profile")
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isUnauthorized());
@@ -126,7 +95,7 @@ public class ProfileControllerTest {
 
     @Test
     @DisplayName("Получение заказов профиля с ролью CLIENT возвращает заказы")
-    public void findProfileOrdersClientRoleReturnsOrders() throws Exception {
+    public void findProfile_OrdersClientRole_ReturnsOrders() throws Exception {
         User client = userRepository.findByUsername("client").orElseThrow();
         Author author = authorRepository.save(Author.builder().fullName("Михаил Булгаков").build());
         Genre genre = genreRepository.save(Genre.builder().name("Роман").build());
@@ -165,7 +134,7 @@ public class ProfileControllerTest {
 
     @Test
     @DisplayName("Получение продаж профиля с ролью CLIENT возвращает продажи")
-    public void findProfileSalesClientRoleReturnsSales() throws Exception {
+    public void findProfileSales_ClientRole_ReturnsSales() throws Exception {
         User client = userRepository.findByUsername("client").orElseThrow();
         Author author = authorRepository.save(Author.builder().fullName("Михаил Булгаков").build());
         Genre genre = genreRepository.save(Genre.builder().name("Роман").build());

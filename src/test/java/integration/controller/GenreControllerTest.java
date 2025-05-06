@@ -5,7 +5,6 @@ import com.ifellow.bookstore.configuration.RootConfiguration;
 import com.ifellow.bookstore.dto.request.GenreRequestDto;
 import com.ifellow.bookstore.model.Genre;
 import com.ifellow.bookstore.repository.GenreRepository;
-import com.ifellow.bookstore.service.api.GenreService;
 import com.ifellow.bookstore.util.JwtUtils;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -19,22 +18,16 @@ import org.springframework.test.web.servlet.MockMvc;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-@SpringBootTest(classes = RootConfiguration.class)
 @AutoConfigureMockMvc
+@SpringBootTest(classes = RootConfiguration.class)
 public class GenreControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
-
     @Autowired
     private ObjectMapper objectMapper;
-
-    @Autowired
-    private GenreService genreService;
-
     @Autowired
     private GenreRepository genreRepository;
-
     @Autowired
     private JwtUtils jwtUtils;
 
@@ -54,7 +47,7 @@ public class GenreControllerTest {
 
     @Test
     @DisplayName("Создание жанра с валидными данными и ролью MANAGER")
-    public void createValidDataManagerRoleCreatesGenre() throws Exception {
+    public void create_ValidDataManagerRole_CreatesGenre() throws Exception {
         GenreRequestDto genreRequestDto = new GenreRequestDto("Роман");
 
         mockMvc.perform(post("/api/genres")
@@ -67,7 +60,7 @@ public class GenreControllerTest {
 
     @Test
     @DisplayName("Создание жанра с ролью CLIENT - запрещено")
-    public void createClientRoleForbidden() throws Exception {
+    public void create_ClientRoleForbidden() throws Exception {
         GenreRequestDto genreRequestDto = new GenreRequestDto("Повесть");
 
         mockMvc.perform(post("/api/genres")
@@ -79,7 +72,7 @@ public class GenreControllerTest {
 
     @Test
     @DisplayName("Получение жанра по существующему ID")
-    public void findByIdExistingIdReturnsGenre() throws Exception {
+    public void findById_ExistingId_ReturnsGenre() throws Exception {
         Genre genre = genreRepository.save(Genre.builder().name("Роман").build());
 
         mockMvc.perform(get("/api/genres/" + genre.getId())
@@ -91,8 +84,9 @@ public class GenreControllerTest {
 
     @Test
     @DisplayName("Получение жанра по несуществующему ID")
-    public void findByIdNonExistingIdNotFound() throws Exception {
-        mockMvc.perform(get("/api/genres/999")
+    public void findById_NonExistingId_NotFound() throws Exception {
+        String nonExistId = "123";
+        mockMvc.perform(get("/api/genres/{nonExistId}", nonExistId)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNotFound());
     }

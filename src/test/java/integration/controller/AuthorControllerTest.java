@@ -5,7 +5,6 @@ import com.ifellow.bookstore.configuration.RootConfiguration;
 import com.ifellow.bookstore.dto.request.AuthorRequestDto;
 import com.ifellow.bookstore.model.Author;
 import com.ifellow.bookstore.repository.AuthorRepository;
-import com.ifellow.bookstore.service.api.AuthorService;
 import com.ifellow.bookstore.util.JwtUtils;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -19,22 +18,16 @@ import org.springframework.test.web.servlet.MockMvc;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-@SpringBootTest(classes = RootConfiguration.class)
 @AutoConfigureMockMvc
+@SpringBootTest(classes = RootConfiguration.class)
 public class AuthorControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
-
     @Autowired
     private ObjectMapper objectMapper;
-
-    @Autowired
-    private AuthorService authorService;
-
     @Autowired
     private AuthorRepository authorRepository;
-
     @Autowired
     private JwtUtils jwtUtils;
 
@@ -54,7 +47,7 @@ public class AuthorControllerTest {
 
     @Test
     @DisplayName("Создание автора с валидными данными и ролью MANAGER")
-    public void createValidDataManagerRoleCreatesAuthor() throws Exception {
+    public void create_validDataManagerRole_CreatesAuthor() throws Exception {
         AuthorRequestDto authorRequestDto = new AuthorRequestDto("Михаил Булгаков");
 
         mockMvc.perform(post("/api/authors")
@@ -67,7 +60,7 @@ public class AuthorControllerTest {
 
     @Test
     @DisplayName("Создание автора с ролью CLIENT - запрещено")
-    public void createClientRoleForbidden() throws Exception {
+    public void create_ClientRoleForbidden() throws Exception {
         AuthorRequestDto authorRequestDto = new AuthorRequestDto("Федор Достоевский");
 
         mockMvc.perform(post("/api/authors")
@@ -79,7 +72,7 @@ public class AuthorControllerTest {
 
     @Test
     @DisplayName("Получение автора по существующему ID")
-    public void findByIdExistingIdReturnsAuthor() throws Exception {
+    public void findById_ExistingId_ReturnsAuthor() throws Exception {
         Author author = authorRepository.save(Author.builder().fullName("Лев Толстой").build());
 
         mockMvc.perform(get("/api/authors/" + author.getId())
@@ -91,8 +84,9 @@ public class AuthorControllerTest {
 
     @Test
     @DisplayName("Получение автора по несуществующему ID")
-    public void findByIdNonExistingIdNotFound() throws Exception {
-        mockMvc.perform(get("/api/authors/999")
+    public void findById_NonExistingId_NotFound() throws Exception {
+        String nonExistId = "123";
+        mockMvc.perform(get("/api/authors/{nonExistId}", nonExistId)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNotFound());
     }

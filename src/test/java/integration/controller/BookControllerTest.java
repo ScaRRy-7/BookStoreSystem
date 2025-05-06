@@ -9,9 +9,6 @@ import com.ifellow.bookstore.model.Genre;
 import com.ifellow.bookstore.repository.AuthorRepository;
 import com.ifellow.bookstore.repository.BookRepository;
 import com.ifellow.bookstore.repository.GenreRepository;
-import com.ifellow.bookstore.service.api.AuthorService;
-import com.ifellow.bookstore.service.api.BookService;
-import com.ifellow.bookstore.service.api.GenreService;
 import com.ifellow.bookstore.util.JwtUtils;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -26,34 +23,20 @@ import java.math.BigDecimal;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-@SpringBootTest(classes = RootConfiguration.class)
 @AutoConfigureMockMvc
+@SpringBootTest(classes = RootConfiguration.class)
 public class BookControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
-
     @Autowired
     private ObjectMapper objectMapper;
-
-    @Autowired
-    private BookService bookService;
-
-    @Autowired
-    private AuthorService authorService;
-
-    @Autowired
-    private GenreService genreService;
-
     @Autowired
     private AuthorRepository authorRepository;
-
     @Autowired
     private GenreRepository genreRepository;
-
     @Autowired
     private BookRepository bookRepository;
-
     @Autowired
     private JwtUtils jwtUtils;
 
@@ -75,7 +58,7 @@ public class BookControllerTest {
 
     @Test
     @DisplayName("Создание книги с валидными данными и ролью MANAGER")
-    public void createValidDataManagerRoleCreatesBook() throws Exception {
+    public void create_ValidDataManagerRole_CreatesBook() throws Exception {
         Author author = authorRepository.save(Author.builder().fullName("Михаил Булгаков").build());
         Genre genre = genreRepository.save(Genre.builder().name("Роман").build());
         BookRequestDto bookRequestDto = new BookRequestDto("Мастер и Маргарита", author.getId(), genre.getId(), BigDecimal.valueOf(10.0));
@@ -93,7 +76,7 @@ public class BookControllerTest {
 
     @Test
     @DisplayName("Создание книги с ролью CLIENT - запрещено")
-    public void createClientRoleForbidden() throws Exception {
+    public void create_ClientRoleForbidden() throws Exception {
         Author author = authorRepository.save(Author.builder().fullName("Михаил Булгаков").build());
         Genre genre = genreRepository.save(Genre.builder().name("Роман").build());
         BookRequestDto bookRequestDto = new BookRequestDto("Мастер и Маргарита", author.getId(), genre.getId(), BigDecimal.valueOf(10.0));
@@ -107,7 +90,7 @@ public class BookControllerTest {
 
     @Test
     @DisplayName("Получение книги по существующему ID")
-    public void findByIdExistingIdReturnsBook() throws Exception {
+    public void findById_ExistingId_ReturnsBook() throws Exception {
         Author author = authorRepository.save(Author.builder().fullName("Михаил Булгаков").build());
         Genre genre = genreRepository.save(Genre.builder().name("Роман").build());
         Book book = bookRepository.save(Book.builder()
@@ -128,14 +111,15 @@ public class BookControllerTest {
 
     @Test
     @DisplayName("Получение книги по несуществующему ID")
-    public void findByIdNonExistingIdNotFound() throws Exception {
-        mockMvc.perform(get("/api/books/999"))
+    public void findById_NonExistingId_NotFound() throws Exception {
+        String nonExistId = "123";
+        mockMvc.perform(get("/api/books/{id}", nonExistId))
                 .andExpect(status().isNotFound());
     }
 
     @Test
     @DisplayName("Получение всех книг с фильтром по автору")
-    public void findAllWithFilterReturnsFilteredBooks() throws Exception {
+    public void findAll_WithFilter_ReturnsFilteredBooks() throws Exception {
         Author author1 = authorRepository.save(Author.builder().fullName("Михаил Булгаков").build());
         Author author2 = authorRepository.save(Author.builder().fullName("Федор Достоевский").build());
         Genre genre1 = genreRepository.save(Genre.builder().name("Роман").build());
@@ -152,7 +136,7 @@ public class BookControllerTest {
 
     @Test
     @DisplayName("Получение всех книг с группировкой по жанру")
-    public void findAllWithGroupByGenreReturnsGroupedBooks() throws Exception {
+    public void findAll_WithGroupByGenre_ReturnsGroupedBooks() throws Exception {
         Author author1 = authorRepository.save(Author.builder().fullName("Михаил Булгаков").build());
         Genre genre1 = genreRepository.save(Genre.builder().name("Роман").build());
         Genre genre2 = genreRepository.save(Genre.builder().name("Повесть").build());

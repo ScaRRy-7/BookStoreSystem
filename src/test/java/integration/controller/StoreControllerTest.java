@@ -10,8 +10,6 @@ import com.ifellow.bookstore.repository.BookRepository;
 import com.ifellow.bookstore.repository.GenreRepository;
 import com.ifellow.bookstore.repository.StoreBookAmountRepository;
 import com.ifellow.bookstore.repository.StoreRepository;
-import com.ifellow.bookstore.service.api.BookService;
-import com.ifellow.bookstore.service.api.StoreService;
 import com.ifellow.bookstore.util.JwtUtils;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -27,37 +25,24 @@ import java.util.List;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-@SpringBootTest(classes = RootConfiguration.class)
 @AutoConfigureMockMvc
+@SpringBootTest(classes = RootConfiguration.class)
 public class StoreControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
-
     @Autowired
     private ObjectMapper objectMapper;
-
-    @Autowired
-    private StoreService storeService;
-
-    @Autowired
-    private BookService bookService;
-
     @Autowired
     private StoreRepository storeRepository;
-
     @Autowired
     private BookRepository bookRepository;
-
     @Autowired
     private AuthorRepository authorRepository;
-
     @Autowired
     private GenreRepository genreRepository;
-
     @Autowired
     private StoreBookAmountRepository storeBookAmountRepository;
-
     @Autowired
     private JwtUtils jwtUtils;
 
@@ -83,7 +68,7 @@ public class StoreControllerTest {
 
     @Test
     @DisplayName("Создание магазина с валидными данными и ролью admin")
-    public void createValidDataAdminRoleCreatesStore() throws Exception {
+    public void create_ValidDataAdminRole_CreatesStore() throws Exception {
         StoreRequestDto storeRequestDto = new StoreRequestDto("Москва, ул. Тверская, 1");
 
         mockMvc.perform(post("/api/stores")
@@ -96,7 +81,7 @@ public class StoreControllerTest {
 
     @Test
     @DisplayName("Создание магазина с ролью CLIENT - запрещено")
-    public void createClientRoleForbidden() throws Exception {
+    public void create_ClientRole_Forbidden() throws Exception {
         StoreRequestDto storeRequestDto = new StoreRequestDto("Москва, ул. Арбат, 10");
 
         mockMvc.perform(post("/api/stores")
@@ -108,7 +93,7 @@ public class StoreControllerTest {
 
     @Test
     @DisplayName("Получение магазина по существующему ID")
-    public void findByIdExistingIdReturnsStore() throws Exception {
+    public void findById_ExistingId_ReturnsStore() throws Exception {
         Store store = storeRepository.save(Store.builder().address("Москва, ул. Тверская, 1").build());
 
         mockMvc.perform(get("/api/stores/" + store.getId())
@@ -120,15 +105,16 @@ public class StoreControllerTest {
 
     @Test
     @DisplayName("Получение магазина по несуществующему ID")
-    public void findByIdNonExistingIdNotFound() throws Exception {
-        mockMvc.perform(get("/api/stores/999")
+    public void findById_NonExistingId_NotFound() throws Exception {
+        String nonExistId = "123";
+        mockMvc.perform(get("/api/stores/{123}", nonExistId)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNotFound());
     }
 
     @Test
     @DisplayName("Добавление книги в запас магазина с ролью manager")
-    public void addBookToStoreManagerRoleAddsBook() throws Exception {
+    public void addBookToStore_ManagerRole_AddsBook() throws Exception {
         Author author = authorRepository.save(Author.builder().fullName("Михаил Булгаков").build());
         Genre genre = genreRepository.save(Genre.builder().name("Роман").build());
         Book book = bookRepository.save(Book.builder()
@@ -149,7 +135,7 @@ public class StoreControllerTest {
 
     @Test
     @DisplayName("Удаление книги из запаса магазина с ролью manager")
-    public void removeBookFromStoreManagerRoleRemovesBook() throws Exception {
+    public void removeBookFromStore_ManagerRole_RemovesBook() throws Exception {
         Author author = authorRepository.save(Author.builder().fullName("Михаил Булгаков").build());
         Genre genre = genreRepository.save(Genre.builder().name("Роман").build());
         Book book = bookRepository.save(Book.builder()
@@ -175,7 +161,7 @@ public class StoreControllerTest {
 
     @Test
     @DisplayName("Получение запасов магазина по существующему ID")
-    public void getStoreStockExistingIdReturnsStock() throws Exception {
+    public void getStoreStock_ExistingId_ReturnsStock() throws Exception {
         Author author = authorRepository.save(Author.builder().fullName("Михаил Булгаков").build());
         Genre genre = genreRepository.save(Genre.builder().name("Роман").build());
         Book book = bookRepository.save(Book.builder()
@@ -203,7 +189,7 @@ public class StoreControllerTest {
 
     @Test
     @DisplayName("Массовое добавление книг в запас магазина с ролью manager")
-    public void bulkAddBooksToStoreManagerRoleAddsBooks() throws Exception {
+    public void bulkAddBooksToStore_ManagerRole_AddsBooks() throws Exception {
         Author author = authorRepository.save(Author.builder().fullName("Михаил Булгаков").build());
         Genre genre = genreRepository.save(Genre.builder().name("Роман").build());
         Book book1 = bookRepository.save(Book.builder()
@@ -233,7 +219,7 @@ public class StoreControllerTest {
 
     @Test
     @DisplayName("Массовое удаление книг из запаса магазина с ролью manager")
-    public void bulkRemoveBooksFromStoreManagerRoleRemovesBooks() throws Exception {
+    public void bulkRemoveBooksFromStore_ManagerRole_RemovesBooks() throws Exception {
         Author author = authorRepository.save(Author.builder().fullName("Михаил Булгаков").build());
         Genre genre = genreRepository.save(Genre.builder().name("Роман").build());
         Book book1 = bookRepository.save(Book.builder()

@@ -25,25 +25,21 @@ import java.util.Set;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-@SpringBootTest(classes = RootConfiguration.class)
+
 @AutoConfigureMockMvc
+@SpringBootTest(classes = RootConfiguration.class)
 public class AdminPanelControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
-
     @Autowired
     private ObjectMapper objectMapper;
-
     @Autowired
     private UserRepository userRepository;
-
     @Autowired
     private RoleRepository roleRepository;
-
     @Autowired
     private JwtUtils jwtUtils;
-
     @Autowired
     private PasswordEncoder passwordEncoder;
 
@@ -74,7 +70,7 @@ public class AdminPanelControllerTest {
 
     @Test
     @DisplayName("Установка роли пользователю с ролью ADMIN обновляет роли")
-    public void setTheRoleAdminRoleUpdatesUser() throws Exception {
+    public void setTheRole_AdminRole_UpdatesUser() throws Exception {
         RoleDto roleDto = new RoleDto("ROLE_MANAGER");
 
         mockMvc.perform(put("/api/adminpanel/users/{userId}/role", targetUser.getId())
@@ -86,7 +82,7 @@ public class AdminPanelControllerTest {
 
     @Test
     @DisplayName("Установка роли с ролью CLIENT возвращает ошибку")
-    public void setTheRoleClientRoleReturnsError() throws Exception {
+    public void setTheRole_ClientRole_ReturnsError() throws Exception {
         RoleDto roleDto = new RoleDto("ROLE_MANAGER");
 
         mockMvc.perform(put("/api/adminpanel/users/{userId}/role", targetUser.getId())
@@ -98,7 +94,7 @@ public class AdminPanelControllerTest {
 
     @Test
     @DisplayName("Установка роли с несуществующим userId возвращает ошибку")
-    public void setTheRoleNonExistentUserIdReturnsError() throws Exception {
+    public void setTheRole_NonExistentUserId_ReturnsError() throws Exception {
         RoleDto roleDto = new RoleDto("ROLE_MANAGER");
 
         mockMvc.perform(put("/api/adminpanel/users/404/role")
@@ -110,7 +106,7 @@ public class AdminPanelControllerTest {
 
     @Test
     @DisplayName("Установка несуществующей роли возвращает ошибку")
-    public void setTheRoleNonExistentRoleReturnsError() throws Exception {
+    public void setTheRole_NonExistentRole_ReturnsError() throws Exception {
         RoleDto roleDto = new RoleDto("ROLE_UNKNOWN");
 
         mockMvc.perform(put("/api/adminpanel/users/{userId}/role", targetUser.getId())
@@ -121,8 +117,8 @@ public class AdminPanelControllerTest {
     }
 
     @Test
-    @DisplayName("Удаление роли у пользователя с ролью ADMIN обновляет роли")
-    public void deleteTheRoleAdminRoleUpdatesUser() throws Exception {
+    @DisplayName("Удаление роли у пользователя с ролью ADMIN -  обновляет роли")
+    public void deleteTheRole_AdminRole_UpdatesUser() throws Exception {
         RoleDto roleDto = new RoleDto("ROLE_CLIENT");
 
         mockMvc.perform(delete("/api/adminpanel/users/{userId}/role", targetUser.getId())
@@ -133,8 +129,8 @@ public class AdminPanelControllerTest {
     }
 
     @Test
-    @DisplayName("Удаление роли с ролью CLIENT возвращает ошибку")
-    public void deleteTheRoleClientRoleReturnsError() throws Exception {
+    @DisplayName("Удаление роли с ролью CLIENT - возвращает ошибку")
+    public void deleteTheRole_ClientRole_ReturnsError() throws Exception {
         RoleDto roleDto = new RoleDto("ROLE_CLIENT");
 
         mockMvc.perform(delete("/api/adminpanel/users/{userId}/role", targetUser.getId())
@@ -145,11 +141,12 @@ public class AdminPanelControllerTest {
     }
 
     @Test
-    @DisplayName("Удаление роли с несуществующим userId возвращает ошибку")
-    public void deleteTheRoleNonExistentUserIdReturnsError() throws Exception {
+    @DisplayName("Удаление роли с несуществующим userId - возвращает ошибку")
+    public void deleteTheRole_NonExistentUserId_ReturnsError() throws Exception {
+        String nonExistId = "123";
         RoleDto roleDto = new RoleDto("ROLE_CLIENT");
 
-        mockMvc.perform(delete("/api/adminpanel/users/999/role")
+        mockMvc.perform(delete("/api/adminpanel/users/{nonExistId}/role", nonExistId)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(roleDto))
                         .header("Authorization", "Bearer " + adminToken))
@@ -158,7 +155,7 @@ public class AdminPanelControllerTest {
 
     @Test
     @DisplayName("Удаление несуществующей роли возвращает ошибку")
-    public void deleteTheRoleNonExistentRoleReturnsError() throws Exception {
+    public void deleteTheRole_NonExistentRole_ReturnsError() throws Exception {
         RoleDto roleDto = new RoleDto("ROLE_UNKNOWN");
 
         mockMvc.perform(delete("/api/adminpanel/users/{userId}/role", targetUser.getId())

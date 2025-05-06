@@ -18,7 +18,6 @@ import com.ifellow.bookstore.repository.SaleRepository;
 import com.ifellow.bookstore.repository.StoreBookAmountRepository;
 import com.ifellow.bookstore.repository.StoreRepository;
 import com.ifellow.bookstore.repository.UserRepository;
-import com.ifellow.bookstore.service.api.SaleService;
 import com.ifellow.bookstore.util.JwtUtils;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -36,46 +35,32 @@ import java.util.List;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-@SpringBootTest(classes = RootConfiguration.class)
 @AutoConfigureMockMvc
+@SpringBootTest(classes = RootConfiguration.class)
 public class SaleControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
-
     @Autowired
     private ObjectMapper objectMapper;
-
-    @Autowired
-    private SaleService saleService;
-
     @Autowired
     private BookRepository bookRepository;
-
     @Autowired
     private AuthorRepository authorRepository;
-
     @Autowired
     private GenreRepository genreRepository;
-
     @Autowired
     private StoreRepository storeRepository;
-
     @Autowired
     private StoreBookAmountRepository storeBookAmountRepository;
-
     @Autowired
     private UserRepository userRepository;
-
     @Autowired
     private SaleRepository saleRepository;
-
     @Autowired
     private SaleItemRepository saleItemRepository;
-
     @Autowired
     private JwtUtils jwtUtils;
-
     @Autowired
     private PasswordEncoder passwordEncoder;
 
@@ -101,7 +86,7 @@ public class SaleControllerTest {
 
     @Test
     @DisplayName("Обработка продажи с валидными данными и ролью CLIENT")
-    public void processSaleValidDataClientRoleProcessesSale() throws Exception {
+    public void processSale_ValidDataClientRole_ProcessesSale() throws Exception {
         Author author = authorRepository.save(Author.builder().fullName("Михаил Булгаков").build());
         Genre genre = genreRepository.save(Genre.builder().name("Роман").build());
         Book book = bookRepository.save(Book.builder()
@@ -129,7 +114,7 @@ public class SaleControllerTest {
 
     @Test
     @DisplayName("Обработка продажи с ролью MANAGER - запрещено")
-    public void processSaleManagerRoleForbidden() throws Exception {
+    public void processSale_ManagerRole_Forbidden() throws Exception {
         Author author = authorRepository.save(Author.builder().fullName("Михаил Булгаков").build());
         Genre genre = genreRepository.save(Genre.builder().name("Роман").build());
         Book book = bookRepository.save(Book.builder()
@@ -155,7 +140,7 @@ public class SaleControllerTest {
 
     @Test
     @DisplayName("Получение продажи по ID с ролью MANAGER")
-    public void findByIdManagerRoleReturnsSale() throws Exception {
+    public void findById_ManagerRole_ReturnsSale() throws Exception {
         Author author = authorRepository.save(Author.builder().fullName("Михаил Булгаков").build());
         Genre genre = genreRepository.save(Genre.builder().name("Роман").build());
         Book book = bookRepository.save(Book.builder()
@@ -190,7 +175,7 @@ public class SaleControllerTest {
 
     @Test
     @DisplayName("Получение продажи по ID с ролью CLIENT - запрещено")
-    public void findByIdClientRoleForbidden() throws Exception {
+    public void findById_ClientRole_Forbidden() throws Exception {
         Author author = authorRepository.save(Author.builder().fullName("Михаил Булгаков").build());
         Genre genre = genreRepository.save(Genre.builder().name("Роман").build());
         Book book = bookRepository.save(Book.builder()
@@ -222,7 +207,7 @@ public class SaleControllerTest {
 
     @Test
     @DisplayName("Получение списка продаж с ролью MANAGER")
-    public void findAllManagerRoleReturnsSales() throws Exception {
+    public void findAll_ManagerRole_ReturnsSales() throws Exception {
         Author author = authorRepository.save(Author.builder().fullName("Михаил Булгаков").build());
         Genre genre = genreRepository.save(Genre.builder().name("Роман").build());
         Book book = bookRepository.save(Book.builder()
