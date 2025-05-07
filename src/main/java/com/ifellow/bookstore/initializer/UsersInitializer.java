@@ -44,14 +44,5 @@ public class UsersInitializer {
         userRepository.save(admin);
         userRepository.save(manager);
         userRepository.save(client);
-
-        String adminAccessToken = jwtUtils.generateLongLivedAccessTokenForInitializingUsers(admin);
-        String managerAccessToken = jwtUtils.generateLongLivedAccessTokenForInitializingUsers(manager);
-        String clientAccessToken = jwtUtils.generateLongLivedAccessTokenForInitializingUsers(client);
-
-        System.out.println("admin access token = " + adminAccessToken);
-        System.out.println("manager access token = " + managerAccessToken);
-        System.out.println("client access token = " + clientAccessToken);
-
     }
 }
