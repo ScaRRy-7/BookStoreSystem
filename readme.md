@@ -31,15 +31,21 @@ Access токен становится Expired (истекший/протухш�
 
 #### Пользователь с username "client" и ролью ROLE_CLIENT
 Access token :
-```eyJhbGciOiJIUzUxMiJ9.eyJleHAiOjE3NTE4ODMxOTQsInN1YiI6ImNsaWVudCIsInJvbGVzIjpbIlJPTEVfQ0xJRU5UIl19.-fRCpMczuDN6OSpNqa3altrWNhb6pc7KNboglFiSFmnJSjRuBE1PonRL2s2mwI7wwabq4cGeq6rSH4_lhxQ4sA```
+```text
+eyJhbGciOiJIUzUxMiJ9.eyJleHAiOjE3NTE4ODMxOTQsInN1YiI6ImNsaWVudCIsInJvbGVzIjpbIlJPTEVfQ0xJRU5UIl19.-fRCpMczuDN6OSpNqa3altrWNhb6pc7KNboglFiSFmnJSjRuBE1PonRL2s2mwI7wwabq4cGeq6rSH4_lhxQ4sA
+```
 
 #### Пользователь с username "manager" и ролью ROLE_MANAGER
 Access token :
-```eyJhbGciOiJIUzUxMiJ9.eyJleHAiOjE3NTE4ODMxOTQsInN1YiI6Im1hbmFnZXIiLCJyb2xlcyI6WyJST0xFX01BTkFHRVIiXX0.7s8xxb6vc9Eja95PAApwNDNhTesQaKEei23gCfL2KJ5_t1FobtM8sCP3mz_Q3HZY0zUTpNpKCuAKt_Qn9O9Z0A```
+```text
+eyJhbGciOiJIUzUxMiJ9.eyJleHAiOjE3NTE4ODMxOTQsInN1YiI6Im1hbmFnZXIiLCJyb2xlcyI6WyJST0xFX01BTkFHRVIiXX0.7s8xxb6vc9Eja95PAApwNDNhTesQaKEei23gCfL2KJ5_t1FobtM8sCP3mz_Q3HZY0zUTpNpKCuAKt_Qn9O9Z0A
+```
 
 #### Пользователь с username "admin" и ролью ROLE_ADMIN
 Access token :
-```eyJhbGciOiJIUzUxMiJ9.eyJleHAiOjE3NTE4ODMxOTQsInN1YiI6ImNsaWVudCIsInJvbGVzIjpbIlJPTEVfQ0xJRU5UIl19.-fRCpMczuDN6OSpNqa3altrWNhb6pc7KNboglFiSFmnJSjRuBE1PonRL2s2mwI7wwabq4cGeq6rSH4_lhxQ4sA```
+```text
+eyJhbGciOiJIUzUxMiJ9.eyJleHAiOjE3NTE4ODMxOTQsInN1YiI6ImNsaWVudCIsInJvbGVzIjpbIlJPTEVfQ0xJRU5UIl19.-fRCpMczuDN6OSpNqa3altrWNhb6pc7KNboglFiSFmnJSjRuBE1PonRL2s2mwI7wwabq4cGeq6rSH4_lhxQ4sA
+```
 
 ### Пример JWT-токена, раскодированного из Base64 (пользователь client):
 
