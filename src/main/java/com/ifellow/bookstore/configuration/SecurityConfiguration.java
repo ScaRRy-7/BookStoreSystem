@@ -87,7 +87,10 @@ public class SecurityConfiguration {
                 )
                 .exceptionHandling(exception -> exception
                         .authenticationEntryPoint(((request, response, authException) ->
-                                response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Unauthorized"))))
+                                response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Unauthorized")))
+                        .accessDeniedHandler(((request, response, accessDeniedException) ->
+                                response.sendError(HttpServletResponse.SC_FORBIDDEN, "Forbidden")))
+                )
                 .addFilterAfter(jwtAuthenticationFilter, LogoutFilter.class)
                 .build();
     }
