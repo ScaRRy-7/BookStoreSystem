@@ -77,6 +77,8 @@ public class StoreServiceImpl implements StoreService {
 
         Optional<StoreBookAmount> optionalSba = storeBookAmountRepository.findByStoreIdAndBookId(id, bookId);
         StoreBookAmount storeBookAmount;
+        // кажется, что вместо if можно было бы воспользоваться optionalSba.orElseGet(...)
+        // могу быть не права и решение с if-ом более изящное
         if (optionalSba.isPresent()) {
             storeBookAmount = optionalSba.get();
             storeBookAmount.setAmount(storeBookAmount.getAmount() + quantity);
@@ -97,6 +99,7 @@ public class StoreServiceImpl implements StoreService {
         int quantity = bookBulkDto.quantity();
         Long bookId = bookBulkDto.bookId();
 
+        // зачем тут эта проверка, если в dto уже есть проверка через Spring Validation?
         if (quantity <= EMPTY_STOCK) throw new IllegalArgumentException("quantity must be greater than zero");
 
         checkStoreExistence(id);

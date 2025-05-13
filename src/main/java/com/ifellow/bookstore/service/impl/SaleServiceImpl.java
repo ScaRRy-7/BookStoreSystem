@@ -68,6 +68,7 @@ public class SaleServiceImpl implements SaleService {
         sale.setUser(authenticationService.getUserInCurrentContext());
         saleRepository.save(sale);
 
+        // Вот тут проверял, у sale появляется id? Почему-то есть сомнения в этом
         return saleMapper.toDto(sale);
 
     }
@@ -89,9 +90,11 @@ public class SaleServiceImpl implements SaleService {
         return saleRepository.findByUserId(userId, pageable).map(saleMapper::toDto);
     }
 
+    // можно унести в утилитный класс
     private BigDecimal calculateTotalPrice(List<SaleItem> saleItemList) {
         BigDecimal totalPrice = BigDecimal.ZERO;
 
+        // Давай лучше на StreamAPI? Симпатичней и лаконичнее
         for (SaleItem saleItem : saleItemList) {
             BigDecimal totalPriceOfSaleItem = saleItem.getPrice().multiply(new BigDecimal(saleItem.getQuantity()));
             totalPrice = totalPrice.add(totalPriceOfSaleItem);

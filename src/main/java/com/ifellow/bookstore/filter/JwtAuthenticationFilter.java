@@ -1,4 +1,4 @@
-package com.ifellow.bookstore.filter;
+package com.ifellow.bookstore.filter; // можно унести в пакет configuration, но это на твое усмотрение)
 
 import com.ifellow.bookstore.util.JwtUtils;
 import jakarta.servlet.FilterChain;

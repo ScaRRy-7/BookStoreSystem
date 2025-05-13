@@ -53,7 +53,7 @@ public class SecurityConfiguration {
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(HttpMethod.GET, "/api/genres/**").permitAll()
-                        .requestMatchers(HttpMethod.POST, "api/genres/**").hasRole("MANAGER")
+                        .requestMatchers(HttpMethod.POST, "api/genres/**").hasRole("MANAGER") //роли лучше задать в отдельном enam-е, просто чтобы не опечататься в следующий раз
 
                         .requestMatchers(HttpMethod.GET, "/api/books/**").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/books/**").hasRole("MANAGER")

@@ -124,6 +124,7 @@ public class OrderServiceImpl implements OrderService {
         return orderRepository.findByUserId(userId, pageable).map(orderMapper::toDto);
     }
 
+    //можно унести в отдельный утилитный класс
     private BigDecimal calculateTotalPrice(List<OrderItem> orderItemList) {
         return orderItemList.stream()
                 .reduce(BigDecimal.ZERO, (BigDecimal totalPrice, OrderItem orderItem) ->

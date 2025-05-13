@@ -31,6 +31,10 @@ public class JwtUtils {
     private final SecretKey jwtAccessSecret;
     private final UserDetailsService userDetailsService;
 
+    // А эта переменная просетится, если ее в параметрах конструктора нет?
+    // Полагаю, что она будет проставлена после создания инстанса класса, через set (но не уверена).
+    // Чтобы таких вопросов не возникало, очень советую инициализировать единообразно -
+    // либо сразу в конструкторе, либо через сеты. Если, конечно, это возможно.
     @Value("${jwt.expiration.access.minutes}")
     private int accessExpirationMinutes;
 

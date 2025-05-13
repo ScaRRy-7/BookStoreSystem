@@ -19,7 +19,7 @@ public class UsersInitializer {
     private final PasswordEncoder passwordEncoder;
     private final UserRepository userRepository;
     private final RoleService roleService;
-    private final JwtUtils jwtUtils;
+    private final JwtUtils jwtUtils; // не используется, можно удалить?
 
     @PostConstruct
     public void initUsers() {

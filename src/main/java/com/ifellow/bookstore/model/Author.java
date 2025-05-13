@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 @Entity
+//очень много ломбоковских аннотаций, часть из них можно заменить одной @Data
 @Setter
 @Getter
 @Builder

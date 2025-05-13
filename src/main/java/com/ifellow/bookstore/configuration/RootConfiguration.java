@@ -72,6 +72,7 @@ public class RootConfiguration {
 
     @Bean
     public Properties properties() {
+        // а спринг сам из application.properties эти настройки не подтянет, надо обязательно руками сетить?
         Properties properties = new Properties();
         properties.put("hibernate.hbm2ddl.auto", hibernate2ddl);
         properties.put("hibernate.show_sql", hibernateShowSql);
