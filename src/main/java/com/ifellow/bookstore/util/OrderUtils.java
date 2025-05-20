@@ -11,9 +11,8 @@ public class OrderUtils {
 
     public BigDecimal calculateTotalPrice(List<OrderItem> orderItemList) {
         return orderItemList.stream()
-                .reduce(BigDecimal.ZERO, (BigDecimal totalPrice, OrderItem orderItem) ->
-                                totalPrice.add(orderItem.getPrice().multiply(new BigDecimal(orderItem.getQuantity()))),
-                        BigDecimal::add);
+                .map(orderItem -> orderItem.getPrice().multiply(new BigDecimal(orderItem.getQuantity())))
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
 
     }
 }
