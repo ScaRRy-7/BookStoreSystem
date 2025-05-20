@@ -13,6 +13,5 @@ public class OrderUtils {
         return orderItemList.stream()
                 .map(orderItem -> orderItem.getPrice().multiply(new BigDecimal(orderItem.getQuantity())))
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
-
     }
 }
