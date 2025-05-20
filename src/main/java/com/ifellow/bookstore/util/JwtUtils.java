@@ -19,7 +19,6 @@ import org.springframework.stereotype.Component;
 
 import javax.crypto.SecretKey;
 import java.time.Instant;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Date;
@@ -30,19 +29,15 @@ public class JwtUtils {
 
     private final SecretKey jwtAccessSecret;
     private final UserDetailsService userDetailsService;
-
-    // А эта переменная просетится, если ее в параметрах конструктора нет?
-    // Полагаю, что она будет проставлена после создания инстанса класса, через set (но не уверена).
-    // Чтобы таких вопросов не возникало, очень советую инициализировать единообразно -
-    // либо сразу в конструкторе, либо через сеты. Если, конечно, это возможно.
-    @Value("${jwt.expiration.access.minutes}")
-    private int accessExpirationMinutes;
+    private final int accessExpirationMinutes;
 
     public JwtUtils(
             @Value("${jwt.secret.access}") String jwtAccessSecret,
+            @Value("${jwt.expiration.access.minutes}") int accessExpirationMinutes,
             UserDetailsService userDetailsService
     ) {
         this.jwtAccessSecret = Keys.hmacShaKeyFor(Decoders.BASE64.decode(jwtAccessSecret));
+        this.accessExpirationMinutes = accessExpirationMinutes;
         this.userDetailsService = userDetailsService;
     }
 
