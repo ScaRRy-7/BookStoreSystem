@@ -16,6 +16,7 @@ import com.ifellow.bookstore.model.Store;
 import com.ifellow.bookstore.repository.SaleRepository;
 import com.ifellow.bookstore.service.api.*;
 import com.ifellow.bookstore.specification.SaleSpecification;
+import com.ifellow.bookstore.util.SaleUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -38,6 +39,8 @@ public class SaleServiceImpl implements SaleService {
     private final AuthenticationService authenticationService;
 
     private final SaleMapper saleMapper;
+
+    private final SaleUtils saleUtils;
 
     @Override
     @Transactional
@@ -64,13 +67,11 @@ public class SaleServiceImpl implements SaleService {
             sale.getSaleItemList().add(saleItem);
         }
 
-        sale.setTotalPrice(calculateTotalPrice(sale.getSaleItemList()));
+        sale.setTotalPrice(saleUtils.calculateTotalPrice(sale.getSaleItemList()));
         sale.setUser(authenticationService.getUserInCurrentContext());
         saleRepository.save(sale);
 
-        // Вот тут проверял, у sale появляется id? Почему-то есть сомнения в этом
         return saleMapper.toDto(sale);
-
     }
 
     @Override
@@ -80,6 +81,7 @@ public class SaleServiceImpl implements SaleService {
         return saleMapper.toDto(sale);
     }
 
+    @Override
     public Page<SaleResponseDto> findAll(SaleFilter filter, Pageable pageable) {
         Specification<Sale> spec = SaleSpecification.withFilter(filter);
         return saleRepository.findAll(spec, pageable).map(saleMapper::toDto);
@@ -88,17 +90,5 @@ public class SaleServiceImpl implements SaleService {
     @Override
     public Page<SaleResponseDto> findByUserId(Long userId, Pageable pageable) {
         return saleRepository.findByUserId(userId, pageable).map(saleMapper::toDto);
-    }
-
-    // можно унести в утилитный класс
-    private BigDecimal calculateTotalPrice(List<SaleItem> saleItemList) {
-        BigDecimal totalPrice = BigDecimal.ZERO;
-
-        // Давай лучше на StreamAPI? Симпатичней и лаконичнее
-        for (SaleItem saleItem : saleItemList) {
-            BigDecimal totalPriceOfSaleItem = saleItem.getPrice().multiply(new BigDecimal(saleItem.getQuantity()));
-            totalPrice = totalPrice.add(totalPriceOfSaleItem);
-        }
-        return totalPrice;
     }
 }

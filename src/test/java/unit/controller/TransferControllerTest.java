@@ -69,7 +69,7 @@ class TransferControllerTest {
         doNothing().when(transferService).transferBookFromWarehouseToStore(
                 anyLong(), anyLong(), any());
 
-        ResultActions response = mockMvc.perform(post("/api/transfer/fromwarehousetostore")
+        ResultActions response = mockMvc.perform(post("/api/transfer/from-warehouse-to-store")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(validTransferRequest)));
 
@@ -83,7 +83,7 @@ class TransferControllerTest {
     @Test
     @DisplayName("POST /api/transfer/fromwarehousetostore - невалидные данные")
     public void transferFromWarehouseToStore_InvalidRequest_ReturnsBadRequest() throws Exception {
-        ResultActions response = mockMvc.perform(post("/api/transfer/fromwarehousetostore")
+        ResultActions response = mockMvc.perform(post("/api/transfer/from-warehouse-to-store")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(invalidTransferRequest)));
 
@@ -96,7 +96,7 @@ class TransferControllerTest {
         doThrow(new WarehouseException("Warehouse not found with id: 1"))
                 .when(transferService).transferBookFromWarehouseToStore(anyLong(), anyLong(), any(BookBulkDto.class));
 
-        ResultActions response = mockMvc.perform(post("/api/transfer/fromwarehousetostore")
+        ResultActions response = mockMvc.perform(post("/api/transfer/from-warehouse-to-store")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(validTransferRequest)));
 
@@ -109,7 +109,7 @@ class TransferControllerTest {
         doThrow(new NotEnoughStockException("Not enough stock for book with id: 1"))
                 .when(transferService).transferBookFromWarehouseToStore(anyLong(), anyLong(), any(BookBulkDto.class));
 
-        ResultActions response = mockMvc.perform(post("/api/transfer/fromwarehousetostore")
+        ResultActions response = mockMvc.perform(post("/api/transfer/from-warehouse-to-store")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(validTransferRequest)));
 
@@ -122,7 +122,7 @@ class TransferControllerTest {
         doNothing().when(transferService).transferBookFromStoreToStore(
                 anyLong(), anyLong(), any(BookBulkDto.class));
 
-        ResultActions response = mockMvc.perform(post("/api/transfer/fromstoretostore")
+        ResultActions response = mockMvc.perform(post("/api/transfer/from-store-to-store")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(validTransferRequest)));
 
@@ -136,7 +136,7 @@ class TransferControllerTest {
     @Test
     @DisplayName("POST /api/transfer/fromstoretostore - невалидные данные")
     public void transferFromStoreToStore_InvalidRequest_ReturnsBadRequest() throws Exception {
-        ResultActions response = mockMvc.perform(post("/api/transfer/fromstoretostore")
+        ResultActions response = mockMvc.perform(post("/api/transfer/from-store-to-store")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(invalidTransferRequest)));
 
@@ -149,7 +149,7 @@ class TransferControllerTest {
         doThrow(new StoreException("Store not found with id: 1"))
                 .when(transferService).transferBookFromStoreToStore(anyLong(), anyLong(), any(BookBulkDto.class));
 
-        ResultActions response = mockMvc.perform(post("/api/transfer/fromstoretostore")
+        ResultActions response = mockMvc.perform(post("/api/transfer/from-store-to-store")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(validTransferRequest)));
 
@@ -162,7 +162,7 @@ class TransferControllerTest {
         doThrow(new NotEnoughStockException("Not enough stock for book with id: 1"))
                 .when(transferService).transferBookFromStoreToStore(anyLong(), anyLong(), any(BookBulkDto.class));
 
-        ResultActions response = mockMvc.perform(post("/api/transfer/fromstoretostore")
+        ResultActions response = mockMvc.perform(post("/api/transfer/from-store-to-store")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(validTransferRequest)));
 
@@ -175,7 +175,7 @@ class TransferControllerTest {
         doThrow(new BookException("Book not found with id: 1"))
                 .when(transferService).transferBookFromStoreToStore(anyLong(), anyLong(), any(BookBulkDto.class));
 
-        ResultActions response = mockMvc.perform(post("/api/transfer/fromstoretostore")
+        ResultActions response = mockMvc.perform(post("/api/transfer/from-store-to-store")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(validTransferRequest)));
 

@@ -70,24 +70,20 @@ public class StoreServiceImpl implements StoreService {
         int quantity = bookBulkDto.quantity();
         Long bookId = bookBulkDto.bookId();
 
-        if (quantity <= EMPTY_STOCK) throw new IllegalArgumentException("quantity must be greater than zero");
-
         Store store = findStoreById(id);
         Book book = bookService.findBookById(bookId);
 
-        Optional<StoreBookAmount> optionalSba = storeBookAmountRepository.findByStoreIdAndBookId(id, bookId);
-        StoreBookAmount storeBookAmount;
-        // кажется, что вместо if можно было бы воспользоваться optionalSba.orElseGet(...)
-        // могу быть не права и решение с if-ом более изящное
-        if (optionalSba.isPresent()) {
-            storeBookAmount = optionalSba.get();
-            storeBookAmount.setAmount(storeBookAmount.getAmount() + quantity);
-        } else {
-            storeBookAmount = new StoreBookAmount();
-            storeBookAmount.setAmount(quantity);
-            storeBookAmount.setBook(book);
-            storeBookAmount.setStore(store);
-        }
+        StoreBookAmount storeBookAmount = storeBookAmountRepository.findByStoreIdAndBookId(id, bookId)
+                        .map(sba -> {
+                            sba.setAmount(sba.getAmount() + quantity);
+                            return sba;
+                        }).orElseGet(() -> {
+                            StoreBookAmount newSba = new StoreBookAmount();
+                            newSba.setAmount(quantity);
+                            newSba.setBook(book);
+                            newSba.setStore(store);
+                            return newSba;
+                });
 
         storeBookAmountRepository.save(storeBookAmount);
     }
@@ -98,9 +94,6 @@ public class StoreServiceImpl implements StoreService {
             throws IllegalArgumentException, NotEnoughStockException, BookException, StoreException {
         int quantity = bookBulkDto.quantity();
         Long bookId = bookBulkDto.bookId();
-
-        // зачем тут эта проверка, если в dto уже есть проверка через Spring Validation?
-        if (quantity <= EMPTY_STOCK) throw new IllegalArgumentException("quantity must be greater than zero");
 
         checkStoreExistence(id);
         bookService.checkBookExistence(bookId);

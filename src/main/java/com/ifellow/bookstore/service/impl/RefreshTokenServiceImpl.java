@@ -80,6 +80,7 @@ public class RefreshTokenServiceImpl implements RefreshTokenService {
         refreshTokenRepository.delete(refreshToken);
     }
 
+    @Override
     @Transactional
     @Scheduled(cron = "0 0 * * * ?")
     public void deleteExpiredAndRevokedTokens() {

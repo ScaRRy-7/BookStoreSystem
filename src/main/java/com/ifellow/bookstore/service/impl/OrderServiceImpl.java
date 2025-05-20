@@ -15,6 +15,7 @@ import com.ifellow.bookstore.model.Warehouse;
 import com.ifellow.bookstore.repository.OrderRepository;
 import com.ifellow.bookstore.service.api.*;
 import com.ifellow.bookstore.specification.OrderSpecification;
+import com.ifellow.bookstore.util.OrderUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -37,6 +38,8 @@ public class OrderServiceImpl implements OrderService {
     private final AuthenticationService authenticationService;
 
     private final OrderMapper orderMapper;
+
+    private final OrderUtils orderUtils;
 
     @Override
     @Transactional
@@ -62,7 +65,7 @@ public class OrderServiceImpl implements OrderService {
             order.getOrderItemList().add(orderItem);
         }
 
-        order.setTotalPrice(calculateTotalPrice(order.getOrderItemList()));
+        order.setTotalPrice(orderUtils.calculateTotalPrice(order.getOrderItemList()));
         order.setUser(authenticationService.getUserInCurrentContext());
         orderRepository.save(order);
 
@@ -122,14 +125,5 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public Page<OrderResponseDto> findByUserId(Long userId, Pageable pageable) {
         return orderRepository.findByUserId(userId, pageable).map(orderMapper::toDto);
-    }
-
-    //можно унести в отдельный утилитный класс
-    private BigDecimal calculateTotalPrice(List<OrderItem> orderItemList) {
-        return orderItemList.stream()
-                .reduce(BigDecimal.ZERO, (BigDecimal totalPrice, OrderItem orderItem) ->
-                        totalPrice.add(orderItem.getPrice().multiply(new BigDecimal(orderItem.getQuantity()))),
-                        BigDecimal::add);
-
     }
 }

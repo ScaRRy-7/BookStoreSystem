@@ -32,7 +32,7 @@ public class ProfileController {
         return profileService.findProfileOrders(pageable);
     }
 
-    @GetMapping("my-sales") //потерял слэш)
+    @GetMapping("/my-sales")
     @ResponseStatus(HttpStatus.OK)
     public Page<SaleResponseDto> findProfileSales(Pageable pageable) {
         return profileService.findProfileSales(pageable);

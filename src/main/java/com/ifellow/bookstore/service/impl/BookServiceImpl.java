@@ -56,12 +56,14 @@ public class BookServiceImpl implements BookService {
         return bookMapper.toDto(book);
    }
 
+   @Override
    public void checkBookExistence(Long id) throws BookException {
         if (!bookRepository.existsById(id)) {
             throw new BookException("Book not found with id: " + id);
         }
    }
 
+   @Override
    public Object findAll(BookFilter filter, Pageable pageable) {
         if (filter.isGroupByGenre()) {
             return findAllGroupedByGenre(filter, pageable);

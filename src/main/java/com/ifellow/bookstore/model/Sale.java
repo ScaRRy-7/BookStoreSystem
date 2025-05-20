@@ -23,6 +23,7 @@ public class Sale {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Builder.Default
     @OneToMany(mappedBy = "sale", cascade = CascadeType.PERSIST, orphanRemoval = true)
     private List<SaleItem> saleItemList = new ArrayList<>();
 

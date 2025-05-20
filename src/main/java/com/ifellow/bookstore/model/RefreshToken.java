@@ -28,6 +28,7 @@ public class RefreshToken {
     @Column(name = "refresh_expiration", nullable = false)
     private Instant refreshExpiration;
 
+    @Builder.Default
     @Column(nullable = false)
     private boolean revoked = false;
 }

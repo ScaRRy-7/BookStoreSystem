@@ -8,12 +8,14 @@ import org.springframework.stereotype.Component;
 @Component
 public class AuthorMapper implements ToEntityMapper<AuthorRequestDto, Author>, ToDtoMapper<Author, AuthorResponseDto> {
 
+    @Override
     public Author toEntity(AuthorRequestDto authorRequestDto) {
         return Author.builder()
                 .fullName(authorRequestDto.fullName())
                 .build();
     }
 
+    @Override
     public AuthorResponseDto toDto(Author author) {
         return new AuthorResponseDto(
                 author.getId(),

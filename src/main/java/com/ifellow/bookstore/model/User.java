@@ -28,6 +28,7 @@ public class User {
     @Column(nullable = false)
     private String password;
 
+    @Builder.Default
     @ManyToMany
     @JoinTable(
             name = "user_roles",
@@ -36,9 +37,11 @@ public class User {
     )
     private Set<Role> roles = new HashSet<>();
 
+    @Builder.Default
     @OneToMany(mappedBy = "user")
     private List<Order> orders = new ArrayList<>();
 
+    @Builder.Default
     @OneToMany(mappedBy = "user")
     private List<Sale> sales = new ArrayList<>();
 }

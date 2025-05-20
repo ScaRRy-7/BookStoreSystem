@@ -1,5 +1,6 @@
 package com.ifellow.bookstore.configuration;
 
+import com.ifellow.bookstore.enumeration.RoleName;
 import com.ifellow.bookstore.filter.JwtAuthenticationFilter;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,42 +54,42 @@ public class SecurityConfiguration {
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(HttpMethod.GET, "/api/genres/**").permitAll()
-                        .requestMatchers(HttpMethod.POST, "api/genres/**").hasRole("MANAGER") //роли лучше задать в отдельном enam-е, просто чтобы не опечататься в следующий раз
+                        .requestMatchers(HttpMethod.POST, "api/genres/**").hasAuthority(RoleName.ROLE_MANAGER.name())
 
                         .requestMatchers(HttpMethod.GET, "/api/books/**").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/api/books/**").hasRole("MANAGER")
+                        .requestMatchers(HttpMethod.POST, "/api/books/**").hasAuthority(RoleName.ROLE_MANAGER.name())
 
                         .requestMatchers(HttpMethod.GET, "/api/authors/**").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/api/authors/**").hasRole("MANAGER")
+                        .requestMatchers(HttpMethod.POST, "/api/authors/**").hasAuthority(RoleName.ROLE_MANAGER.name())
 
-                        .requestMatchers(HttpMethod.POST, "/api/stores/{storeId}/sales").hasRole("CLIENT")
-                        .requestMatchers(HttpMethod.GET, "/api/sales/**").hasAnyRole("MANAGER", "ADMIN")
+                        .requestMatchers(HttpMethod.POST, "/api/stores/{storeId}/sales").hasAuthority(RoleName.ROLE_CLIENT.name())
+                        .requestMatchers(HttpMethod.GET, "/api/sales/**").hasAnyAuthority(RoleName.ROLE_MANAGER.name(), RoleName.ROLE_ADMIN.name())
 
-                        .requestMatchers(HttpMethod.POST, "/api/warehouses/{warehouseId}/orders").hasRole("CLIENT")
-                        .requestMatchers(HttpMethod.POST, "/api/orders/{orderId}/cancel").hasAnyRole("CLIENT", "MANAGER")
-                        .requestMatchers(HttpMethod.POST, "/api/orders/{orderId}/complete").hasRole("MANAGER")
-                        .requestMatchers(HttpMethod.GET, "/api/orders/**").hasAnyRole("MANAGER", "ADMIN")
+                        .requestMatchers(HttpMethod.POST, "/api/warehouses/{warehouseId}/orders").hasAuthority(RoleName.ROLE_CLIENT.name())
+                        .requestMatchers(HttpMethod.POST, "/api/orders/{orderId}/cancel").hasAnyAuthority(RoleName.ROLE_CLIENT.name(), RoleName.ROLE_MANAGER.name())
+                        .requestMatchers(HttpMethod.POST, "/api/orders/{orderId}/complete").hasAuthority(RoleName.ROLE_MANAGER.name())
+                        .requestMatchers(HttpMethod.GET, "/api/orders/**").hasAnyAuthority(RoleName.ROLE_MANAGER.name(), RoleName.ROLE_ADMIN.name())
 
-                        .requestMatchers(HttpMethod.POST, "/api/stores").hasRole("ADMIN")
-                        .requestMatchers(HttpMethod.POST, "/api/stores/{storeId}/stock/**").hasRole("MANAGER")
+                        .requestMatchers(HttpMethod.POST, "/api/stores").hasAuthority(RoleName.ROLE_ADMIN.name())
+                        .requestMatchers(HttpMethod.POST, "/api/stores/{storeId}/stock/**").hasAuthority(RoleName.ROLE_MANAGER.name())
                         .requestMatchers(HttpMethod.GET, "/api/stores/**").permitAll()
 
-                        .requestMatchers(HttpMethod.POST, "/api/transfer/**").hasRole("MANAGER")
+                        .requestMatchers(HttpMethod.POST, "/api/transfer/**").hasAuthority(RoleName.ROLE_MANAGER.name())
 
                         .requestMatchers(HttpMethod.GET, "/api/warehouses/**").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/api/warehouses/{warehouseId}/stock**").hasRole("MANAGER")
-                        .requestMatchers(HttpMethod.POST, "/api/warehouses").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.POST, "/api/warehouses/{warehouseId}/stock**").hasAuthority(RoleName.ROLE_MANAGER.name())
+                        .requestMatchers(HttpMethod.POST, "/api/warehouses").hasAuthority(RoleName.ROLE_ADMIN.name())
 
-                        .requestMatchers("/api/adminpanel/**").hasRole("ADMIN")
+                        .requestMatchers("/api/adminpanel/**").hasAuthority(RoleName.ROLE_ADMIN.name())
 
 
                         .requestMatchers("/api/auth/**").permitAll()
                         .anyRequest().authenticated()
                 )
                 .exceptionHandling(exception -> exception
-                        .authenticationEntryPoint(((request, response, authException) ->
+                        .authenticationEntryPoint(((_, response, _) ->
                                 response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Unauthorized")))
-                        .accessDeniedHandler(((request, response, accessDeniedException) ->
+                        .accessDeniedHandler(((_, response, _) ->
                                 response.sendError(HttpServletResponse.SC_FORBIDDEN, "Forbidden")))
                 )
                 .addFilterAfter(jwtAuthenticationFilter, LogoutFilter.class)

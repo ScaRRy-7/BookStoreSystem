@@ -7,6 +7,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class WarehouseBookAmountMapper implements ToDtoMapper<WarehouseBookAmount, WarehouseBookResponseDto> {
 
+    @Override
     public WarehouseBookResponseDto toDto(WarehouseBookAmount warehouseBookAmount) {
         return new WarehouseBookResponseDto(warehouseBookAmount.getId(),
                 warehouseBookAmount.getWarehouse().getId(),

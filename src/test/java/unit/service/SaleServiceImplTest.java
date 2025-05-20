@@ -12,6 +12,7 @@ import com.ifellow.bookstore.service.api.AuthenticationService;
 import com.ifellow.bookstore.service.api.BookService;
 import com.ifellow.bookstore.service.api.StoreService;
 import com.ifellow.bookstore.service.impl.SaleServiceImpl;
+import com.ifellow.bookstore.util.SaleUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -49,6 +50,9 @@ class SaleServiceImplTest {
 
     @Mock
     private SaleMapper saleMapper;
+
+    @Mock
+    private SaleUtils saleUtils;
 
     @InjectMocks
     private SaleServiceImpl saleService;

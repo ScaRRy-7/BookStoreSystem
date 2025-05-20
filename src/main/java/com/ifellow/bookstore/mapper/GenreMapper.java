@@ -8,12 +8,14 @@ import org.springframework.stereotype.Component;
 @Component
 public class GenreMapper implements ToEntityMapper<GenreRequestDto, Genre>, ToDtoMapper<Genre, GenreResponseDto> {
 
+    @Override
     public Genre toEntity(GenreRequestDto genreRequestDto) {
         return Genre.builder()
                 .name(genreRequestDto.name())
                 .build();
     }
 
+    @Override
     public GenreResponseDto toDto(Genre genre) {
         return new GenreResponseDto(genre.getId(), genre.getName());
     }

@@ -96,7 +96,7 @@ public class TransferControllerTest {
         BookBulkDto bookBulkDto = new BookBulkDto(book.getId(), 5);
         TransferRequestDto transferRequestDto = new TransferRequestDto(warehouse.getId(), store.getId(), bookBulkDto);
 
-        mockMvc.perform(post("/api/transfer/fromwarehousetostore")
+        mockMvc.perform(post("/api/transfer/from-warehouse-to-store")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(transferRequestDto))
                         .header("Authorization", "Bearer " + managerToken))
@@ -124,7 +124,7 @@ public class TransferControllerTest {
         BookBulkDto bookBulkDto = new BookBulkDto(book.getId(), 5);
         TransferRequestDto transferRequestDto = new TransferRequestDto(storeFrom.getId(), storeTo.getId(), bookBulkDto);
 
-        mockMvc.perform(post("/api/transfer/fromstoretostore")
+        mockMvc.perform(post("/api/transfer/from-store-to-store")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(transferRequestDto))
                         .header("Authorization", "Bearer " + managerToken))

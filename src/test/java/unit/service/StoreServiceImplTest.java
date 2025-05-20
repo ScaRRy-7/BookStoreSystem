@@ -158,14 +158,6 @@ class StoreServiceImplTest {
     }
 
     @Test
-    @DisplayName("Выбрасывает IllegalArgumentException когда quantity <= 0")
-    void addBookToStore_InvalidQuantity_ThrowsException() {
-        assertThrows(IllegalArgumentException.class, () -> storeService.addBookToStore(storeId, new BookBulkDto(bookId, 0)));
-        assertThrows(IllegalArgumentException.class, () -> storeService.addBookToStore(storeId, new BookBulkDto(bookId, -1)));
-        Mockito.verify(storeRepository, Mockito.never()).findById(Mockito.anyLong());
-    }
-
-    @Test
     @DisplayName("Удаляет книгу с магазина")
     void removeBookFromStore_ValidData_RemovesBook() {
         int initialAmount = 10;

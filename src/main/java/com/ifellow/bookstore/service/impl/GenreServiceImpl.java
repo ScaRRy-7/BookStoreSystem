@@ -19,6 +19,7 @@ public class GenreServiceImpl implements GenreService {
     private final GenreMapper genreMapper;
 
 
+    @Override
     @Transactional
     public GenreResponseDto save(GenreRequestDto genreRequestDto) {
         Genre genre = genreMapper.toEntity(genreRequestDto);

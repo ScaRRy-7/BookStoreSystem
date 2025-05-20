@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class BookMapper implements ToEntityMapper<BookRequestDto, Book>, ToDtoMapper<Book, BookResponseDto> {
 
+    @Override
     public Book toEntity(BookRequestDto bookRequestDto) {
         return Book.builder()
                 .title(bookRequestDto.title())
@@ -15,6 +16,7 @@ public class BookMapper implements ToEntityMapper<BookRequestDto, Book>, ToDtoMa
                 .build();
     }
 
+    @Override
     public BookResponseDto toDto(Book book) {
         return new BookResponseDto(
                 book.getId(),

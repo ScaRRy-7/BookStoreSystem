@@ -47,19 +47,19 @@ public class RootConfiguration {
     }
 
     @Bean
-    public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
+    public LocalContainerEntityManagerFactoryBean entityManagerFactory(DataSource dataSource, Properties properties) {
         LocalContainerEntityManagerFactoryBean entityManagerFactory = new LocalContainerEntityManagerFactoryBean();
-        entityManagerFactory.setDataSource(dataSource());
+        entityManagerFactory.setDataSource(dataSource);
         entityManagerFactory.setPackagesToScan("com.ifellow.bookstore.model");
         entityManagerFactory.setJpaVendorAdapter(new HibernateJpaVendorAdapter());
-        entityManagerFactory.setJpaProperties(properties());
+        entityManagerFactory.setJpaProperties(properties);
         return entityManagerFactory;
     }
 
     @Bean
-    public TransactionManager transactionManager() {
+    public TransactionManager transactionManager(LocalContainerEntityManagerFactoryBean entityManagerFactory) {
         JpaTransactionManager transactionManager = new JpaTransactionManager();
-        transactionManager.setEntityManagerFactory(entityManagerFactory().getObject());
+        transactionManager.setEntityManagerFactory(entityManagerFactory.getObject());
         return transactionManager;
     }
 
@@ -72,7 +72,6 @@ public class RootConfiguration {
 
     @Bean
     public Properties properties() {
-        // а спринг сам из application.properties эти настройки не подтянет, надо обязательно руками сетить?
         Properties properties = new Properties();
         properties.put("hibernate.hbm2ddl.auto", hibernate2ddl);
         properties.put("hibernate.show_sql", hibernateShowSql);

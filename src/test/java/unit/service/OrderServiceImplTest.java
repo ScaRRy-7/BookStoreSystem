@@ -14,6 +14,7 @@ import com.ifellow.bookstore.service.api.AuthenticationService;
 import com.ifellow.bookstore.service.api.BookService;
 import com.ifellow.bookstore.service.api.WarehouseService;
 import com.ifellow.bookstore.service.impl.OrderServiceImpl;
+import com.ifellow.bookstore.util.OrderUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -48,6 +49,9 @@ class OrderServiceImplTest {
 
     @Mock
     private OrderMapper orderMapper;
+
+    @Mock
+    private OrderUtils orderUtils;
 
     @InjectMocks
     private OrderServiceImpl orderService;

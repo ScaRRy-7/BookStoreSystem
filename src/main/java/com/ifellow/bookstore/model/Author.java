@@ -4,12 +4,8 @@ import jakarta.persistence.*;
 import lombok.*;
 
 @Entity
-//очень много ломбоковских аннотаций, часть из них можно заменить одной @Data
-@Setter
-@Getter
+@Data
 @Builder
-@ToString
-@EqualsAndHashCode
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "authors")

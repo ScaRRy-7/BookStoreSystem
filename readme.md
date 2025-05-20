@@ -39,7 +39,7 @@ Access token :
 
 #### Пользователь с username "admin" и ролью ROLE_ADMIN
 Access token :
-```eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsImV4cCI6MTc0NjYxNzIzMSwicm9sZXMiOlsiUk9MRV9BRE1JTiJdfQ.ChS-maG3h7BwEdpCNzTXJ12RS56XkNpxxQ66JshXAxEChFW12ZlhyqXFX0CJY96GFW9wLSRD7QOlxRRruC1R5A```
+```eyJhbGciOiJIUzUxMiJ9.eyJleHAiOjE3NTI5OTU2NzQsInN1YiI6ImFkbWluIiwicm9sZXMiOlsiUk9MRV9BRE1JTiJdfQ._bSduIdL-5cyJYwSEq3mqyBcmjdQyCR3WZUaMMemZC0bJcfckAHTGOjIrTF3w777Zzd_leM-F85OcNjaBIKQ-A```
 
 ### Пример JWT-токена, раскодированного из Base64 (пользователь client):
 

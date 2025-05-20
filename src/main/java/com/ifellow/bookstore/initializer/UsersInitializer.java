@@ -4,7 +4,6 @@ import com.ifellow.bookstore.enumeration.RoleName;
 import com.ifellow.bookstore.model.User;
 import com.ifellow.bookstore.repository.UserRepository;
 import com.ifellow.bookstore.service.api.RoleService;
-import com.ifellow.bookstore.util.JwtUtils;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -19,7 +18,6 @@ public class UsersInitializer {
     private final PasswordEncoder passwordEncoder;
     private final UserRepository userRepository;
     private final RoleService roleService;
-    private final JwtUtils jwtUtils; // не используется, можно удалить?
 
     @PostConstruct
     public void initUsers() {
