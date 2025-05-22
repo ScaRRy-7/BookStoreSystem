@@ -16,11 +16,11 @@ import javax.sql.DataSource;
 import java.util.Properties;
 
 @Configuration
+@EnableScheduling
+@EnableTransactionManagement
 @ComponentScan("com.ifellow.bookstore")
 @PropertySource("classpath:application.properties")
-@EnableTransactionManagement
 @EnableJpaRepositories("com.ifellow.bookstore.repository")
-@EnableScheduling
 public class RootConfiguration {
 
     @Value("${datasource.driver}")
