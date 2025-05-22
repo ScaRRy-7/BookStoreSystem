@@ -49,6 +49,7 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public BookResponseDto findById(Long id) throws BookException {
         Book book = bookRepository.findById(id)
                 .orElseThrow(() -> new BookException("Book not found with id: " + id));
@@ -57,6 +58,7 @@ public class BookServiceImpl implements BookService {
    }
 
    @Override
+   @Transactional(readOnly = true)
    public void checkBookExistence(Long id) throws BookException {
         if (!bookRepository.existsById(id)) {
             throw new BookException("Book not found with id: " + id);
@@ -64,6 +66,7 @@ public class BookServiceImpl implements BookService {
    }
 
    @Override
+   @Transactional(readOnly = true)
    public Object findAll(BookFilter filter, Pageable pageable) {
         if (filter.isGroupByGenre()) {
             return findAllGroupedByGenre(filter, pageable);
@@ -98,6 +101,7 @@ public class BookServiceImpl implements BookService {
    }
 
    @Override
+   @Transactional(readOnly = true)
    public Book findBookById(Long id) throws BookException {
         return bookRepository.findById(id)
                 .orElseThrow(() -> new BookException("Book not found with id: " + id));

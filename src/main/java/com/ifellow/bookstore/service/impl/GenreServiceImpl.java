@@ -28,6 +28,7 @@ public class GenreServiceImpl implements GenreService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Genre findGenreById(Long id) throws GenreException {
         return genreRepository.findById(id).orElseThrow(
                 () -> new GenreException("Genre not found with id: " + id)
@@ -35,6 +36,7 @@ public class GenreServiceImpl implements GenreService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public GenreResponseDto findById(Long id) throws GenreException {
         return genreRepository.findById(id)
                 .map(genreMapper::toDto)

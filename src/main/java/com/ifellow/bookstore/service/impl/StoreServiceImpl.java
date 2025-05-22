@@ -23,7 +23,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -45,6 +44,7 @@ public class StoreServiceImpl implements StoreService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public StoreResponseDto findById(Long id) throws StoreException {
         Store store = storeRepository.findById(id)
                 .orElseThrow(() -> new StoreException("Store not found with id " + id));
@@ -53,6 +53,7 @@ public class StoreServiceImpl implements StoreService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Store findStoreById(Long id) throws StoreException {
         return storeRepository.findById(id)
                 .orElseThrow(() -> new StoreException("Store not found with id: " + id));
@@ -127,6 +128,7 @@ public class StoreServiceImpl implements StoreService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Page<StoreBookResponseDto> getStoreStock(Long id, Pageable pageable) {
        return storeBookAmountRepository.findByStoreId(id, pageable)
                .map(storeBookAmountMapper::toDto);

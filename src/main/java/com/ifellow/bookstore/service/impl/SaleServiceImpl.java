@@ -75,6 +75,7 @@ public class SaleServiceImpl implements SaleService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public SaleResponseDto findById(Long id) {
         Sale sale = saleRepository.findById(id)
                 .orElseThrow(() -> new SaleException("Sale not found with id: " + id));
@@ -82,12 +83,14 @@ public class SaleServiceImpl implements SaleService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Page<SaleResponseDto> findAll(SaleFilter filter, Pageable pageable) {
         Specification<Sale> spec = SaleSpecification.withFilter(filter);
         return saleRepository.findAll(spec, pageable).map(saleMapper::toDto);
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Page<SaleResponseDto> findByUserId(Long userId, Pageable pageable) {
         return saleRepository.findByUserId(userId, pageable).map(saleMapper::toDto);
     }

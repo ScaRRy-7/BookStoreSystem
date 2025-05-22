@@ -45,6 +45,7 @@ public class WarehouseServiceImpl implements WarehouseService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public WarehouseResponseDto findById(Long id) throws WarehouseException {
         Warehouse warehouse = warehouseRepository.findById(id).orElseThrow(
                 () -> new WarehouseException("Warehouse not found with id: " + id)
@@ -53,11 +54,13 @@ public class WarehouseServiceImpl implements WarehouseService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Warehouse findWarehouseById(Long id) throws WarehouseException {
         return warehouseRepository.findById(id)
                 .orElseThrow(() -> new WarehouseException("Warehouse not found with id: " + id));
     }
 
+    @Transactional(readOnly = true)
     public void checkWarehouseExistence(Long id) throws WarehouseException {
         if (!warehouseRepository.existsById(id)) {
             throw new WarehouseException("Warehouse not found with id: " + id);
@@ -118,6 +121,7 @@ public class WarehouseServiceImpl implements WarehouseService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Page<WarehouseBookResponseDto> getWarehouseStock(Long id, Pageable pageable) {
         return warehouseBookAmountRepository.findByWarehouseId(id, pageable)
                 .map(warehouseBookAmountMapper::toDto);

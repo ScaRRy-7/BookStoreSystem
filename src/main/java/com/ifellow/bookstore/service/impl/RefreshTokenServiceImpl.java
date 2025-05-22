@@ -47,6 +47,7 @@ public class RefreshTokenServiceImpl implements RefreshTokenService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public RefreshToken findByToken(String token) throws RefreshTokenException {
         return refreshTokenRepository.findByToken(token)
                 .orElseThrow(() -> new RefreshTokenException("Refresh token not found with UUID: " + token));

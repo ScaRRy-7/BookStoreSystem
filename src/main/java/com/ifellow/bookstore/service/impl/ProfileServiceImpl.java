@@ -10,6 +10,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -35,6 +36,7 @@ public class ProfileServiceImpl implements ProfileService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Page<OrderResponseDto> findProfileOrders(Pageable pageable) {
         UserDetails userDetails = authenticationService.getCurrentPrincipal();
         Long userId = userService.findUserByUsername(userDetails.getUsername()).getId();
@@ -43,6 +45,7 @@ public class ProfileServiceImpl implements ProfileService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Page<SaleResponseDto> findProfileSales(Pageable pageable) {
         UserDetails userDetails = authenticationService.getCurrentPrincipal();
         Long userId = userService.findUserByUsername(userDetails.getUsername()).getId();

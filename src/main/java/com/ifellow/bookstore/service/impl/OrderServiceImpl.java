@@ -108,6 +108,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public OrderResponseDto findById(Long orderId) throws OrderException {
         Order order = orderRepository.findById(orderId)
                 .orElseThrow(() -> new OrderException("Order not found with id: " + orderId));
@@ -116,6 +117,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Page<OrderResponseDto> findAll(OrderFilter filter, Pageable pageable) {
         Specification<Order> spec = OrderSpecification.withFilter(filter);
         return orderRepository.findAll(spec, pageable)
@@ -123,6 +125,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Page<OrderResponseDto> findByUserId(Long userId, Pageable pageable) {
         return orderRepository.findByUserId(userId, pageable).map(orderMapper::toDto);
     }

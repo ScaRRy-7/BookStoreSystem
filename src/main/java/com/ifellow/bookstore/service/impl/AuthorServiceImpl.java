@@ -27,6 +27,7 @@ public class AuthorServiceImpl implements AuthorService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public AuthorResponseDto findById(Long id) throws AuthorException {
         return authorRepository.findById(id)
                 .map(authorMapper::toDto)
@@ -34,6 +35,7 @@ public class AuthorServiceImpl implements AuthorService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Author findAuthorById(Long id) throws AuthorException {
         return authorRepository.findById(id)
                 .orElseThrow(() -> new AuthorException("Author not found with id: " + id));
