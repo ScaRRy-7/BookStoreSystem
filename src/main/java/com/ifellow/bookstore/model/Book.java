@@ -5,14 +5,12 @@ import lombok.*;
 
 import java.math.BigDecimal;
 
+@Data
 @Entity
-@Setter
-@Getter
 @Builder
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode
 @Table(name = "books")
 public class Book {
 

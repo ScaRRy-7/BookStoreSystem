@@ -1,16 +1,15 @@
 package com.ifellow.bookstore.model;
 
 import jakarta.persistence.*;
+import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.math.BigDecimal;
 
+@Data
 @Entity
-@Getter
-@Setter
-@EqualsAndHashCode
 @Table(name = "sale_items")
 public class SaleItem {
 

@@ -5,13 +5,11 @@ import lombok.*;
 
 import java.math.BigDecimal;
 
+@Data
 @Entity
-@Getter
-@Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode
 @Table(name = "order_items")
 public class OrderItem {
 
