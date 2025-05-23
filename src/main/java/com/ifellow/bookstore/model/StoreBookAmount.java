@@ -3,11 +3,9 @@ package com.ifellow.bookstore.model;
 import jakarta.persistence.*;
 import lombok.*;
 
+@Data
 @Entity
-@Setter
-@Getter
 @Builder
-@EqualsAndHashCode
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(

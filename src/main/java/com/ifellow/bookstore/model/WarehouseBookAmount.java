@@ -3,13 +3,11 @@ package com.ifellow.bookstore.model;
 import jakarta.persistence.*;
 import lombok.*;
 
+@Data
 @Entity
-@Setter
-@Getter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode
 @Table(
         name = "warehouse_books_amount",
         uniqueConstraints = {@UniqueConstraint(columnNames = {"book_id", "warehouse_id"})}
